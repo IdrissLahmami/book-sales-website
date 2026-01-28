@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Book Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Book Management</h5>
+                    <a href="{{ url_for('admin_add_book') }}" class="btn btn-primary">Add New Book</a>
+                </div>
+                <div class="card-body">
+                    {% if books %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cover</th>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for book in books %}
+                                <tr>
+                                    <td>{{ book.id }}</td>
+                                    <td>
+                                        {% if book.cover_image %}
+                                        <img src="{{ url_for('static', filename='uploads/' + book.cover_image) }}" alt="{{ book.title }}" style="width: 50px;">
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" alt="Book cover placeholder" style="width: 50px;">
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td>${{ "%.2f"|format(book.price) }}</td>
+                                    <td>
+                                        {% if book.is_available %}
+                                        <span class="badge bg-success">Available</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">Unavailable</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('admin_edit_book', book_id=book.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ book.id }}">Delete</button>
+                                        </div>
+                                        
+                                        <!-- Delete Confirmation Modal -->
+                                        <div class="modal fade" id="deleteModal{{ book.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ book.id }}" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deleteModalLabel{{ book.id }}">Confirm Delete</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to delete "{{ book.title }}"? This action cannot be undone.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <form action="{{ url_for('admin_delete_book', book_id=book.id) }}" method="post">
+                                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center py-3">No books available. Add your first book to get started.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Orders</h5>
+                </div>
+                <div class="card-body">
+                    {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.order_reference }}</td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                    <td>
+                                        {% if order.status == 'completed' %}
+                                        <span class="badge bg-success">Completed</span>
+                                        {% elif order.status == 'pending' %}
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">{{ order.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center py-3">No orders yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body text-center">
+                                    <h3>{{ total_books }}</h3>
+                                    <p class="mb-0">Total Books</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <h3>{{ total_orders }}</h3>
+                                    <p class="mb-0">Total Orders</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body text-center">
+                                    <h3>{{ total_users }}</h3>
+                                    <p class="mb-0">Registered Users</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-warning text-dark">
+                                <div class="card-body text-center">
+                                    <h3>${{ "%.2f"|format(total_revenue) }}</h3>
+                                    <p class="mb-0">Total Revenue</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

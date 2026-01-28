@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - Book Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Checkout</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Items</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in items %}
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            {% if item.book.cover_image %}
+                            <img src="{{ url_for('static', filename='uploads/' + item.book.cover_image) }}" class="img-fluid rounded" alt="{{ item.book.title }}">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" class="img-fluid rounded" alt="Book cover placeholder">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h6>{{ item.book.title }}</h6>
+                            <p class="text-muted small">{{ item.book.author }}</p>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <span class="small">Qty: {{ item.quantity }}</span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <span>${{ "%.2f"|format(item.total) }}</span>
+                        </div>
+                    </div>
+                    {% if not loop.last %}<hr>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Billing Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ current_user.name }}</p>
+                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    <p class="mb-0"><strong>Payment Method:</strong> PayPal</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="cart-summary">
+                <h4 class="mb-3">Order Summary</h4>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>${{ "%.2f"|format(total) }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Tax:</span>
+                    <span>$0.00</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between mb-4">
+                    <strong>Total:</strong>
+                    <strong>${{ "%.2f"|format(total) }}</strong>
+                </div>
+                
+                <button id="checkout-btn" class="btn btn-primary btn-lg w-100">Proceed to Payment</button>
+                <div class="text-center mt-3">
+                    <img src="{{ url_for('static', filename='img/paypal-logo.png') }}" alt="PayPal" height="30">
+                </div>
+                <p class="small text-muted text-center mt-2">You will be redirected to PayPal to complete your payment.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // PayPal checkout functionality is handled in main.js
+</script>
+{% endblock %}

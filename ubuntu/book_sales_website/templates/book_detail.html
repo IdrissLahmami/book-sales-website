@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }} - Book Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            {% if book.cover_image %}
+            <img src="{{ url_for('static', filename='uploads/' + book.cover_image) }}" class="img-fluid book-detail-img rounded" alt="{{ book.title }}">
+            {% else %}
+            <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" class="img-fluid book-detail-img rounded" alt="Book cover placeholder">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <div class="book-detail-info">
+                <h1 class="mb-2">{{ book.title }}</h1>
+                <h5 class="text-muted mb-3">by {{ book.author }}</h5>
+                
+                <div class="book-price mb-3">${{ "%.2f"|format(book.price) }}</div>
+                
+                <form action="{{ url_for('add_to_cart', book_id=book.id) }}" method="post">
+                    <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                </form>
+                
+                <hr>
+                
+                <h4>Book Description</h4>
+                <p>{{ book.description }}</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Book Details</h5>
+                        <table class="table">
+                            <tbody>
+                                {% if book.isbn %}
+                                <tr>
+                                    <th>ISBN</th>
+                                    <td>{{ book.isbn }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if book.publisher %}
+                                <tr>
+                                    <th>Publisher</th>
+                                    <td>{{ book.publisher }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if book.publication_date %}
+                                <tr>
+                                    <th>Publication Date</th>
+                                    <td>{{ book.publication_date.strftime('%B %d, %Y') }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if book.language %}
+                                <tr>
+                                    <th>Language</th>
+                                    <td>{{ book.language }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if book.pages %}
+                                <tr>
+                                    <th>Pages</th>
+                                    <td>{{ book.pages }}</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

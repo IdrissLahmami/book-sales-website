@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Order Details - Book Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Order Details</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h5 class="mb-0">Order #{{ order.order_reference }}</h5>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span class="badge {% if order.status == 'completed' %}bg-success{% elif order.status == 'pending' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                        {{ order.status|capitalize }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Order Date:</strong> {{ order.order_date.strftime('%B %d, %Y') }}</p>
+                    <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+                    <p><strong>Email:</strong> {{ order.customer.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Payment Method:</strong> {{ order.payment.payment_method|capitalize }}</p>
+                    <p><strong>Payment Status:</strong> {{ order.payment.status|capitalize }}</p>
+                    <p><strong>Transaction ID:</strong> {{ order.payment.transaction_id }}</p>
+                </div>
+            </div>
+            
+            <h5 class="mb-3">Order Items</h5>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Book</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th class="text-end">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.book.cover_image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + item.book.cover_image) }}" class="img-fluid rounded me-3" alt="{{ item.book.title }}" style="width: 50px;">
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" class="img-fluid rounded me-3" alt="Book cover placeholder" style="width: 50px;">
+                                    {% endif %}
+                                    <div>
+                                        <h6 class="mb-0">{{ item.book.title }}</h6>
+                                        <small class="text-muted">{{ item.book.author }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${{ "%.2f"|format(item.price) }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td class="text-end">${{ "%.2f"|format(item.price * item.quantity) }}</td>
+                            <td>
+                                {% if order.status == 'completed' %}
+                                <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-download"></i> Download
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3" class="text-end">Total:</th>
+                            <th class="text-end">${{ "%.2f"|format(order.total_amount) }}</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center">
+        <a href="{{ url_for('account') }}" class="btn btn-outline-primary">Back to Account</a>
+    </div>
+</div>
+{% endblock %}

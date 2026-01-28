@@ -32,6 +32,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['PDF_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/pdfs')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
+app.config['TEMPLATES_AUTO_RELOAD'] = True  # Force template reloading
 
 # Ensure upload directories exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -517,6 +518,94 @@ def admin_add_book():
         return redirect(url_for('admin_dashboard'))
     
     return render_template('admin/add_book.html')
+
+@app.route('/admin/books/edit/<int:book_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_book(book_id):
+    """Admin route to edit an existing book"""
+    book = Book.query.get_or_404(book_id)
+    
+    if request.method == 'POST':
+        # Update book data
+        book.title = request.form.get('title')
+        book.author = request.form.get('author')
+        book.description = request.form.get('description')
+        book.price = float(request.form.get('price'))
+        book.isbn = request.form.get('isbn')
+        book.publisher = request.form.get('publisher')
+        book.language = request.form.get('language')
+        pages = request.form.get('pages')
+        if pages:
+            book.pages = int(pages)
+        
+        publication_date = request.form.get('publication_date')
+        if publication_date:
+            book.publication_date = datetime.strptime(publication_date, '%Y-%m-%d')
+        
+        book.is_available = 'is_available' in request.form
+        
+        # Handle file uploads
+        if 'cover_image' in request.files:
+            file = request.files['cover_image']
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file.save(file_path)
+                book.cover_image = filename
+        
+        if 'pdf_file' in request.files:
+            file = request.files['pdf_file']
+            if file and file.filename:
+                filename = generate_secure_filename(file.filename)
+                file_path = os.path.join(app.config['PDF_FOLDER'], filename)
+                file.save(file_path)
+                book.pdf_file = filename
+        
+        db.session.commit()
+        
+        flash('Book updated successfully!', 'success')
+        return redirect(url_for('admin_dashboard'))
+    
+    return render_template('admin/edit_book.html', book=book)
+
+@app.route('/admin/books/delete/<int:book_id>', methods=['POST'])
+@login_required
+@admin_required
+def admin_delete_book(book_id):
+    """Admin route to delete a book"""
+    book = Book.query.get_or_404(book_id)
+    
+    # Delete associated files
+    if book.cover_image:
+        cover_path = os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image)
+        if os.path.exists(cover_path):
+            os.remove(cover_path)
+    
+    if book.pdf_file:
+        pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+        if os.path.exists(pdf_path):
+            os.remove(pdf_path)
+    
+    db.session.delete(book)
+    db.session.commit()
+    
+    flash('Book deleted successfully!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/debug/user')
+@login_required
+def debug_user():
+    """Debug route to check current user info"""
+    return f"""
+    <h1>Current User Debug Info</h1>
+    <p>Authenticated: {current_user.is_authenticated}</p>
+    <p>User ID: {current_user.id}</p>
+    <p>Email: {current_user.email}</p>
+    <p>Name: {current_user.name}</p>
+    <p>Is Admin: {current_user.is_admin}</p>
+    <p>Has is_admin attribute: {hasattr(current_user, 'is_admin')}</p>
+    """
 
 if __name__ == '__main__':
     with app.app_context():

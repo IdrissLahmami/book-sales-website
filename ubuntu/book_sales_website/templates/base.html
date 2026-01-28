@@ -29,6 +29,12 @@
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
                 <ul class="navbar-nav">
+                    <!-- DEBUG: Auth={{ current_user.is_authenticated }}, Admin={{ current_user.is_admin if current_user.is_authenticated else 'N/A' }} -->
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-warning text-dark" href="{{ url_for('admin_dashboard') }}">🔧 ADMIN DASHBOARD</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('cart') }}">
                             <i class="bi bi-cart"></i> Cart
@@ -44,6 +50,9 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="{{ url_for('account') }}">My Account</a></li>
+                                {% if current_user.is_admin %}
+                                <li><a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                                {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
                             </ul>

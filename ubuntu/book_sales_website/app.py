@@ -23,6 +23,7 @@ from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 from paypal_helpers import create_payment, execute_payment, get_payment_details
 from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename
 from admin_helpers import admin_required, get_admin_stats
+from pdf_thumbnail import generate_pdf_thumbnail
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -526,6 +527,16 @@ def admin_add_book():
                 file_path = os.path.join(app.config['PDF_FOLDER'], filename)
                 file.save(file_path)
                 pdf_file = filename
+                
+                # Auto-generate thumbnail from PDF if no cover image provided
+                if not cover_image:
+                    thumbnail_filename = os.path.splitext(filename)[0] + '_thumb.png'
+                    thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_filename)
+                    if generate_pdf_thumbnail(file_path, thumbnail_path):
+                        cover_image = thumbnail_filename
+                        flash('Cover image automatically generated from PDF.', 'info')
+                    else:
+                        flash('Could not generate thumbnail from PDF. Please upload a cover image.', 'warning')
         
         # Create new book
         new_book = Book(
@@ -590,6 +601,7 @@ def admin_edit_book(book_id):
                 file.save(file_path)
                 book.cover_image = filename
         
+        pdf_updated = False
         if 'pdf_file' in request.files:
             file = request.files['pdf_file']
             if file and file.filename:
@@ -597,6 +609,15 @@ def admin_edit_book(book_id):
                 file_path = os.path.join(app.config['PDF_FOLDER'], filename)
                 file.save(file_path)
                 book.pdf_file = filename
+                pdf_updated = True
+                
+                # Auto-generate thumbnail from new PDF if no cover image was uploaded
+                if 'cover_image' not in request.files or not request.files['cover_image'].filename:
+                    thumbnail_filename = os.path.splitext(filename)[0] + '_thumb.png'
+                    thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_filename)
+                    if generate_pdf_thumbnail(file_path, thumbnail_path):
+                        book.cover_image = thumbnail_filename
+                        flash('Cover image automatically updated from new PDF.', 'info')
         
         db.session.commit()
         

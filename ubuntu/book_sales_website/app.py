@@ -160,6 +160,7 @@ def cart():
     cart_items = session.get('cart', {})
     books = []
     total = 0
+    invalid_items = []
     
     # Get book details for each item in cart
     for book_id, quantity in cart_items.items():
@@ -172,6 +173,18 @@ def cart():
                 'total': item_total
             })
             total += item_total
+        else:
+            # Mark invalid items for removal
+            invalid_items.append(book_id)
+    
+    # Remove invalid items from cart
+    if invalid_items:
+        cart = session.get('cart', {})
+        for book_id in invalid_items:
+            if book_id in cart:
+                del cart[book_id]
+        session['cart'] = cart
+        flash('Some items in your cart are no longer available and have been removed.', 'warning')
     
     return render_template('cart.html', items=books, total=total)
 
@@ -425,6 +438,21 @@ def account():
     orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.order_date.desc()).all()
     return render_template('account.html', user=current_user, orders=orders)
 
+@app.route('/account/update-address', methods=['POST'])
+@login_required
+def update_address():
+    """Update user billing address"""
+    current_user.address = request.form.get('address')
+    current_user.city = request.form.get('city')
+    current_user.state = request.form.get('state')
+    current_user.zip_code = request.form.get('zip_code')
+    current_user.country = request.form.get('country')
+    
+    db.session.commit()
+    
+    flash('Address updated successfully!', 'success')
+    return redirect(url_for('account'))
+
 @app.route('/account/orders/<int:order_id>')
 @login_required
 def order_detail(order_id):
@@ -463,16 +491,20 @@ def admin_add_book():
         author = request.form.get('author')
         description = request.form.get('description')
         price = float(request.form.get('price'))
-        isbn = request.form.get('isbn')
-        publisher = request.form.get('publisher')
-        language = request.form.get('language')
+        isbn = request.form.get('isbn') or None
+        publisher = request.form.get('publisher') or None
+        language = request.form.get('language') or None
         pages = request.form.get('pages')
         if pages:
             pages = int(pages)
+        else:
+            pages = None
         
         publication_date = request.form.get('publication_date')
         if publication_date:
             publication_date = datetime.strptime(publication_date, '%Y-%m-%d')
+        else:
+            publication_date = None
         
         is_available = 'is_available' in request.form
         
@@ -532,16 +564,20 @@ def admin_edit_book(book_id):
         book.author = request.form.get('author')
         book.description = request.form.get('description')
         book.price = float(request.form.get('price'))
-        book.isbn = request.form.get('isbn')
-        book.publisher = request.form.get('publisher')
-        book.language = request.form.get('language')
+        book.isbn = request.form.get('isbn') or None
+        book.publisher = request.form.get('publisher') or None
+        book.language = request.form.get('language') or None
         pages = request.form.get('pages')
         if pages:
             book.pages = int(pages)
+        else:
+            book.pages = None
         
         publication_date = request.form.get('publication_date')
         if publication_date:
             book.publication_date = datetime.strptime(publication_date, '%Y-%m-%d')
+        else:
+            book.publication_date = None
         
         book.is_available = 'is_available' in request.form
         

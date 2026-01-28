@@ -51,6 +51,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
+                                            <a href="{{ url_for('download_book', book_id=book.id, order_id=0) }}" class="btn btn-sm btn-outline-success" title="Download PDF">
+                                                <i class="bi bi-download"></i> Download
+                                            </a>
                                             <a href="{{ url_for('admin_edit_book', book_id=book.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                             <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ book.id }}">Delete</button>
                                         </div>

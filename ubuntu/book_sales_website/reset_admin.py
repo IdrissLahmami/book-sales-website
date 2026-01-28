@@ -21,7 +21,7 @@ from database_schema import db, User
 
 # Create a minimal Flask app for database operations
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_store.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///booksales.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 

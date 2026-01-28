@@ -15,10 +15,15 @@ from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 
 def purchase_required(f):
     """
-    Decorator to check if user has purchased the book before allowing download
+    Decorator to check if user has purchased the book before allowing download.
+    Admins can download without purchase.
     """
     @wraps(f)
     def decorated_function(book_id, order_id, *args, **kwargs):
+        # Allow admins to download without purchase
+        if current_user.is_admin:
+            return f(book_id, order_id, *args, **kwargs)
+        
         # Check if the user has purchased this book
         order = Order.query.filter_by(
             id=order_id, 

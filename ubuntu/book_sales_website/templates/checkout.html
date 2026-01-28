@@ -45,6 +45,15 @@
                 <div class="card-body">
                     <p><strong>Name:</strong> {{ current_user.name }}</p>
                     <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    {% if current_user.address %}
+                    <p><strong>Address:</strong> {{ current_user.address }}</p>
+                    <p><strong>City:</strong> {{ current_user.city }}</p>
+                    <p><strong>State:</strong> {{ current_user.state }}</p>
+                    <p><strong>ZIP Code:</strong> {{ current_user.zip_code }}</p>
+                    <p><strong>Country:</strong> {{ current_user.country }}</p>
+                    {% else %}
+                    <p class="text-warning"><small>⚠️ No billing address on file. <a href="{{ url_for('account') }}">Update your profile</a></small></p>
+                    {% endif %}
                     <p class="mb-0"><strong>Payment Method:</strong> PayPal</p>
                 </div>
             </div>

@@ -21,7 +21,7 @@ load_dotenv()
 # Import database models
 from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 from paypal_helpers import create_payment, execute_payment, get_payment_details
-from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename
+from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename, extract_pdf_metadata
 from admin_helpers import admin_required, get_admin_stats
 from pdf_thumbnail import generate_pdf_thumbnail
 
@@ -32,7 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:/
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['PDF_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/pdfs')
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max upload size
 app.config['TEMPLATES_AUTO_RELOAD'] = True  # Force template reloading
 
 # Ensure upload directories exist
@@ -480,6 +480,48 @@ def admin_dashboard():
                           total_users=stats['total_users'],
                           total_orders=stats['total_orders'],
                           total_revenue=stats['total_revenue'])
+
+@app.route('/admin/extract-pdf-metadata', methods=['POST'])
+@login_required
+@admin_required
+def extract_pdf_metadata_endpoint():
+    """AJAX endpoint to extract metadata from uploaded PDF"""
+    if 'pdf_file' not in request.files:
+        return jsonify({'error': 'No PDF file provided'}), 400
+    
+    file = request.files['pdf_file']
+    if not file or not file.filename:
+        return jsonify({'error': 'No PDF file provided'}), 400
+    
+    # Save temporarily to extract metadata
+    temp_filename = generate_secure_filename(file.filename)
+    temp_path = os.path.join(app.config['PDF_FOLDER'], temp_filename)
+    file.save(temp_path)
+    
+    try:
+        # Extract metadata
+        metadata = extract_pdf_metadata(temp_path)
+        
+        # Return metadata as JSON
+        return jsonify({
+            'success': True,
+            'metadata': {
+                'title': metadata.get('title', ''),
+                'author': metadata.get('author', ''),
+                'description': metadata.get('description', ''),
+                'publisher': metadata.get('publisher', ''),
+                'isbn': metadata.get('isbn', '') or metadata.get('doi', ''),  # Use DOI if ISBN not found
+                'pages': metadata.get('pages', 0),
+                'language': metadata.get('language', ''),
+                'publication_date': metadata.get('publication_date', ''),
+                'filename': temp_filename
+            }
+        })
+    except Exception as e:
+        # Clean up temp file on error
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/admin/books/add', methods=['GET', 'POST'])
 @login_required

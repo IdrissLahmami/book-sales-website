@@ -45,8 +45,8 @@
                                 <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="isbn" class="form-label">ISBN</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn">
+                                <label for="isbn" class="form-label">ISBN/DOI</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="ISBN or DOI">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label for="publisher" class="form-label">Publisher</label>
@@ -73,13 +73,20 @@
                             <div class="col-md-6 mb-3">
                                 <label for="cover_image" class="form-label">Cover Image</label>
                                 <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
-                                <div class="form-text">Recommended size: 600x900 pixels</div>
+                                <div class="form-text">Recommended size: 600x900 pixels (auto-generated from PDF if not provided)</div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="pdf_file" class="form-label">PDF File *</label>
                                 <input type="file" class="form-control" id="pdf_file" name="pdf_file" accept="application/pdf" required>
+                                <div class="form-text">Metadata will be automatically extracted</div>
+                                <div id="pdf-loading" class="text-info mt-2" style="display:none;">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    Extracting PDF metadata...
+                                </div>
                             </div>
                         </div>
+                        
+                        <input type="hidden" id="temp_pdf_filename" name="temp_pdf_filename" value="">
                         
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="is_available" name="is_available" checked>
@@ -96,4 +103,91 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('pdf_file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // Show loading indicator
+    document.getElementById('pdf-loading').style.display = 'block';
+    
+    // Create FormData and upload PDF
+    const formData = new FormData();
+    formData.append('pdf_file', file);
+    
+    fetch('{{ url_for("extract_pdf_metadata_endpoint") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Hide loading indicator
+        document.getElementById('pdf-loading').style.display = 'none';
+        
+        if (data.success && data.metadata) {
+            const meta = data.metadata;
+            
+            // Auto-fill fields if they're empty and metadata is available
+            if (meta.title && !document.getElementById('title').value) {
+                document.getElementById('title').value = meta.title;
+            }
+            
+            if (meta.author && !document.getElementById('author').value) {
+                document.getElementById('author').value = meta.author;
+            }
+            
+            if (meta.publisher && !document.getElementById('publisher').value) {
+                document.getElementById('publisher').value = meta.publisher;
+            }
+            
+            if (meta.description && !document.getElementById('description').value) {
+                document.getElementById('description').value = meta.description;
+            }
+            
+            if (meta.isbn && !document.getElementById('isbn').value) {
+                document.getElementById('isbn').value = meta.isbn;
+            }
+            
+            if (meta.pages && !document.getElementById('pages').value) {
+                document.getElementById('pages').value = meta.pages;
+            }
+            
+            if (meta.language && !document.getElementById('language').value) {
+                document.getElementById('language').value = meta.language;
+            }
+            
+            if (meta.publication_date && !document.getElementById('publication_date').value) {
+                // Convert dd/mm/yyyy to yyyy-mm-dd for HTML date input
+                const dateParts = meta.publication_date.split('/');
+                if (dateParts.length === 3) {
+                    const formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                    document.getElementById('publication_date').value = formattedDate;
+                }
+            }
+            
+            // Store temp filename for later use
+            if (meta.filename) {
+                document.getElementById('temp_pdf_filename').value = meta.filename;
+            }
+            
+            // Show success message
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+            alertDiv.innerHTML = `
+                <strong>PDF metadata extracted!</strong> Title, author, and other details have been auto-filled.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.querySelector('.card-body').insertBefore(alertDiv, document.querySelector('form'));
+        } else {
+            console.error('Error extracting metadata:', data.error);
+        }
+    })
+    .catch(error => {
+        document.getElementById('pdf-loading').style.display = 'none';
+        console.error('Error:', error);
+    });
+});
+</script>
+
 {% endblock %}

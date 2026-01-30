@@ -100,14 +100,33 @@ body {
 .hero {
     background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
     color: white;
-    padding: 60px 0;
+    padding: 5px 0 5px 0 !important;
     margin-bottom: 40px;
     border-radius: 0 0 10px 10px;
 }
 
+.hero .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.hero .row {
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.hero .col-md-6 {
+    padding-top: 0 !important;
+}
+
 .hero h1 {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
+    margin-bottom: 0.5rem !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    line-height: 1.2 !important;
 }
 
 /* Order complete page */

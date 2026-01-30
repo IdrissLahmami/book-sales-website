@@ -6,6 +6,8 @@ and includes all the routes for the website functionality.
 """
 
 import os
+import logging
+logging.basicConfig(level=logging.DEBUG)
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,7 +22,7 @@ load_dotenv()
 
 # Import database models
 from database_schema import db, User, Book, Order, OrderItem, Payment, Download
-from paypal_helpers import create_payment, execute_payment, get_payment_details
+from paypal_helpers import create_payment, execute_payment as paypal_execute_payment, get_payment_details
 from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename, extract_pdf_metadata
 from pdf_cleaner import clean_pdf_auto, detect_watermark_pages
 from admin_helpers import admin_required, get_admin_stats
@@ -52,6 +54,13 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     """Load user by ID for Flask-Login"""
     return User.query.get(int(user_id))
+
+# Request logging for debugging
+@app.before_request
+def log_request():
+    """Log all requests for debugging"""
+    with open('request_log.txt', 'a') as f:
+        f.write(f"{datetime.now()} - {request.method} {request.path} - Auth: {current_user.is_authenticated if hasattr(current_user, 'is_authenticated') else 'N/A'}\n")
 
 # Create database tables
 # Flask 2.0+ uses this pattern instead of before_first_request
@@ -325,70 +334,123 @@ def create_payment_route():
 @login_required
 def execute_payment():
     """Execute PayPal payment after user approval"""
-    payment_id = session.get('payment_id')
-    payer_id = request.args.get('PayerID')
+    import sys
     
-    if not payment_id or not payer_id:
-        flash('Payment information missing.', 'danger')
-        return redirect(url_for('checkout'))
+    # Write to file for debugging since terminal output isn't working
+    with open('debug_payment.txt', 'a') as f:
+        f.write(f"\n\n=== EXECUTE PAYMENT CALLED at {datetime.now()} ===\n")
+        f.write(f"Request URL: {request.url}\n")
+        f.write(f"User authenticated: {current_user.is_authenticated}\n")
     
-    # Execute payment using helper function
-    result = execute_payment(payment_id, payer_id)
-    
-    if result["success"]:
-        # Payment successful, create order in database
-        cart_items = session.get('cart', {})
-        total_amount = 0
+    try:
+        # Get payment ID from both session AND URL parameter
+        payment_id = session.get('payment_id')
+        payment_id_from_url = request.args.get('paymentId')
+        payer_id = request.args.get('PayerID')
         
-        # Create new order
-        new_order = Order(
-            user_id=current_user.id,
-            total_amount=0,  # Will update after calculating items
-            status='completed'
-        )
-        db.session.add(new_order)
-        db.session.flush()  # Get order ID without committing
+        with open('debug_payment.txt', 'a') as f:
+            f.write(f"payment_id from session: {payment_id}\n")
+            f.write(f"payment_id from URL: {payment_id_from_url}\n")
+            f.write(f"payer_id: {payer_id}\n")
+            f.write(f"Session data: {dict(session)}\n")
         
-        # Add order items
-        for book_id, quantity in cart_items.items():
-            book = Book.query.get(int(book_id))
-            if book:
-                item_total = book.price * quantity
-                total_amount += item_total
-                
-                # Create order item
-                order_item = OrderItem(
-                    order_id=new_order.id,
-                    book_id=book.id,
-                    quantity=quantity,
-                    price=book.price
-                )
-                db.session.add(order_item)
+        print(f"DEBUG: payment_id from session: {payment_id}", flush=True)
+        print(f"DEBUG: payment_id from URL: {payment_id_from_url}", flush=True)
+        print(f"DEBUG: payer_id from request: {payer_id}", flush=True)
+        print(f"DEBUG: All session data: {dict(session)}", flush=True)
+        sys.stdout.flush()
         
-        # Update order total
-        new_order.total_amount = total_amount
+        # Use payment_id from URL if session is empty (common issue with redirects)
+        if not payment_id and payment_id_from_url:
+            payment_id = payment_id_from_url
+            print(f"DEBUG: Using payment_id from URL instead of session", flush=True)
+            with open('debug_payment.txt', 'a') as f:
+                f.write(f"Using payment_id from URL\n")
         
-        # Create payment record
-        payment_record = Payment(
-            order_id=new_order.id,
-            amount=total_amount,
-            payment_method='paypal',
-            transaction_id=payment_id,
-            status='completed'
-        )
-        db.session.add(payment_record)
+        if not payment_id or not payer_id:
+            print(f"ERROR: Missing payment info - payment_id: {payment_id}, payer_id: {payer_id}", flush=True)
+            with open('debug_payment.txt', 'a') as f:
+                f.write(f"ERROR: Missing payment info\n")
+            flash('Payment information missing.', 'danger')
+            return redirect(url_for('checkout'))
         
-        # Commit all changes
-        db.session.commit()
+        # Execute payment using helper function
+        print(f"DEBUG: Calling paypal_execute_payment with payment_id={payment_id}, payer_id={payer_id}...", flush=True)
+        with open('debug_payment.txt', 'a') as f:
+            f.write(f"Calling paypal_execute_payment({payment_id}, {payer_id})\n")
+        sys.stdout.flush()
+        result = paypal_execute_payment(payment_id, payer_id)
+        print(f"DEBUG: Result: {result}", flush=True)
+        with open('debug_payment.txt', 'a') as f:
+            f.write(f"Result: {result}\n")
+        sys.stdout.flush()
         
-        # Clear cart
-        session.pop('cart', None)
-        session.pop('payment_id', None)
-        
-        flash('Payment successful! You can now download your books.', 'success')
-        return redirect(url_for('order_complete', order_id=new_order.id))
-    else:
-        flash('Payment execution failed.', 'danger')
+        if result["success"]:
+            # Payment successful, create order in database
+            cart_items = session.get('cart', {})
+            total_amount = 0
+            
+            # Create new order
+            new_order = Order(
+                user_id=current_user.id,
+                total_amount=0,  # Will update after calculating items
+                status='completed'
+            )
+            db.session.add(new_order)
+            db.session.flush()  # Get order ID without committing
+            
+            # Add order items
+            for book_id, quantity in cart_items.items():
+                book = Book.query.get(int(book_id))
+                if book:
+                    item_total = book.price * quantity
+                    total_amount += item_total
+                    
+                    # Create order item
+                    order_item = OrderItem(
+                        order_id=new_order.id,
+                        book_id=book.id,
+                        quantity=quantity,
+                        price=book.price
+                    )
+                    db.session.add(order_item)
+            
+            # Update order total
+            new_order.total_amount = total_amount
+            
+            # Create payment record
+            payment_record = Payment(
+                order_id=new_order.id,
+                amount=total_amount,
+                payment_method='paypal',
+                transaction_id=payment_id,
+                status='completed'
+            )
+            db.session.add(payment_record)
+            
+            # Commit all changes
+            db.session.commit()
+            
+            # Clear cart
+            session.pop('cart', None)
+            session.pop('payment_id', None)
+            
+            flash('Payment successful! You can now download your books.', 'success')
+            return redirect(url_for('order_complete', order_id=new_order.id))
+        else:
+            flash('Payment execution failed.', 'danger')
+            return redirect(url_for('checkout'))
+    except Exception as e:
+        print(f"ERROR in execute_payment: {str(e)}", flush=True)
+        with open('debug_payment.txt', 'a') as f:
+            f.write(f"EXCEPTION: {str(e)}\n")
+            import traceback
+            f.write(traceback.format_exc())
+        import traceback
+        import sys
+        traceback.print_exc()
+        sys.stdout.flush()
+        flash(f'Payment processing error: {str(e)}', 'danger')
         return redirect(url_for('checkout'))
 
 @app.route('/payment-cancelled')

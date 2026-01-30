@@ -31,7 +31,7 @@
     {% else %}
     <div class="alert alert-info" role="alert">
         <h4 class="alert-heading">No Results Found</h4>
-        <p>We couldn't find any books matching "{{ query }}". Try different search terms or <a href="{{ url_for('books') }}" class="alert-link">browse all books</a>.</p>
+        <p>We couldn't find any books matching "{{ query }}". Try different search terms or <a href="{{ url_for('book_list') }}" class="alert-link">browse all books</a>.</p>
     </div>
     {% endif %}
 </div>

@@ -169,6 +169,13 @@ def cart():
     """Display shopping cart contents"""
     # Get cart from session or initialize empty cart
     cart_items = session.get('cart', {})
+    
+    # Debug: Log cart contents
+    print(f"DEBUG CART: cart_items = {cart_items}", flush=True)
+    with open('debug_cart.txt', 'a') as f:
+        f.write(f"\n=== CART VIEW at {datetime.now()} ===\n")
+        f.write(f"Cart items: {cart_items}\n")
+    
     books = []
     total = 0
     invalid_items = []
@@ -178,12 +185,18 @@ def cart():
         book = Book.query.get(int(book_id))
         if book:
             item_total = book.price * quantity
-            books.append({
+            book_info = {
                 'book': book,
                 'quantity': quantity,
                 'total': item_total
-            })
+            }
+            books.append(book_info)
             total += item_total
+            
+            # Debug: Log each book added
+            print(f"DEBUG CART: Added book ID {book_id} ({book.title}) x {quantity} = ${item_total}", flush=True)
+            with open('debug_cart.txt', 'a') as f:
+                f.write(f"  Book ID {book_id}: {book.title} x {quantity} = ${item_total}\n")
         else:
             # Mark invalid items for removal
             invalid_items.append(book_id)
@@ -196,6 +209,11 @@ def cart():
                 del cart[book_id]
         session['cart'] = cart
         flash('Some items in your cart are no longer available and have been removed.', 'warning')
+    
+    # Debug: Log final result
+    print(f"DEBUG CART: Total books to display = {len(books)}, Total price = ${total}", flush=True)
+    with open('debug_cart.txt', 'a') as f:
+        f.write(f"Total books: {len(books)}, Total: ${total}\n")
     
     return render_template('cart.html', items=books, total=total)
 

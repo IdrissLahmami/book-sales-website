@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}View PDF - {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2><i class="bi bi-file-pdf"></i> {{ book.title }}</h2>
+                    <p class="text-muted">Total Pages: <span id="total-pages">{{ total_pages }}</span></p>
+                </div>
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-container"></div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row" id="pages-container">
+        {% for page_num in range(1, total_pages + 1) %}
+        <div class="col-md-3 col-sm-6 mb-4 page-card" data-page="{{ page_num }}">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <strong>Page {{ page_num }}</strong>
+                </div>
+                <div class="card-body text-center p-2">
+                    <img src="{{ url_for('admin_pdf_page_preview', book_id=book.id, page_num=page_num) }}" 
+                         class="img-fluid border" 
+                         alt="Page {{ page_num }}"
+                         style="max-height: 400px; width: auto;">
+                </div>
+                <div class="card-footer text-center">
+                    <button class="btn btn-danger btn-sm remove-page-btn" 
+                            data-page="{{ page_num }}"
+                            data-book-id="{{ book.id }}">
+                        <i class="bi bi-trash"></i> Remove Page
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if total_pages == 0 %}
+    <div class="alert alert-warning text-center">
+        <i class="bi bi-exclamation-triangle"></i> No pages found in this PDF.
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const removeButtons = document.querySelectorAll('.remove-page-btn');
+    
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const pageNum = parseInt(this.dataset.page);
+            const bookId = this.dataset.bookId;
+            
+            if (!confirm(`Are you sure you want to remove page ${pageNum}?\n\nThis action cannot be undone.`)) {
+                return;
+            }
+            
+            // Disable button and show loading
+            button.disabled = true;
+            const originalHTML = button.innerHTML;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Removing...';
+            
+            // Send remove request
+            fetch(`/admin/remove-pdf-page/${bookId}/${pageNum}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove the card from view
+                    const pageCard = document.querySelector(`[data-page="${pageNum}"]`);
+                    if (pageCard) {
+                        pageCard.remove();
+                    }
+                    
+                    // Update total pages count
+                    document.getElementById('total-pages').textContent = data.new_page_count;
+                    
+                    // Renumber remaining pages
+                    const remainingCards = document.querySelectorAll('.page-card');
+                    remainingCards.forEach((card, index) => {
+                        const newPageNum = index + 1;
+                        card.dataset.page = newPageNum;
+                        card.querySelector('.card-header strong').textContent = `Page ${newPageNum}`;
+                        card.querySelector('img').alt = `Page ${newPageNum}`;
+                        const removeBtn = card.querySelector('.remove-page-btn');
+                        removeBtn.dataset.page = newPageNum;
+                    });
+                    
+                    // Show success message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    `;
+                    const alertContainer = document.getElementById('alert-container');
+                    alertContainer.appendChild(alertDiv);
+                    
+                    // Auto-dismiss after 3 seconds
+                    setTimeout(() => {
+                        alertDiv.remove();
+                    }, 3000);
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Unknown error occurred'));
+                    button.disabled = false;
+                    button.innerHTML = originalHTML;
+                }
+            })
+            .catch(error => {
+                alert('❌ Error removing page: ' + error);
+                button.disabled = false;
+                button.innerHTML = originalHTML;
+            });
+        });
+    });
+});
+</script>
+
+<style>
+.page-card {
+    transition: all 0.3s ease;
+}
+
+.page-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card-body img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    background: white;
+}
+</style>
+{% endblock %}

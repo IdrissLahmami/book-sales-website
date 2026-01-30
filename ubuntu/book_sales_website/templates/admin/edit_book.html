@@ -22,7 +22,7 @@
                     <h5 class="mb-0">Edit Book: {{ book.title }}</h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" id="editBookForm">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="title" class="form-label">Title *</label>
@@ -100,12 +100,33 @@
                         
                         <div class="d-flex justify-content-between">
                             <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-primary">Update Book</button>
+                            <div>
+                                <button type="button" class="btn btn-info me-2" id="reextractBtn">
+                                    <i class="bi bi-arrow-clockwise"></i> Re-extract Metadata
+                                </button>
+                                <button type="submit" class="btn btn-primary">Update Book</button>
+                            </div>
                         </div>
+                        <input type="hidden" name="reextract_metadata" id="reextractFlag" value="false">
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('editBookForm').addEventListener('submit', function(e) {
+    console.log('Form is submitting...');
+    // Form will submit normally - this just logs for debugging
+});
+
+// Re-extract metadata button
+document.getElementById('reextractBtn').addEventListener('click', function() {
+    if (confirm('This will regenerate the cover thumbnail and re-extract metadata (title, author, description, etc.) from the current PDF.\n\nAny empty fields will be filled with extracted data.\n\nContinue?')) {
+        document.getElementById('reextractFlag').value = 'true';
+        document.getElementById('editBookForm').submit();
+    }
+});
+</script>
 {% endblock %}

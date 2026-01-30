@@ -275,7 +275,11 @@ def parse_cover_text(text):
             break
     
     if title_lines:
-        metadata['title'] = ' '.join(title_lines)
+        potential_title = ' '.join(title_lines)
+        # Reject if it's just publisher names or very short
+        publisher_keywords = ['manning', 'press', 'publishing', 'publisher', 'ebook', 'provided']
+        if len(potential_title) > 5 and not any(kw in potential_title.lower() for kw in publisher_keywords):
+            metadata['title'] = potential_title
     
     # Author detection (look for common patterns)
     author_keywords = ['by', 'author', 'written by']
@@ -637,6 +641,54 @@ def extract_pdf_metadata(pdf_path):
     elif not OCR_AVAILABLE:
         print("⚠ OCR not available (Tesseract not configured)")
     
+    # If title is still empty or rejected (publisher name), try to extract from page 2 (title page)
+    if (not metadata['title'] or len(metadata['title']) < 5) and PYMUPDF_AVAILABLE:
+        try:
+            print("📖 Searching for title on page 2 (title page)...", flush=True)
+            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                f.write("\n📖 Searching for title on page 2 (title page)...\n")
+            
+            doc = fitz.open(pdf_path)
+            if len(doc) > 1:  # Check if page 2 exists
+                page_text = doc[1].get_text()  # Page 2 is index 1
+                lines = [line.strip() for line in page_text.split('\n') if line.strip()]
+                
+                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                    f.write(f"Page 2 has {len(lines)} lines of text\n")
+                
+                # Look for title in first 10 lines of page 2
+                publisher_keywords = ['manning', 'press', 'publishing', 'publisher', 'ebook', 'provided']
+                for i, line in enumerate(lines[:10]):
+                    # Skip very short lines (likely page numbers)
+                    if len(line) < 10:
+                        continue
+                    
+                    # Skip lines with mostly lowercase (likely descriptions)
+                    if sum(c.islower() for c in line) > len(line) * 0.7:
+                        continue
+                    
+                    # Skip publisher names
+                    if any(kw in line.lower() for kw in publisher_keywords):
+                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            f.write(f"Skipping publisher line: '{line}'\n")
+                        continue
+                    
+                    # Good candidate if it's Title Case or ALL CAPS, reasonable length
+                    if 10 <= len(line) <= 150:
+                        # Check if it looks like a title (not URL, email, etc.)
+                        if not any(x in line for x in ['http://', 'https://', '@', 'www.']):
+                            metadata['title'] = line
+                            print(f"✓ Title from page 2: {metadata['title']}", flush=True)
+                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                f.write(f"✓ Extracted title from page 2: {metadata['title']}\n")
+                            break
+            
+            doc.close()
+        except Exception as e:
+            print(f"Error extracting title from page 2: {e}", flush=True)
+            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                f.write(f"Error extracting title from page 2: {e}\n")
+    
     # If author is still empty or looks invalid (single word, numbers, etc.), try to extract from first page content
     def is_valid_author(author):
         """Check if author name looks valid"""
@@ -744,7 +796,7 @@ def extract_pdf_metadata(pdf_path):
             doc = fitz.open(pdf_path)
             
             # Look for introduction, preface, overview pages
-            intro_keywords = ['introduction', 'summary', 'abstract', 'preface', 'overview', 'foreword']
+            intro_keywords = ['introduction', 'preface', 'overview', 'summary', 'abstract', 'foreword', 'about this book']
             intro_page = None
             intro_page_num = -1
             found_keyword = ''
@@ -790,21 +842,29 @@ def extract_pdf_metadata(pdf_path):
                 intro_page_num = 0
             
             if intro_page:
-                page_text = intro_page.get_text()
+                # Collect text from current page AND next 2 pages (for multi-page sections)
+                all_lines = []
+                for offset in range(3):  # Current page + next 2 pages (usually sufficient for introduction sections)
+                    page_idx = intro_page_num + offset
+                    if page_idx < len(doc):
+                        page = doc[page_idx]
+                        page_text = page.get_text()
+                        page_lines = [line.strip() for line in page_text.split('\n') if line.strip()]
+                        all_lines.extend(page_lines)
+                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            f.write(f"Page {page_idx + 1} has {len(page_lines)} lines of text\n")
                 
-                # Clean up the text
-                lines = [line.strip() for line in page_text.split('\n') if line.strip()]
-                
-                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
-                    f.write(f"Page {intro_page_num + 1} has {len(lines)} lines of text\n")
+                lines = all_lines
                 
                 # Find the introduction heading, then extract paragraph AFTER it
                 description_lines = []
                 found_heading = False
                 skip_after_heading = 0
+                found_acknowledgments = False
+                skip_acknowledgments = 0
                 
                 with open('ocr_debug.log', 'a', encoding='utf-8') as f:
-                    f.write(f"Processing lines from introduction page:\n")
+                    f.write(f"Processing lines from introduction section (multiple pages):\n")
                 
                 for i, line in enumerate(lines):
                     # Look for the heading first
@@ -813,14 +873,25 @@ def extract_pdf_metadata(pdf_path):
                         with open('ocr_debug.log', 'a', encoding='utf-8') as f:
                             f.write(f"Found heading: '{line}'\n")
                         
-                        # If title is still empty or generic, try to extract it from the heading
-                        # (useful for academic papers where title is in the heading)
-                        if (not metadata['title'] or metadata['title'].lower() in ['title', 'untitled']) and len(line) > 15:
-                            # Keep the full heading as title
+                        # Only extract title from heading if we don't already have one
+                        # AND it looks like an actual paper title (not section headings)
+                        section_keywords = ['about this book', 'about the', 'preface', 'foreword', 'contents', 'table of', 'summary', 'abstract']
+                        is_section_heading = any(kw in line.lower() for kw in section_keywords)
+                        
+                        # Only use heading as title if:
+                        # 1. We don't have a title yet (or it's just placeholder like 'title'/'untitled')
+                        # 2. It's NOT a section heading
+                        # 3. It's reasonably long (>20 chars)
+                        if (not metadata['title'] or metadata['title'].lower() in ['title', 'untitled']) and not is_section_heading and len(line) > 20:
+                            # This looks like an actual paper/article title
                             metadata['title'] = line.strip()
                             print(f"✓ Extracted title from heading: {metadata['title']}", flush=True)
                             with open('ocr_debug.log', 'a', encoding='utf-8') as f:
                                 f.write(f"✓ Extracted title from heading: {metadata['title']}\n")
+                        elif metadata['title']:
+                            # Already have a title, don't overwrite
+                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                f.write(f"Skipping heading as title (already have: '{metadata['title']}')\n")
                         continue
                     
                     # Log lines after heading for debugging
@@ -828,20 +899,70 @@ def extract_pdf_metadata(pdf_path):
                         with open('ocr_debug.log', 'a', encoding='utf-8') as f:
                             f.write(f"Line {i}: len={len(line)}, text='{line[:80]}'\n")
                     
-                    # Skip a few lines after heading (likely blank or subheadings)
-                    if found_heading and skip_after_heading < 3:
-                        if len(line) < 20:
-                            # Check if this short line could be start of a word (single letter or short word)
-                            if len(line) <= 3 and line.isalpha() and i + 1 < len(lines):
-                                # Combine with next line (word broken across lines)
-                                next_line = lines[i + 1]
-                                combined = line + next_line
-                                lines[i + 1] = combined  # Update next line
-                                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
-                                    f.write(f"Combined '{line}' + '{next_line[:50]}' = '{combined[:80]}'\n")
+                    # Skip lines after heading to get past TOC/navigation content
+                    if found_heading and skip_after_heading < 700:  # Manning books have extremely long TOCs + acknowledgments spanning many pages
+                        # Check if line looks like TOC or navigation (dots, page numbers, short entries)
+                        dot_count = line.count('.') + line.count('_') + line.count('-')
+                        digit_count = sum(c.isdigit() for c in line)
+                        ends_with_number = re.search(r'\d+\s*$', line)
+                        
+                        # Check for chapter/section numbering at start (e.g., "1.2", "2.1", "Chapter 3")
+                        has_chapter_number = re.match(r'^\s*(\d+\.?\d*\s+|Chapter\s+\d+|CHAPTER\s+\d+)', line)
+                        
+                        # Check for TOC keywords
+                        toc_keywords = ['contents', 'acknowledgment', 'foreword', 'preface', 'introduction', 
+                                       'appendix', 'glossary', 'index', 'part 1', 'part 2', 'part 3', 
+                                       'about this book', 'about the book']
+                        has_toc_keyword = any(kw in line.lower() for kw in toc_keywords)
+                        
+                        # Skip if it looks like TOC entry:
+                        # - Has lots of dots/dashes (TOC leaders)
+                        # - Ends with page number
+                        # - Has high digit percentage
+                        # - Is very short (<50 chars)
+                        # - Starts with chapter/section number
+                        # - Contains TOC keywords
+                        is_toc_like = (
+                            dot_count > 3 or 
+                            ends_with_number or 
+                            digit_count > len(line) * 0.15 or
+                            len(line) < 50 or
+                            line.count('■') > 0 or  # Bullet points
+                            has_chapter_number or
+                            has_toc_keyword
+                        )
+                        
+                        if is_toc_like:
+                            skip_after_heading += 1
+                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                f.write(f"Skipping TOC/nav line {skip_after_heading}: '{line[:60]}'\n")
+                            continue
+                        
+                        # Found a proper paragraph line (long, mostly letters, no TOC markers)
+                        letter_count = sum(c.isalpha() for c in line)
+                        if len(line) >= 80 and letter_count > len(line) * 0.7:
+                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                f.write(f"✓ Found description paragraph: '{line[:80]}'\n")
+                            skip_after_heading = 999  # Done skipping
+                        else:
                             skip_after_heading += 1
                             continue
-                        skip_after_heading = 999  # Found first real line
+                    
+                    # After skipping TOC, check for acknowledgments section before collecting description
+                    if skip_after_heading >= 700 and not found_acknowledgments and 'acknowledgment' in line.lower():
+                        found_acknowledgments = True
+                        skip_acknowledgments = 0
+                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            f.write(f"Found acknowledgments section (after TOC) at line {i}: '{line}'\n")
+                        continue
+                    
+                    # Skip acknowledgments section content (personal narrative)
+                    if found_acknowledgments and skip_acknowledgments < 150:
+                        skip_acknowledgments += 1
+                        if skip_acknowledgments <= 5:  # Log first few lines
+                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                f.write(f"Skipping acknowledgments content line {skip_acknowledgments}: '{line[:60]}'\n")
+                        continue
                     
                     # If we haven't found heading yet, skip short lines
                     if not found_heading and len(line) < 20:
@@ -853,9 +974,16 @@ def extract_pdf_metadata(pdf_path):
                     
                     # Skip lines with mostly dots or special chars (TOC entries)
                     dot_count = line.count('.') + line.count('_') + line.count('-')
-                    if dot_count > len(line) * 0.3:  # More than 30% dots/dashes
+                    if dot_count > len(line) * 0.2:  # More than 20% dots/dashes (stricter)
                         with open('ocr_debug.log', 'a', encoding='utf-8') as f:
                             f.write(f"Skipping TOC line: '{line[:50]}'\n")
+                        continue
+                    
+                    # Skip lines that are mostly numbers (chapter/page references)
+                    digit_count = sum(c.isdigit() for c in line)
+                    if digit_count > len(line) * 0.3:
+                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            f.write(f"Skipping number-heavy line: '{line[:50]}'\n")
                         continue
                     
                     # Skip lines that look like headers or page references (end with numbers)

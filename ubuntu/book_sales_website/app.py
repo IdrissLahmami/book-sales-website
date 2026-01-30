@@ -22,6 +22,7 @@ load_dotenv()
 from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 from paypal_helpers import create_payment, execute_payment, get_payment_details
 from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename, extract_pdf_metadata
+from pdf_cleaner import clean_pdf_auto, detect_watermark_pages
 from admin_helpers import admin_required, get_admin_stats
 from pdf_thumbnail import generate_pdf_thumbnail
 
@@ -499,6 +500,13 @@ def extract_pdf_metadata_endpoint():
     file.save(temp_path)
     
     try:
+        # Auto-clean watermark pages
+        print("🧹 Checking for watermark pages...")
+        clean_result = clean_pdf_auto(temp_path)
+        
+        if clean_result['removed_count'] > 0:
+            print(f"✓ Removed {clean_result['removed_count']} watermark page(s)")
+        
         # Extract metadata
         metadata = extract_pdf_metadata(temp_path)
         
@@ -520,7 +528,12 @@ def extract_pdf_metadata_endpoint():
     except Exception as e:
         # Clean up temp file on error
         if os.path.exists(temp_path):
-            os.remove(temp_path)
+            try:
+                import time
+                time.sleep(0.1)  # Brief delay to ensure file is closed
+                os.remove(temp_path)
+            except:
+                pass  # Ignore cleanup errors
         return jsonify({'error': str(e)}), 500
 
 @app.route('/admin/books/add', methods=['GET', 'POST'])
@@ -612,7 +625,64 @@ def admin_edit_book(book_id):
     book = Book.query.get_or_404(book_id)
     
     if request.method == 'POST':
-        # Update book data
+        # Check if we should re-extract metadata (when no significant user input)
+        should_reextract = request.form.get('reextract_metadata') == 'true'
+        
+        if should_reextract and book.pdf_file:
+            # Re-extract metadata from current PDF
+            pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+            if os.path.exists(pdf_path):
+                from pdf_helpers import extract_pdf_metadata
+                metadata = extract_pdf_metadata(pdf_path)
+                
+                # Always update with re-extracted metadata (overwrite existing)
+                if metadata.get('title'):
+                    book.title = metadata.get('title')
+                if metadata.get('author'):
+                    book.author = metadata.get('author')
+                if metadata.get('description'):
+                    book.description = metadata.get('description')
+                if metadata.get('publisher'):
+                    book.publisher = metadata.get('publisher')
+                isbn_value = metadata.get('isbn') or metadata.get('doi')
+                if isbn_value:
+                    book.isbn = isbn_value
+                if metadata.get('language'):
+                    book.language = metadata.get('language')
+                if metadata.get('pages'):
+                    book.pages = metadata.get('pages')
+                pub_date_str = metadata.get('publication_date')
+                if pub_date_str:
+                    try:
+                        book.publication_date = datetime.strptime(pub_date_str, '%d/%m/%Y')
+                    except:
+                        try:
+                            book.publication_date = datetime.strptime(pub_date_str, '%Y-%m-%d')
+                        except:
+                            pass
+                
+                # Always regenerate thumbnail from current PDF
+                old_cover = book.cover_image
+                thumbnail_filename = f"thumb_{os.path.basename(book.pdf_file)}.png"
+                thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_filename)
+                
+                if generate_pdf_thumbnail(pdf_path, thumbnail_path):
+                    book.cover_image = thumbnail_filename
+                    # Remove old thumbnail if different
+                    if old_cover and old_cover != thumbnail_filename:
+                        old_thumb_path = os.path.join(app.config['UPLOAD_FOLDER'], old_cover)
+                        if os.path.exists(old_thumb_path):
+                            try:
+                                os.remove(old_thumb_path)
+                            except:
+                                pass
+                    flash('Cover thumbnail regenerated from PDF.', 'info')
+                
+                db.session.commit()
+                flash('Metadata re-extracted and book updated successfully!', 'success')
+                return redirect(url_for('admin_dashboard'))
+        
+        # Normal update with user input
         book.title = request.form.get('title')
         book.author = request.form.get('author')
         book.description = request.form.get('description')
@@ -675,22 +745,242 @@ def admin_delete_book(book_id):
     """Admin route to delete a book"""
     book = Book.query.get_or_404(book_id)
     
-    # Delete associated files
-    if book.cover_image:
-        cover_path = os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image)
-        if os.path.exists(cover_path):
-            os.remove(cover_path)
+    try:
+        # Delete associated downloads first (foreign key constraint)
+        Download.query.filter_by(book_id=book_id).delete()
+        
+        # Delete associated order items
+        OrderItem.query.filter_by(book_id=book_id).delete()
+        
+        # Delete associated files
+        if book.cover_image:
+            cover_path = os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image)
+            if os.path.exists(cover_path):
+                os.remove(cover_path)
+        
+        if book.pdf_file:
+            pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+            if os.path.exists(pdf_path):
+                os.remove(pdf_path)
+        
+        # Finally delete the book
+        db.session.delete(book)
+        db.session.commit()
+        
+        flash('Book deleted successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting book: {str(e)}', 'danger')
     
-    if book.pdf_file:
-        pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
-        if os.path.exists(pdf_path):
-            os.remove(pdf_path)
-    
-    db.session.delete(book)
-    db.session.commit()
-    
-    flash('Book deleted successfully!', 'success')
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/clean-pdf/<int:book_id>', methods=['POST'])
+@login_required
+@admin_required
+def admin_clean_pdf(book_id):
+    """Admin route to manually clean watermark pages from a book's PDF"""
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.pdf_file:
+        return jsonify({'error': 'No PDF file for this book'}), 400
+    
+    pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+    
+    if not os.path.exists(pdf_path):
+        return jsonify({'error': 'PDF file not found'}), 404
+    
+    # Store values before any operations
+    old_cover_image = book.cover_image
+    
+    try:
+        # Clean the PDF
+        clean_result = clean_pdf_auto(pdf_path)
+        
+        if clean_result['removed_count'] > 0:
+            # Update page count
+            import fitz
+            doc = fitz.open(pdf_path)
+            new_page_count = len(doc)
+            doc.close()
+            
+            # Regenerate thumbnail from cleaned PDF
+            if old_cover_image:
+                # Remove old thumbnail
+                old_thumb_path = os.path.join(app.config['UPLOAD_FOLDER'], old_cover_image)
+                if os.path.exists(old_thumb_path):
+                    try:
+                        os.remove(old_thumb_path)
+                    except:
+                        pass  # Ignore if file is locked
+            
+            # Generate new thumbnail
+            thumbnail_filename = f"thumb_{os.path.basename(book.pdf_file)}.png"
+            thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_filename)
+            if generate_pdf_thumbnail(pdf_path, thumbnail_path):
+                book.cover_image = thumbnail_filename
+            
+            # Update book in single transaction
+            book.pages = new_page_count
+            db.session.commit()
+            
+            return jsonify({
+                'success': True,
+                'message': f'Removed {clean_result["removed_count"]} watermark page(s)',
+                'removed_pages': [p+1 for p in clean_result['removed_pages']],
+                'new_page_count': new_page_count,
+                'thumbnail_updated': True
+            })
+        else:
+            return jsonify({
+                'success': True,
+                'message': 'No watermark pages detected',
+                'removed_pages': [],
+                'new_page_count': book.pages
+            })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/admin/view-pdf/<int:book_id>')
+@login_required
+@admin_required
+def admin_view_pdf(book_id):
+    """Admin route to view PDF pages with option to remove individual pages"""
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.pdf_file:
+        flash('No PDF file for this book', 'danger')
+        return redirect(url_for('admin_dashboard'))
+    
+    pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+    
+    if not os.path.exists(pdf_path):
+        flash('PDF file not found', 'danger')
+        return redirect(url_for('admin_dashboard'))
+    
+    # Get total pages
+    import fitz
+    doc = fitz.open(pdf_path)
+    total_pages = len(doc)
+    doc.close()
+    
+    return render_template('admin/view_pdf.html', book=book, total_pages=total_pages)
+
+@app.route('/admin/pdf-page-preview/<int:book_id>/<int:page_num>')
+@login_required
+@admin_required
+def admin_pdf_page_preview(book_id, page_num):
+    """Generate and return a preview image of a specific PDF page"""
+    from flask import send_file
+    import io
+    
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.pdf_file:
+        abort(404)
+    
+    pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+    
+    if not os.path.exists(pdf_path):
+        abort(404)
+    
+    try:
+        import fitz
+        from PIL import Image
+        
+        doc = fitz.open(pdf_path)
+        
+        # Validate page number (1-indexed)
+        if page_num < 1 or page_num > len(doc):
+            doc.close()
+            abort(404)
+        
+        # Get page (0-indexed)
+        page = doc[page_num - 1]
+        
+        # Render page to image at 150 DPI
+        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72))
+        img_data = pix.tobytes("png")
+        doc.close()
+        
+        # Return image
+        return send_file(
+            io.BytesIO(img_data),
+            mimetype='image/png',
+            as_attachment=False
+        )
+    except Exception as e:
+        abort(500)
+
+@app.route('/admin/remove-pdf-page/<int:book_id>/<int:page_num>', methods=['POST'])
+@login_required
+@admin_required
+def admin_remove_pdf_page(book_id, page_num):
+    """Remove a specific page from a PDF"""
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.pdf_file:
+        return jsonify({'error': 'No PDF file for this book'}), 400
+    
+    pdf_path = os.path.join(app.config['PDF_FOLDER'], book.pdf_file)
+    
+    if not os.path.exists(pdf_path):
+        return jsonify({'error': 'PDF file not found'}), 404
+    
+    # Store old cover image
+    old_cover_image = book.cover_image
+    
+    try:
+        import fitz
+        import shutil
+        
+        doc = fitz.open(pdf_path)
+        total_pages = len(doc)
+        
+        # Validate page number (1-indexed)
+        if page_num < 1 or page_num > total_pages:
+            doc.close()
+            return jsonify({'error': f'Invalid page number. PDF has {total_pages} pages'}), 400
+        
+        # Delete the page (0-indexed)
+        doc.delete_pages(page_num - 1)
+        
+        # Save to temp file then move
+        temp_path = pdf_path + '.tmp'
+        doc.save(temp_path)
+        new_page_count = len(doc)
+        doc.close()
+        
+        # Move temp file to original
+        shutil.move(temp_path, pdf_path)
+        
+        # Regenerate thumbnail from first page
+        if old_cover_image:
+            old_thumb_path = os.path.join(app.config['UPLOAD_FOLDER'], old_cover_image)
+            if os.path.exists(old_thumb_path):
+                try:
+                    os.remove(old_thumb_path)
+                except:
+                    pass
+        
+        # Generate new thumbnail
+        thumbnail_filename = f"thumb_{os.path.basename(book.pdf_file)}.png"
+        thumbnail_path = os.path.join(app.config['UPLOAD_FOLDER'], thumbnail_filename)
+        if generate_pdf_thumbnail(pdf_path, thumbnail_path):
+            book.cover_image = thumbnail_filename
+        
+        # Update book in database
+        book.pages = new_page_count
+        db.session.commit()
+        
+        return jsonify({
+            'success': True,
+            'message': f'Page {page_num} removed successfully',
+            'new_page_count': new_page_count
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/debug/user')
 @login_required

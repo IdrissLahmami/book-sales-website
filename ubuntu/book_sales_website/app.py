@@ -1,3 +1,5 @@
+import mimetypes
+mimetypes.add_type('application/javascript', '.mjs')
 """
 Main application file for Book Sales Website
 
@@ -29,7 +31,20 @@ from admin_helpers import admin_required, get_admin_stats
 from pdf_thumbnail import generate_pdf_thumbnail
 
 # Initialize Flask app
+import logging
+from logging.handlers import RotatingFileHandler
+
 app = Flask(__name__)
+
+# --- Flask Logging Setup ---
+if not app.debug:
+    handler = RotatingFileHandler('flask.log', maxBytes=100000, backupCount=3)
+    handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+    handler.setFormatter(formatter)
+    app.logger.addHandler(handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('Flask logging is set up.')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-development')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///booksales.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -1061,6 +1076,17 @@ def admin_remove_pdf_page(book_id, page_num):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
+
+@app.route('/read/<int:book_id>')
+@login_required
+def read_book(book_id):
+    """Route to view a book's PDF in the browser using PDF.js"""
+    book = Book.query.get_or_404(book_id)
+    if not book.pdf_file:
+        flash('No PDF file available for this book.', 'danger')
+        return redirect(url_for('book_detail', book_id=book_id))
+    pdf_url = url_for('static', filename=f'pdfs/{book.pdf_file}', _external=True)
+    return render_template('read_book.html', book=book, pdf_url=pdf_url)
 
 @app.route('/debug/user')
 @login_required

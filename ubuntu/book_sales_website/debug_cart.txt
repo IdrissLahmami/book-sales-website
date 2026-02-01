@@ -35,3 +35,7 @@ Total books: 3, Total: $123.96
 Cart items: {'1': 1}
   Book ID 1: Sample Book - RESTful Web APIs x 1 = $29.99
 Total books: 1, Total: $29.99
+
+=== CART VIEW at 2026-01-31 21:31:52.566259 ===
+Cart items: {}
+Total books: 0, Total: $0

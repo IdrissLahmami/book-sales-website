@@ -22,6 +22,7 @@
                 <form action="{{ url_for('add_to_cart', book_id=book.id) }}" method="post">
                     <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
                 </form>
+                <a href="{{ url_for('read_book', book_id=book.id) }}" class="btn btn-success btn-lg mt-2">Read</a>
                 
                 <hr>
                 

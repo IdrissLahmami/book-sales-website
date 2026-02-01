@@ -1,0 +1,1 @@
+// Placeholder for pdf.mjs. Please download the latest pdf.mjs from the official PDF.js release and place it here.

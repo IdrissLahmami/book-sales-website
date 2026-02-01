@@ -1,0 +1,1 @@
+// Placeholder for pdf.worker.mjs. Please download the latest pdf.worker.mjs from the official PDF.js release and place it here.

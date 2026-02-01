@@ -45,6 +45,19 @@ if not app.debug:
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('Flask logging is set up.')
+
+# --- JS Error Logging Endpoint ---
+import os
+from flask import request
+@app.route('/js-log', methods=['POST'])
+def js_log():
+    data = request.get_json()
+    log_message = data.get('message', '')
+    log_type = data.get('type', 'log')
+    log_file = os.path.join(os.path.dirname(__file__), 'js_error.log')
+    with open(log_file, 'a', encoding='utf-8') as f:
+        f.write(f"[{log_type.upper()}] {log_message}\n")
+    return {'status': 'ok'}
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-development')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///booksales.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

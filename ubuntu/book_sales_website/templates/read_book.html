@@ -12,16 +12,18 @@
         <button id="next" class="btn btn-secondary btn-lg ms-2">Next</button>
         <button id="zoom_in" class="btn btn-outline-primary btn-lg ms-4">+</button>
         <button id="zoom_out" class="btn btn-outline-primary btn-lg ms-2">-</button>
-        <button id="search_btn" class="btn btn-outline-success btn-lg ms-4">Search</button>
     </div>
-    <div id="search-bar" class="mb-3 d-flex align-items-center justify-content-center" style="display:none;">
-        <input id="search_input" type="text" class="form-control w-25 me-2" placeholder="Search text in PDF...">
-        <button id="search_submit" class="btn btn-success">Find</button>
-        <button id="search_close" class="btn btn-outline-secondary ms-2">Close</button>
-        <span id="search_result" class="ms-3 text-info"></span>
-    </div>
-    <div id="pdf-viewer" class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
-        <canvas id="pdf-canvas" style="border:1px solid #ccc; max-width:100%; max-height:80vh;"></canvas>
+    <div class="d-flex" style="min-height: 70vh;">
+        <div id="pdf-viewer" class="flex-grow-1 d-flex justify-content-center align-items-center">
+            <canvas id="pdf-canvas" style="border:1px solid #ccc; max-width:100%; max-height:80vh;"></canvas>
+        </div>
+        <div id="search-sidebar" class="ms-4 d-flex flex-column align-items-stretch" style="width:220px; min-height:70vh; border:1px solid #ddd; background:#f9f9f9; padding:16px 12px; border-radius:8px;">
+            <div class="mb-2">
+                <input id="search_input" type="text" class="form-control mb-2" placeholder="Search text in PDF...">
+                <button id="search_submit" class="btn btn-success w-100">Find</button>
+            </div>
+            <div id="search_result" class="text-info flex-grow-1" style="white-space:pre-line;"></div>
+        </div>
     </div>
     <div class="mt-3">
         <a href="{{ url_for('book_detail', book_id=book.id) }}" class="btn btn-outline-primary">Back to Book Details</a>
@@ -42,6 +44,7 @@
     let pageNumPending = null;
     let scale = 1.8;
     // Search functionality
+
     let searchBar = document.getElementById('search-bar');
     let searchBtn = document.getElementById('search_btn');
     let searchInput = document.getElementById('search_input');
@@ -49,15 +52,45 @@
     let searchClose = document.getElementById('search_close');
     let searchResult = document.getElementById('search_result');
 
-            searchBtn.addEventListener('click', function() {
-                searchBar.style.display = 'flex';
-                searchInput.focus();
-            });
-            searchClose.addEventListener('click', function() {
-                searchBar.style.display = 'none';
-                searchResult.textContent = '';
-                searchInput.value = '';
-            });
+
+    // Log to server for diagnostics
+    function sendLogToServer(type, message) {
+        fetch('/js-log', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({type, message})
+        });
+    }
+
+    // Edge browser debug log for null elements
+    if (!searchBar) { console.warn('searchBar is null'); sendLogToServer('warn', 'searchBar is null'); }
+    if (!searchBtn) { console.warn('searchBtn is null'); sendLogToServer('warn', 'searchBtn is null'); }
+    if (!searchInput) { console.warn('searchInput is null'); sendLogToServer('warn', 'searchInput is null'); }
+    if (!searchSubmit) { console.warn('searchSubmit is null'); sendLogToServer('warn', 'searchSubmit is null'); }
+    if (!searchClose) { console.warn('searchClose is null'); sendLogToServer('warn', 'searchClose is null'); }
+    if (!searchResult) { console.warn('searchResult is null'); sendLogToServer('warn', 'searchResult is null'); }
+
+    // Global error handler to log JS errors
+    window.addEventListener('error', function(e) {
+        sendLogToServer('error', e.message + ' at ' + e.filename + ':' + e.lineno + ':' + e.colno);
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+        sendLogToServer('error', 'Unhandled promise rejection: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
+    });
+
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function() {
+            searchBar.style.display = 'flex';
+            searchInput.focus();
+        });
+    }
+    if (searchClose) {
+        searchClose.addEventListener('click', function() {
+            searchBar.style.display = 'none';
+            searchResult.textContent = '';
+            searchInput.value = '';
+        });
+    }
 
             searchSubmit.addEventListener('click', function() {
                 let query = searchInput.value.trim();
@@ -100,10 +133,10 @@
                 });
             });
 
-    let canvas = document.getElementById('pdf-canvas');
-    let ctx = canvas.getContext('2d');
 
     function renderPage(num) {
+        let canvas = document.getElementById('pdf-canvas');
+        let ctx = canvas.getContext('2d');
         pageRendering = true;
         pdfDoc.getPage(num).then(function(page) {
             let viewport = page.getViewport({scale: scale});

@@ -12,6 +12,13 @@
         <button id="next" class="btn btn-secondary btn-lg ms-2">Next</button>
         <button id="zoom_in" class="btn btn-outline-primary btn-lg ms-4">+</button>
         <button id="zoom_out" class="btn btn-outline-primary btn-lg ms-2">-</button>
+        <button id="search_btn" class="btn btn-outline-success btn-lg ms-4">Search</button>
+    </div>
+    <div id="search-bar" class="mb-3 d-flex align-items-center justify-content-center" style="display:none;">
+        <input id="search_input" type="text" class="form-control w-25 me-2" placeholder="Search text in PDF...">
+        <button id="search_submit" class="btn btn-success">Find</button>
+        <button id="search_close" class="btn btn-outline-secondary ms-2">Close</button>
+        <span id="search_result" class="ms-3 text-info"></span>
     </div>
     <div id="pdf-viewer" class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
         <canvas id="pdf-canvas" style="border:1px solid #ccc; max-width:100%; max-height:80vh;"></canvas>
@@ -28,13 +35,73 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc = "{{ url_for('static', filename='js/pdf.worker.mjs') }}";
     const url = "{{ pdf_url }}";
     document.getElementById('pdf-url-span').textContent = url;
-    let pdfDoc = null,
-        pageNum = 1,
-        pageRendering = false,
-        pageNumPending = null,
-        scale = 1.2,
-        canvas = document.getElementById('pdf-canvas'),
-        ctx = canvas.getContext('2d');
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.8;
+    // Search functionality
+    let searchBar = document.getElementById('search-bar');
+    let searchBtn = document.getElementById('search_btn');
+    let searchInput = document.getElementById('search_input');
+    let searchSubmit = document.getElementById('search_submit');
+    let searchClose = document.getElementById('search_close');
+    let searchResult = document.getElementById('search_result');
+
+            searchBtn.addEventListener('click', function() {
+                searchBar.style.display = 'flex';
+                searchInput.focus();
+            });
+            searchClose.addEventListener('click', function() {
+                searchBar.style.display = 'none';
+                searchResult.textContent = '';
+                searchInput.value = '';
+            });
+
+            searchSubmit.addEventListener('click', function() {
+                let query = searchInput.value.trim();
+                if (!query || !pdfDoc) return;
+                searchResult.textContent = 'Searching...';
+                let totalMatches = 0;
+                let matchedPages = [];
+                let promises = [];
+                for (let i = 1; i <= pdfDoc.numPages; i++) {
+                    promises.push(pdfDoc.getPage(i).then(page => {
+                        return page.getTextContent().then(tc => {
+                            let text = tc.items.map(item => item.str).join(' ');
+                            let regex = new RegExp(query, 'gi');
+                            let pageMatches = (text.match(regex) || []).length;
+                            if (pageMatches > 0) {
+                                totalMatches += pageMatches;
+                                matchedPages.push(i);
+                            }
+                        });
+                    }));
+                }
+                Promise.all(promises).then(() => {
+                    if (totalMatches > 0) {
+                        // Create clickable page links
+                        let links = matchedPages.map(pageNum => {
+                            return `<a href="#" class="search-page-link" data-page="${pageNum}">${pageNum}</a>`;
+                        }).join(', ');
+                        searchResult.innerHTML = `Found <b>${totalMatches}</b> match(es) for "${query}" on page(s): ${links}`;
+                        // Add click listeners
+                        document.querySelectorAll('.search-page-link').forEach(link => {
+                            link.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                pageNum = parseInt(this.dataset.page);
+                                queueRenderPage(pageNum);
+                            });
+                        });
+                    } else {
+                        searchResult.textContent = `No results for "${query}".`;
+                    }
+                });
+            });
+
+    let canvas = document.getElementById('pdf-canvas');
+    let ctx = canvas.getContext('2d');
 
     function renderPage(num) {
         pageRendering = true;

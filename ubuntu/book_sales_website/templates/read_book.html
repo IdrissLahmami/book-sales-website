@@ -12,10 +12,11 @@
         <button id="next" class="btn btn-secondary btn-lg ms-2">Next</button>
         <button id="zoom_in" class="btn btn-outline-primary btn-lg ms-4">+</button>
         <button id="zoom_out" class="btn btn-outline-primary btn-lg ms-2">-</button>
+            <span class="ms-3">Zoom: <span id="zoom-level">100%</span></span>
     </div>
     <div class="d-flex" style="min-height: 70vh;">
-        <div id="pdf-viewer" class="flex-grow-1 d-flex justify-content-center align-items-center">
-            <canvas id="pdf-canvas" style="border:1px solid #ccc; max-width:100%; max-height:80vh;"></canvas>
+            <div id="pdf-viewer" style="overflow-x:auto; width:100%; display:flex; flex-direction:column; align-items:center;">
+                <canvas id="pdf-canvas" style="border:1px solid #ccc; display:block; margin:24px auto 0 auto; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15); width:auto !important; height:auto !important; max-width:none !important; max-height:none !important;"></canvas>
         </div>
         <div id="search-sidebar" class="ms-4 d-flex flex-column align-items-stretch" style="width:220px; min-height:70vh; border:1px solid #ddd; background:#f9f9f9; padding:16px 12px; border-radius:8px;">
             <div class="mb-2">
@@ -42,7 +43,7 @@
     let pageNum = 1;
     let pageRendering = false;
     let pageNumPending = null;
-    let scale = 1.8;
+    let scale = 1.0;
     // Search functionality
 
     let searchBar = document.getElementById('search-bar');
@@ -67,8 +68,6 @@
     if (!searchBtn) { console.warn('searchBtn is null'); sendLogToServer('warn', 'searchBtn is null'); }
     if (!searchInput) { console.warn('searchInput is null'); sendLogToServer('warn', 'searchInput is null'); }
     if (!searchSubmit) { console.warn('searchSubmit is null'); sendLogToServer('warn', 'searchSubmit is null'); }
-    if (!searchClose) { console.warn('searchClose is null'); sendLogToServer('warn', 'searchClose is null'); }
-    if (!searchResult) { console.warn('searchResult is null'); sendLogToServer('warn', 'searchResult is null'); }
 
     // Global error handler to log JS errors
     window.addEventListener('error', function(e) {
@@ -92,46 +91,113 @@
         });
     }
 
-            searchSubmit.addEventListener('click', function() {
-                let query = searchInput.value.trim();
-                if (!query || !pdfDoc) return;
-                searchResult.textContent = 'Searching...';
-                let totalMatches = 0;
-                let matchedPages = [];
-                let promises = [];
-                for (let i = 1; i <= pdfDoc.numPages; i++) {
-                    promises.push(pdfDoc.getPage(i).then(page => {
-                        return page.getTextContent().then(tc => {
-                            let text = tc.items.map(item => item.str).join(' ');
-                            let regex = new RegExp(query, 'gi');
-                            let pageMatches = (text.match(regex) || []).length;
-                            if (pageMatches > 0) {
-                                totalMatches += pageMatches;
-                                matchedPages.push(i);
+                        // Update zoom level indicator
+                        document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+
+    // --- Highlighting logic ---
+    let lastSearchQuery = '';
+    let highlightRects = [];
+
+    searchSubmit.addEventListener('click', function() {
+        let query = searchInput.value.trim();
+        lastSearchQuery = query;
+        highlightRects = [];
+        if (!query || !pdfDoc) return;
+        searchResult.textContent = 'Searching...';
+        let totalMatches = 0;
+        let matchedPages = [];
+        let promises = [];
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+            promises.push(pdfDoc.getPage(i).then(page => {
+                return page.getTextContent().then(tc => {
+                    let text = tc.items.map(item => item.str).join(' ');
+                    let regex = new RegExp(query, 'gi');
+                    let pageMatches = (text.match(regex) || []).length;
+                    if (pageMatches > 0) {
+                        totalMatches += pageMatches;
+                        matchedPages.push(i);
+                    }
+                    // Store highlight rects for current page using precise bounding boxes
+                    if (i === pageNum) {
+                        highlightRects = [];
+                        let textContentItems = tc.items;
+                        let pageText = textContentItems.map(item => item.str).join('');
+                        let match;
+                        let regex2 = new RegExp(query, 'gi');
+                        // Build a mapping from global char index to (itemIdx, charIdx)
+                        let charMap = [];
+                        let globalIdx = 0;
+                        for (let i = 0; i < textContentItems.length; i++) {
+                            let item = textContentItems[i];
+                            for (let j = 0; j < item.str.length; j++) {
+                                charMap[globalIdx++] = {itemIdx: i, charIdx: j};
                             }
-                        });
-                    }));
-                }
-                Promise.all(promises).then(() => {
-                    if (totalMatches > 0) {
-                        // Create clickable page links
-                        let links = matchedPages.map(pageNum => {
-                            return `<a href="#" class="search-page-link" data-page="${pageNum}">${pageNum}</a>`;
-                        }).join(', ');
-                        searchResult.innerHTML = `Found <b>${totalMatches}</b> match(es) for "${query}" on page(s): ${links}`;
-                        // Add click listeners
-                        document.querySelectorAll('.search-page-link').forEach(link => {
-                            link.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                pageNum = parseInt(this.dataset.page);
-                                queueRenderPage(pageNum);
-                            });
-                        });
-                    } else {
-                        searchResult.textContent = `No results for "${query}".`;
+                        }
+                        while ((match = regex2.exec(pageText)) !== null) {
+                            let matchStart = match.index;
+                            let matchEnd = match.index + match[0].length;
+                            // Double-check substring is exact match (avoid false positives)
+                            if (pageText.substring(matchStart, matchEnd).toLowerCase() !== query.toLowerCase()) continue;
+                            // For each character in the match, get its item and char index
+                            let boxes = [];
+                            for (let k = matchStart; k < matchEnd; k++) {
+                                let map = charMap[k];
+                                if (!map) continue;
+                                let item = textContentItems[map.itemIdx];
+                                let charIdx = map.charIdx;
+                                // Calculate per-character width
+                                let totalWidth = item.width;
+                                let charWidth = totalWidth / item.str.length;
+                                let fontHeight = Math.abs(item.transform[3]);
+                                let x = item.transform[4] + charWidth * charIdx;
+                                let y = item.transform[5] - fontHeight;
+                                let w = charWidth;
+                                let h = fontHeight;
+                                boxes.push({x, y, w, h});
+                            }
+                            // Merge adjacent boxes into a single rect if possible (for continuous highlights)
+                            if (boxes.length > 0) {
+                                let merged = [];
+                                let cur = boxes[0];
+                                for (let i = 1; i < boxes.length; i++) {
+                                    let b = boxes[i];
+                                    // If adjacent horizontally and on same line, merge
+                                    if (Math.abs((cur.x + cur.w) - b.x) < 0.5 && Math.abs(cur.y - b.y) < 1) {
+                                        cur.w += b.w;
+                                    } else {
+                                        merged.push(cur);
+                                        cur = b;
+                                    }
+                                }
+                                merged.push(cur);
+                                highlightRects.push(...merged);
+                            }
+                        }
                     }
                 });
-            });
+            }));
+        }
+        Promise.all(promises).then(() => {
+            if (totalMatches > 0) {
+                // Create clickable page links
+                let links = matchedPages.map(pageNum => {
+                    return `<a href="#" class="search-page-link" data-page="${pageNum}">${pageNum}</a>`;
+                }).join(', ');
+                searchResult.innerHTML = `Found <b>${totalMatches}</b> match(es) for "${query}" on page(s): ${links}`;
+                // Add click listeners
+                document.querySelectorAll('.search-page-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        pageNum = parseInt(this.dataset.page);
+                        queueRenderPage(pageNum);
+                    });
+                });
+            } else {
+                searchResult.textContent = `No results for "${query}".`;
+            }
+            queueRenderPage(pageNum); // re-render to show highlights
+        });
+    });
 
 
     function renderPage(num) {
@@ -148,6 +214,21 @@
             };
             let renderTask = page.render(renderContext);
             renderTask.promise.then(function() {
+                // Draw highlights if search is active
+                if (lastSearchQuery && highlightRects.length > 0) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.35;
+                    ctx.fillStyle = 'yellow';
+                    highlightRects.forEach(rect => {
+                        // Transform PDF coordinates to canvas
+                        let x = rect.x * viewport.transform[0] + viewport.transform[4];
+                        let y = rect.y * viewport.transform[3] + viewport.transform[5];
+                        let w = rect.w * viewport.transform[0];
+                        let h = rect.h * viewport.transform[3];
+                        ctx.fillRect(x, y, w, h);
+                    });
+                    ctx.restore();
+                }
                 pageRendering = false;
                 document.getElementById('page_num').textContent = num;
                 if (pageNumPending !== null) {

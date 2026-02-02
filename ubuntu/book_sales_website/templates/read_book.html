@@ -28,7 +28,7 @@
                 position: absolute;
                 left: 1px;
                 top: 1px;
-                overflow: hidden;
+                overflow: visible;
                 pointer-events: none;
                 z-index: 1;
             }
@@ -38,6 +38,14 @@
                 opacity: 0.5;
                 pointer-events: none;
             }
+            #highlight-layer .selection-rect {
+                position: absolute;
+                background-color: rgba(0, 100, 255, 0.4);
+                pointer-events: none;
+            }
+            #manual-selection-box {
+                z-index: 9999 !important;
+            }
             #text-layer {
                 position: absolute;
                 left: 1px; /* account for canvas border */
@@ -45,18 +53,31 @@
                 overflow: hidden;
                 opacity: 1;
                 line-height: 1.0;
-                pointer-events: none;
+                pointer-events: auto;
                 z-index: 2;
+                cursor: text;
             }
             #text-layer > span {
                 color: transparent;
                 position: absolute;
                 white-space: pre;
-                pointer-events: all;
+                pointer-events: auto;
                 transform-origin: 0% 0%;
+                user-select: text;
+                -webkit-user-select: text;
+                -moz-user-select: text;
+                background: transparent;
+                cursor: text;
             }
             #text-layer > span::selection {
-                background: rgba(0, 0, 255, 0.3);
+                background-color: rgba(0, 100, 255, 0.4) !important;
+            }
+            #text-layer > span::-moz-selection {
+                background-color: rgba(0, 100, 255, 0.4) !important;
+            }
+            /* Force selection to show by adding a pseudo-element trick */
+            #text-layer {
+                mix-blend-mode: multiply;
             }
         </style>
         <div id="search-sidebar" class="ms-4 d-flex flex-column align-items-stretch" style="width:220px; min-height:70vh; border:1px solid #ddd; background:#f9f9f9; padding:16px 12px; border-radius:8px;">
@@ -123,6 +144,11 @@
     let pageRendering = false;
     let pageNumPending = null;
     let scale = 1.0;
+    
+    // Store current page's text content and viewport for selection
+    let currentTextContent = null;
+    let currentViewport = null;
+    
     // Search functionality
 
     // Use correct IDs for search elements
@@ -161,6 +187,179 @@
 
                         // Update zoom level indicator
                         document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+
+    // --- Manual Drag Selection with visual rectangle ---
+    let isDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    
+    // Create persistent selection rectangle element directly in pdf-container with high z-index
+    let selectionBox = document.createElement('div');
+    selectionBox.id = 'manual-selection-box';
+    selectionBox.style.cssText = `
+        position: absolute;
+        border: 3px solid #0066ff;
+        background-color: rgba(0, 100, 255, 0.25);
+        pointer-events: none;
+        z-index: 9999;
+        display: none;
+    `;
+    document.getElementById('pdf-container').appendChild(selectionBox);
+    
+    // Get mouse position relative to pdf-container
+    function getMousePos(e) {
+        let container = document.getElementById('pdf-container');
+        let rect = container.getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
+    
+    // Start drag on mousedown in pdf-container
+    document.getElementById('pdf-container').addEventListener('mousedown', function(e) {
+        if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+        
+        isDragging = true;
+        let pos = getMousePos(e);
+        dragStartX = pos.x;
+        dragStartY = pos.y;
+        
+        selectionBox.style.left = dragStartX + 'px';
+        selectionBox.style.top = dragStartY + 'px';
+        selectionBox.style.width = '0px';
+        selectionBox.style.height = '0px';
+        selectionBox.style.display = 'block';
+        
+        e.preventDefault(); // Prevent native text selection
+    });
+    
+    // Update rectangle on mousemove
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        
+        let pos = getMousePos(e);
+        let x = Math.min(dragStartX, pos.x);
+        let y = Math.min(dragStartY, pos.y);
+        let w = Math.abs(pos.x - dragStartX);
+        let h = Math.abs(pos.y - dragStartY);
+        
+        selectionBox.style.left = x + 'px';
+        selectionBox.style.top = y + 'px';
+        selectionBox.style.width = w + 'px';
+        selectionBox.style.height = h + 'px';
+    });
+    
+    // End drag on mouseup - extract text from spans inside the rectangle
+    document.addEventListener('mouseup', function(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        
+        // Get selection box bounds (relative to pdf-container)
+        let boxLeft = parseFloat(selectionBox.style.left);
+        let boxTop = parseFloat(selectionBox.style.top);
+        let boxWidth = parseFloat(selectionBox.style.width);
+        let boxHeight = parseFloat(selectionBox.style.height);
+        let boxRight = boxLeft + boxWidth;
+        let boxBottom = boxTop + boxHeight;
+        
+        // Only process if we have a meaningful selection
+        if (boxWidth < 5 || boxHeight < 5) {
+            selectionBox.style.display = 'none';
+            return;
+        }
+        
+        sendLogToServer('info', 'Selection: ' + boxLeft.toFixed(0) + ',' + boxTop.toFixed(0) + ' to ' + boxRight.toFixed(0) + ',' + boxBottom.toFixed(0));
+        
+        // Use stored text content with PDF coordinate transforms
+        // The selection box is relative to pdf-container, which includes the 1px canvas border
+        // Adjust for the border offset
+        let selLeft = boxLeft - 1;
+        let selTop = boxTop - 1;
+        let selRight = boxRight - 1;
+        let selBottom = boxBottom - 1;
+        
+        if (!currentTextContent || !currentViewport) {
+            sendLogToServer('error', 'No text content available');
+            selectionBox.style.display = 'none';
+            return;
+        }
+        
+        let selectedTexts = [];
+        let items = currentTextContent.items;
+        
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            if (!item.str || item.str.length === 0) continue;
+            
+            // Get the transform for this text item
+            let tx = currentViewport.transform;
+            let itemTx = item.transform;
+            
+            // Calculate position in viewport coordinates
+            // The transform is [scaleX, skewY, skewX, scaleY, translateX, translateY]
+            let x = itemTx[4] * tx[0] + itemTx[5] * tx[2] + tx[4];
+            let y = itemTx[4] * tx[1] + itemTx[5] * tx[3] + tx[5];
+            
+            // Get dimensions
+            let fontSize = Math.sqrt(itemTx[0] * itemTx[0] + itemTx[1] * itemTx[1]);
+            let scaledFontSize = fontSize * tx[0];
+            let textWidth = item.width * tx[0];
+            let textHeight = scaledFontSize;
+            
+            // PDF coordinates have Y increasing upward, but canvas has Y increasing downward
+            // The viewport transform handles this, so y is already in canvas coordinates
+            let itemTop = y - textHeight;
+            let itemBottom = y;
+            let itemLeft = x;
+            let itemRight = x + textWidth;
+            
+            // Check if item intersects with selection
+            let itemCenterY = (itemTop + itemBottom) / 2;
+            
+            if (itemCenterY >= selTop && itemCenterY <= selBottom &&
+                itemRight > selLeft && itemLeft < selRight) {
+                
+                let text = item.str;
+                let charWidth = textWidth / text.length;
+                
+                let startChar = 0;
+                let endChar = text.length;
+                
+                if (selLeft > itemLeft) {
+                    startChar = Math.floor((selLeft - itemLeft) / charWidth);
+                }
+                if (selRight < itemRight) {
+                    endChar = Math.ceil((selRight - itemLeft) / charWidth);
+                }
+                
+                startChar = Math.max(0, Math.min(startChar, text.length));
+                endChar = Math.max(0, Math.min(endChar, text.length));
+                
+                if (endChar > startChar) {
+                    selectedTexts.push(text.substring(startChar, endChar));
+                }
+            }
+        }
+        
+        let finalText = selectedTexts.join(' ').trim();
+        
+        if (finalText) {
+            navigator.clipboard.writeText(finalText).then(() => {
+                sendLogToServer('info', 'Copied: ' + finalText.substring(0, 100));
+                // Show brief feedback
+                selectionBox.style.backgroundColor = 'rgba(0, 200, 0, 0.3)';
+                setTimeout(() => {
+                    selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.2)';
+                    selectionBox.style.display = 'none';
+                }, 500);
+            }).catch(err => {
+                sendLogToServer('error', 'Clipboard error: ' + err.message);
+                selectionBox.style.display = 'none';
+            });
+        } else {
+            selectionBox.style.display = 'none';
+        }
+    });
 
     // --- Highlighting logic ---
     let lastSearchQuery = '';
@@ -293,6 +492,9 @@
             canvas.height = viewport.height;
             canvas.width = viewport.width;
             
+            // Store viewport for text selection
+            currentViewport = viewport;
+            
             // Size and position text layer and highlight layer to match canvas
             textLayerDiv.style.width = viewport.width + 'px';
             textLayerDiv.style.height = viewport.height + 'px';
@@ -306,6 +508,9 @@
             let renderTask = page.render(renderContext);
             // Render text layer and calculate highlights
             page.getTextContent().then(function(textContent) {
+                // Store text content for text selection
+                currentTextContent = textContent;
+                
                 // Calculate highlight positions from PDF text content
                 calculateHighlightsForPage(num, textContent, viewport);
                 // Draw highlights

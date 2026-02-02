@@ -16,8 +16,49 @@
     </div>
     <div class="d-flex" style="min-height: 70vh;">
             <div id="pdf-viewer" style="overflow-x:auto; width:100%; display:flex; flex-direction:column; align-items:center;">
-                <canvas id="pdf-canvas" style="border:1px solid #ccc; display:block; margin:24px auto 0 auto; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15); width:auto !important; height:auto !important; max-width:none !important; max-height:none !important;"></canvas>
+                <div id="pdf-container" style="position:relative; display:inline-block; margin:24px auto 0 auto;">
+                    <canvas id="pdf-canvas" style="border:1px solid #ccc; display:block; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15);"></canvas>
+                    <div id="highlight-layer"></div>
+                    <div id="text-layer"></div>
+                </div>
         </div>
+        <!-- PDF.js Text Layer CSS - required for proper text positioning -->
+        <style>
+            #highlight-layer {
+                position: absolute;
+                left: 1px;
+                top: 1px;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: 1;
+            }
+            #highlight-layer .highlight-rect {
+                position: absolute;
+                background-color: yellow;
+                opacity: 0.5;
+                pointer-events: none;
+            }
+            #text-layer {
+                position: absolute;
+                left: 1px; /* account for canvas border */
+                top: 1px; /* account for canvas border */
+                overflow: hidden;
+                opacity: 1;
+                line-height: 1.0;
+                pointer-events: none;
+                z-index: 2;
+            }
+            #text-layer > span {
+                color: transparent;
+                position: absolute;
+                white-space: pre;
+                pointer-events: all;
+                transform-origin: 0% 0%;
+            }
+            #text-layer > span::selection {
+                background: rgba(0, 0, 255, 0.3);
+            }
+        </style>
         <div id="search-sidebar" class="ms-4 d-flex flex-column align-items-stretch" style="width:220px; min-height:70vh; border:1px solid #ddd; background:#f9f9f9; padding:16px 12px; border-radius:8px;">
             <div class="mb-2">
                 <input id="search_input" type="text" class="form-control mb-2" placeholder="Search text in PDF...">
@@ -33,8 +74,46 @@
 
 <!-- PDF.js ES Module integration -->
 <div id="pdfjs-error" style="display:none;color:red;text-align:center;margin-top:1em;"></div>
+<!-- Early error capture before module loads -->
+<script>
+    window._jsErrors = [];
+    window.onerror = function(msg, url, line, col, err) {
+        window._jsErrors.push({type: 'error', message: msg + ' at ' + url + ':' + line + ':' + col});
+        fetch('/js-log', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'error', message: msg + ' at ' + url + ':' + line + ':' + col})});
+        return false;
+    };
+    window.onunhandledrejection = function(e) {
+        var msg = 'Unhandled promise rejection: ' + (e.reason && e.reason.message ? e.reason.message : e.reason);
+        window._jsErrors.push({type: 'error', message: msg});
+        fetch('/js-log', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'error', message: msg})});
+    };
+    console.log('Early error logging initialized');
+    fetch('/js-log', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'info', message: 'Page loaded, early error logging active'})});
+</script>
 <script type="module">
     import * as pdfjsLib from "{{ url_for('static', filename='js/pdf.mjs') }}";
+    // Dynamically load mark.min.js as a classic script
+    function loadMarkJs() {
+        return new Promise((resolve, reject) => {
+            // Check if Mark is already loaded (could be Mark or Mark.default)
+            if (window.Mark) {
+                const MarkConstructor = window.Mark.default || window.Mark;
+                return resolve(MarkConstructor);
+            }
+            const script = document.createElement('script');
+            script.src = "{{ url_for('static', filename='js/mark.min.js') }}";
+            script.onload = () => {
+                const MarkConstructor = window.Mark && (window.Mark.default || window.Mark);
+                if (MarkConstructor) {
+                    resolve(MarkConstructor);
+                } else {
+                    reject(new Error('Mark.js loaded but Mark constructor not found'));
+                }
+            };
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
     pdfjsLib.GlobalWorkerOptions.workerSrc = "{{ url_for('static', filename='js/pdf.worker.mjs') }}";
     const url = "{{ pdf_url }}";
     document.getElementById('pdf-url-span').textContent = url;
@@ -46,11 +125,12 @@
     let scale = 1.0;
     // Search functionality
 
-    let searchBar = document.getElementById('search-bar');
-    let searchBtn = document.getElementById('search_btn');
+    // Use correct IDs for search elements
+    let searchBar = document.getElementById('search-sidebar');
+    let searchBtn = null; // No dedicated open button, sidebar is always visible
     let searchInput = document.getElementById('search_input');
     let searchSubmit = document.getElementById('search_submit');
-    let searchClose = document.getElementById('search_close');
+    let searchClose = null; // No close button in sidebar
     let searchResult = document.getElementById('search_result');
 
 
@@ -65,7 +145,6 @@
 
     // Edge browser debug log for null elements
     if (!searchBar) { console.warn('searchBar is null'); sendLogToServer('warn', 'searchBar is null'); }
-    if (!searchBtn) { console.warn('searchBtn is null'); sendLogToServer('warn', 'searchBtn is null'); }
     if (!searchInput) { console.warn('searchInput is null'); sendLogToServer('warn', 'searchInput is null'); }
     if (!searchSubmit) { console.warn('searchSubmit is null'); sendLogToServer('warn', 'searchSubmit is null'); }
 
@@ -77,31 +156,80 @@
         sendLogToServer('error', 'Unhandled promise rejection: ' + (e.reason && e.reason.message ? e.reason.message : e.reason));
     });
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function() {
-            searchBar.style.display = 'flex';
-            searchInput.focus();
-        });
-    }
-    if (searchClose) {
-        searchClose.addEventListener('click', function() {
-            searchBar.style.display = 'none';
-            searchResult.textContent = '';
-            searchInput.value = '';
-        });
-    }
+
+    // No open/close logic for sidebar; always visible
 
                         // Update zoom level indicator
                         document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
 
     // --- Highlighting logic ---
     let lastSearchQuery = '';
-    let highlightRects = [];
+    // Store highlight rectangles per page: {pageNum: [{left, top, width, height}, ...]}
+    let highlightRects = {};
 
-    searchSubmit.addEventListener('click', function() {
+    // Function to draw highlights on the highlight layer (separate from text layer)
+    function drawHighlights() {
+        let highlightLayer = document.getElementById('highlight-layer');
+        // Clear previous highlights
+        highlightLayer.innerHTML = '';
+        
+        if (!lastSearchQuery || !highlightRects[pageNum]) return;
+        
+        let rects = highlightRects[pageNum];
+        rects.forEach(rect => {
+            let div = document.createElement('div');
+            div.className = 'highlight-rect';
+            div.style.left = rect.left + 'px';
+            div.style.top = rect.top + 'px';
+            div.style.width = rect.width + 'px';
+            div.style.height = rect.height + 'px';
+            highlightLayer.appendChild(div);
+        });
+        sendLogToServer('info', 'Drew ' + rects.length + ' highlight rects on page ' + pageNum);
+    }
+
+    // Function to calculate highlight positions from PDF text content
+    function calculateHighlightsForPage(pageNumCalc, textContent, viewport) {
+        if (!lastSearchQuery) return;
+        
+        let rects = [];
+        let searchLower = lastSearchQuery.toLowerCase();
+        
+        textContent.items.forEach(item => {
+            let text = item.str;
+            let textLower = text.toLowerCase();
+            let idx = textLower.indexOf(searchLower);
+            
+            if (idx !== -1) {
+                // Get transform from PDF coordinates
+                let tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+                let left = tx[4];
+                let bottom = tx[5];
+                let fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]);
+                let height = fontSize;
+                let top = bottom - height;
+                
+                // Estimate width based on character position
+                let charWidth = item.width / text.length;
+                let matchLeft = left + (idx * charWidth);
+                let matchWidth = searchLower.length * charWidth;
+                
+                rects.push({
+                    left: matchLeft,
+                    top: top,
+                    width: matchWidth,
+                    height: height
+                });
+            }
+        });
+        
+        highlightRects[pageNumCalc] = rects;
+    }
+
+    if (searchSubmit && searchInput) searchSubmit.addEventListener('click', function() {
         let query = searchInput.value.trim();
         lastSearchQuery = query;
-        highlightRects = [];
+        highlightRects = {}; // Clear previous highlights
         if (!query || !pdfDoc) return;
         searchResult.textContent = 'Searching...';
         let totalMatches = 0;
@@ -109,70 +237,23 @@
         let promises = [];
         for (let i = 1; i <= pdfDoc.numPages; i++) {
             promises.push(pdfDoc.getPage(i).then(page => {
+                let viewport = page.getViewport({scale: scale});
                 return page.getTextContent().then(tc => {
                     let text = tc.items.map(item => item.str).join(' ');
-                    let regex = new RegExp(query, 'gi');
-                    let pageMatches = (text.match(regex) || []).length;
-                    if (pageMatches > 0) {
-                        totalMatches += pageMatches;
-                        matchedPages.push(i);
+                    // Simple case-insensitive search
+                    let searchLower = query.toLowerCase();
+                    let textLower = text.toLowerCase();
+                    let count = 0;
+                    let pos = 0;
+                    while ((pos = textLower.indexOf(searchLower, pos)) !== -1) {
+                        count++;
+                        pos += searchLower.length;
                     }
-                    // Store highlight rects for current page using precise bounding boxes
-                    if (i === pageNum) {
-                        highlightRects = [];
-                        let textContentItems = tc.items;
-                        let pageText = textContentItems.map(item => item.str).join('');
-                        let match;
-                        let regex2 = new RegExp(query, 'gi');
-                        // Build a mapping from global char index to (itemIdx, charIdx)
-                        let charMap = [];
-                        let globalIdx = 0;
-                        for (let i = 0; i < textContentItems.length; i++) {
-                            let item = textContentItems[i];
-                            for (let j = 0; j < item.str.length; j++) {
-                                charMap[globalIdx++] = {itemIdx: i, charIdx: j};
-                            }
-                        }
-                        while ((match = regex2.exec(pageText)) !== null) {
-                            let matchStart = match.index;
-                            let matchEnd = match.index + match[0].length;
-                            // Double-check substring is exact match (avoid false positives)
-                            if (pageText.substring(matchStart, matchEnd).toLowerCase() !== query.toLowerCase()) continue;
-                            // For each character in the match, get its item and char index
-                            let boxes = [];
-                            for (let k = matchStart; k < matchEnd; k++) {
-                                let map = charMap[k];
-                                if (!map) continue;
-                                let item = textContentItems[map.itemIdx];
-                                let charIdx = map.charIdx;
-                                // Calculate per-character width
-                                let totalWidth = item.width;
-                                let charWidth = totalWidth / item.str.length;
-                                let fontHeight = Math.abs(item.transform[3]);
-                                let x = item.transform[4] + charWidth * charIdx;
-                                let y = item.transform[5] - fontHeight;
-                                let w = charWidth;
-                                let h = fontHeight;
-                                boxes.push({x, y, w, h});
-                            }
-                            // Merge adjacent boxes into a single rect if possible (for continuous highlights)
-                            if (boxes.length > 0) {
-                                let merged = [];
-                                let cur = boxes[0];
-                                for (let i = 1; i < boxes.length; i++) {
-                                    let b = boxes[i];
-                                    // If adjacent horizontally and on same line, merge
-                                    if (Math.abs((cur.x + cur.w) - b.x) < 0.5 && Math.abs(cur.y - b.y) < 1) {
-                                        cur.w += b.w;
-                                    } else {
-                                        merged.push(cur);
-                                        cur = b;
-                                    }
-                                }
-                                merged.push(cur);
-                                highlightRects.push(...merged);
-                            }
-                        }
+                    if (count > 0) {
+                        totalMatches += count;
+                        matchedPages.push(i);
+                        // Pre-calculate highlights for this page
+                        calculateHighlightsForPage(i, tc, viewport);
                     }
                 });
             }));
@@ -180,8 +261,8 @@
         Promise.all(promises).then(() => {
             if (totalMatches > 0) {
                 // Create clickable page links
-                let links = matchedPages.map(pageNum => {
-                    return `<a href="#" class="search-page-link" data-page="${pageNum}">${pageNum}</a>`;
+                let links = matchedPages.map(p => {
+                    return `<a href="#" class="search-page-link" data-page="${p}">${p}</a>`;
                 }).join(', ');
                 searchResult.innerHTML = `Found <b>${totalMatches}</b> match(es) for "${query}" on page(s): ${links}`;
                 // Add click listeners
@@ -195,7 +276,8 @@
             } else {
                 searchResult.textContent = `No results for "${query}".`;
             }
-            queueRenderPage(pageNum); // re-render to show highlights
+            // Draw highlights on current page
+            drawHighlights();
         });
     });
 
@@ -203,32 +285,48 @@
     function renderPage(num) {
         let canvas = document.getElementById('pdf-canvas');
         let ctx = canvas.getContext('2d');
+        let textLayerDiv = document.getElementById('text-layer');
+        let highlightLayer = document.getElementById('highlight-layer');
         pageRendering = true;
         pdfDoc.getPage(num).then(function(page) {
             let viewport = page.getViewport({scale: scale});
             canvas.height = viewport.height;
             canvas.width = viewport.width;
+            
+            // Size and position text layer and highlight layer to match canvas
+            textLayerDiv.style.width = viewport.width + 'px';
+            textLayerDiv.style.height = viewport.height + 'px';
+            highlightLayer.style.width = viewport.width + 'px';
+            highlightLayer.style.height = viewport.height + 'px';
+            
             let renderContext = {
                 canvasContext: ctx,
                 viewport: viewport
             };
             let renderTask = page.render(renderContext);
-            renderTask.promise.then(function() {
-                // Draw highlights if search is active
-                if (lastSearchQuery && highlightRects.length > 0) {
-                    ctx.save();
-                    ctx.globalAlpha = 0.35;
-                    ctx.fillStyle = 'yellow';
-                    highlightRects.forEach(rect => {
-                        // Transform PDF coordinates to canvas
-                        let x = rect.x * viewport.transform[0] + viewport.transform[4];
-                        let y = rect.y * viewport.transform[3] + viewport.transform[5];
-                        let w = rect.w * viewport.transform[0];
-                        let h = rect.h * viewport.transform[3];
-                        ctx.fillRect(x, y, w, h);
+            // Render text layer and calculate highlights
+            page.getTextContent().then(function(textContent) {
+                // Calculate highlight positions from PDF text content
+                calculateHighlightsForPage(num, textContent, viewport);
+                // Draw highlights
+                drawHighlights();
+                
+                // Remove previous text layer
+                while (textLayerDiv.firstChild) textLayerDiv.removeChild(textLayerDiv.firstChild);
+                // Use the exported TextLayer class from PDF.js (5.x)
+                try {
+                    const textLayer = new pdfjsLib.TextLayer({
+                        container: textLayerDiv,
+                        viewport: viewport,
+                        textContentSource: textContent
                     });
-                    ctx.restore();
+                    textLayer.render();
+                } catch (err) {
+                    sendLogToServer('error', 'TextLayer render error: ' + err.message);
                 }
+            });
+            renderTask.promise.then(function() {
+                // No canvas highlight; only use mark.js on text layer
                 pageRendering = false;
                 document.getElementById('page_num').textContent = num;
                 if (pageNumPending !== null) {
@@ -237,11 +335,11 @@
                 }
             }).catch(function(err) {
                 showPdfError('Error rendering page: ' + err.message);
-                console.error('PDF.js render error:', err);
+                sendLogToServer('error', 'PDF.js render error: ' + err.message);
             });
         }).catch(function(err) {
             showPdfError('Error loading page: ' + err.message);
-            console.error('PDF.js page error:', err);
+            sendLogToServer('error', 'PDF.js page error: ' + err.message);
         });
     }
 

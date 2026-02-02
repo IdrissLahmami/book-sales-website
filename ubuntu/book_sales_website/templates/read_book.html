@@ -83,7 +83,10 @@
         <div id="search-sidebar" class="ms-4 d-flex flex-column align-items-stretch" style="width:220px; min-height:70vh; border:1px solid #ddd; background:#f9f9f9; padding:16px 12px; border-radius:8px;">
             <div class="mb-2">
                 <input id="search_input" type="text" class="form-control mb-2" placeholder="Search text in PDF...">
-                <button id="search_submit" class="btn btn-success w-100">Find</button>
+                <div class="d-flex gap-2">
+                    <button id="search_submit" class="btn btn-success flex-grow-1">Find</button>
+                    <button id="search_clear" class="btn btn-outline-secondary" style="display:none;">Clear</button>
+                </div>
             </div>
             <div id="search_result" class="text-info flex-grow-1" style="white-space:pre-line;"></div>
         </div>
@@ -472,12 +475,25 @@
                         queueRenderPage(pageNum);
                     });
                 });
+                // Show clear button
+                document.getElementById('search_clear').style.display = 'block';
             } else {
                 searchResult.textContent = `No results for "${query}".`;
+                document.getElementById('search_clear').style.display = 'block';
             }
             // Draw highlights on current page
             drawHighlights();
         });
+    });
+
+    // Clear search button
+    document.getElementById('search_clear').addEventListener('click', function() {
+        searchInput.value = '';
+        searchResult.innerHTML = '';
+        lastSearchQuery = '';
+        highlightRects = {};
+        drawHighlights();
+        this.style.display = 'none';
     });
 
 

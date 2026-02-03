@@ -356,6 +356,12 @@
                     selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.2)';
                     selectionBox.style.display = 'none';
                 }, 500);
+                
+                // Clear search field and place copied text there
+                if (searchInput) {
+                    searchInput.value = '';
+                    searchInput.value = finalText;
+                }
             }).catch(err => {
                 sendLogToServer('error', 'Clipboard error: ' + err.message);
                 selectionBox.style.display = 'none';

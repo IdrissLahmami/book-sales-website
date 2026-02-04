@@ -48,3 +48,7 @@ Total books: 0, Total: $0
 Cart items: {'3': 1}
   Book ID 3: Advanced C# Programming x 1 = $39.99
 Total books: 1, Total: $39.99
+
+=== CART VIEW at 2026-02-04 16:43:06.445813 ===
+Cart items: {}
+Total books: 0, Total: $0

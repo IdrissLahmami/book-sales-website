@@ -640,7 +640,12 @@
     if (typeof pdfjsLib.getDocument === 'function') {
         console.log('PDF.js version:', pdfjsLib.version || 'unknown');
         console.log('PDF URL:', url);
-        pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+        // Include wasmUrl for JPEG2000 (JPX) image support
+        const loadingTask = pdfjsLib.getDocument({
+            url: url,
+            wasmUrl: "{{ url_for('static', filename='js/') }}"
+        });
+        loadingTask.promise.then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
             document.getElementById('page_count').textContent = pdfDoc.numPages;
             renderPage(pageNum);

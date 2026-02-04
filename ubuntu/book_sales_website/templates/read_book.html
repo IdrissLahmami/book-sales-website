@@ -12,6 +12,8 @@
         <button id="prev" class="btn btn-secondary btn-lg me-2">Previous</button>
         <span>Page <span id="page_num">1</span> / <span id="page_count">?</span></span>
         <button id="next" class="btn btn-secondary btn-lg ms-2">Next</button>
+        <input id="goto_page_input" type="number" class="form-control ms-4" style="width:80px;" min="1" placeholder="#">
+        <button id="goto_page" class="btn btn-primary btn-lg ms-2">Go</button>
         <button id="original_size" class="btn btn-outline-info btn-lg ms-4">Original</button>
         <button id="zoom_in" class="btn btn-outline-primary btn-lg ms-2">+</button>
         <button id="zoom_out" class="btn btn-outline-primary btn-lg ms-2">-</button>
@@ -613,6 +615,17 @@
         scale = 1.0;
         queueRenderPage(pageNum);
     }
+    function onGoToPage() {
+        const input = document.getElementById('goto_page_input');
+        const targetPage = parseInt(input.value, 10);
+        if (isNaN(targetPage) || targetPage < 1 || targetPage > pdfDoc.numPages) {
+            alert('Please enter a valid page number (1-' + pdfDoc.numPages + ')');
+            return;
+        }
+        pageNum = targetPage;
+        queueRenderPage(pageNum);
+        input.value = '';
+    }
 
     function showPdfError(msg) {
         const errDiv = document.getElementById('pdfjs-error');
@@ -641,6 +654,10 @@
     document.getElementById('prev').addEventListener('click', onPrevPage);
     document.getElementById('next').addEventListener('click', onNextPage);
     document.getElementById('last').addEventListener('click', onLastPage);
+    document.getElementById('goto_page').addEventListener('click', onGoToPage);
+    document.getElementById('goto_page_input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') onGoToPage();
+    });
     document.getElementById('original_size').addEventListener('click', onOriginalSize);
     document.getElementById('zoom_in').addEventListener('click', onZoomIn);
     document.getElementById('zoom_out').addEventListener('click', onZoomOut);

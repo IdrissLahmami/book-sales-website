@@ -7,6 +7,8 @@
     <h2 class="mb-3">{{ book.title }} <small class="text-muted">by {{ book.author }}</small></h2>
     <div class="alert alert-info">PDF URL: <span id="pdf-url-span">{{ pdf_url }}</span></div>
     <div id="pdf-controls" class="mb-3 d-flex align-items-center justify-content-center">
+        <button id="first" class="btn btn-secondary btn-lg me-2">First</button>
+        <button id="last" class="btn btn-secondary btn-lg me-2">Last</button>
         <button id="prev" class="btn btn-secondary btn-lg me-2">Previous</button>
         <span>Page <span id="page_num">1</span> / <span id="page_count">?</span></span>
         <button id="next" class="btn btn-secondary btn-lg ms-2">Next</button>
@@ -579,6 +581,11 @@
         }
     }
 
+    function onFirstPage() {
+        if (pageNum <= 1) return;
+        pageNum = 1;
+        queueRenderPage(pageNum);
+    }
     function onPrevPage() {
         if (pageNum <= 1) return;
         pageNum--;
@@ -587,6 +594,11 @@
     function onNextPage() {
         if (pageNum >= pdfDoc.numPages) return;
         pageNum++;
+        queueRenderPage(pageNum);
+    }
+    function onLastPage() {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum = pdfDoc.numPages;
         queueRenderPage(pageNum);
     }
     function onZoomIn() {
@@ -625,8 +637,10 @@
         console.error('PDF.js library is not available.');
     }
 
+    document.getElementById('first').addEventListener('click', onFirstPage);
     document.getElementById('prev').addEventListener('click', onPrevPage);
     document.getElementById('next').addEventListener('click', onNextPage);
+    document.getElementById('last').addEventListener('click', onLastPage);
     document.getElementById('original_size').addEventListener('click', onOriginalSize);
     document.getElementById('zoom_in').addEventListener('click', onZoomIn);
     document.getElementById('zoom_out').addEventListener('click', onZoomOut);

@@ -5228,3 +5228,11 @@
 2026-02-04 16:16:52.613950 - GET /static/js/pdf.worker.mjs - Auth: True
 2026-02-04 16:16:52.617317 - GET /favicon.ico - Auth: True
 2026-02-04 16:16:52.666326 - GET /static/pdfs/75039a24-1a3c-4684-848c-db2e63b00c44.pdf - Auth: True
+2026-02-04 16:32:39.152436 - GET /read/5 - Auth: True
+2026-02-04 16:32:39.222843 - GET /static/css/style.css - Auth: True
+2026-02-04 16:32:39.223350 - GET /static/js/main.js - Auth: True
+2026-02-04 16:32:39.488377 - POST /js-log - Auth: True
+2026-02-04 16:32:39.502074 - GET /static/js/pdf.mjs - Auth: True
+2026-02-04 16:32:39.533353 - GET /static/js/pdf.worker.mjs - Auth: True
+2026-02-04 16:32:39.536342 - GET /favicon.ico - Auth: True
+2026-02-04 16:32:39.580858 - GET /static/pdfs/75039a24-1a3c-4684-848c-db2e63b00c44.pdf - Auth: True

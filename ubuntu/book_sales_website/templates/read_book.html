@@ -193,9 +193,6 @@
 
     // No open/close logic for sidebar; always visible
 
-                        // Update zoom level indicator
-                        document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
-
     // --- Manual Drag Selection with visual rectangle ---
     let isDragging = false;
     let dragStartX = 0, dragStartY = 0;
@@ -603,16 +600,22 @@
         pageNum = pdfDoc.numPages;
         queueRenderPage(pageNum);
     }
+    function updateZoomDisplay() {
+        document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+    }
     function onZoomIn() {
         scale = Math.min(scale + 0.2, 3.0);
+        updateZoomDisplay();
         queueRenderPage(pageNum);
     }
     function onZoomOut() {
         scale = Math.max(scale - 0.2, 0.5);
+        updateZoomDisplay();
         queueRenderPage(pageNum);
     }
     function onOriginalSize() {
         scale = 1.0;
+        updateZoomDisplay();
         queueRenderPage(pageNum);
     }
     function onGoToPage() {

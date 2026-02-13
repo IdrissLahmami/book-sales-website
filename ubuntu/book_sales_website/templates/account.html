@@ -7,7 +7,7 @@
     <h1 class="mb-4">My Account</h1>
     
     <div class="row">
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card mb-4">
                 <div class="card-header">
                     <h5 class="mb-0">Account Information</h5>
@@ -53,7 +53,7 @@
             </div>
         </div>
         
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">Order History</h5>
@@ -61,13 +61,15 @@
                 <div class="card-body">
                     {% if orders %}
                     <div class="table-responsive">
-                        <table class="table">
+                        <table class="table table-nowrap">
                             <thead>
                                 <tr>
-                                    <th>Order Reference</th>
-                                    <th>Date</th>
-                                    <th>Amount</th>
+                                    <th style="min-width: 120px;">Order Reference</th>
+                                    <th style="min-width: 100px;">Date</th>
+                                    <th style="min-width: 200px;">Books</th>
+                                    <th style="min-width: 80px;">Amount</th>
                                     <th>Status</th>
+                                    <th style="min-width: 80px;">No. of Books</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -76,7 +78,18 @@
                                 <tr>
                                     <td>{{ order.order_reference }}</td>
                                     <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
-                                    <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                    <td>
+                                        {% for item in order.items %}
+                                            {{ item.book.title }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if order.total_amount == 0 %}
+                                            FREE
+                                        {% else %}
+                                            £{{ "%.2f"|format(order.total_amount) }}
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         {% if order.status == 'completed' %}
                                         <span class="badge bg-success">Completed</span>
@@ -85,6 +98,9 @@
                                         {% else %}
                                         <span class="badge bg-secondary">{{ order.status }}</span>
                                         {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">{{ order.items|length }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ url_for('order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline-primary">View</a>

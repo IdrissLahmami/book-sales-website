@@ -519,14 +519,90 @@ def order_complete(order_id):
     
     return render_template('order_complete.html', order=order)
 
+@app.route('/complete-free-order', methods=['POST'])
+@login_required
+def complete_free_order():
+    """Process free books without PayPal"""
+    # Get cart items from session
+    cart_items = session.get('cart', {})
+    
+    if not cart_items:
+        flash('Your cart is empty!', 'warning')
+        return redirect(url_for('book_list'))
+    
+    # Calculate total and check if all items are free
+    cart_books = []
+    total = 0
+    for book_id, quantity in cart_items.items():
+        book = Book.query.get(int(book_id))
+        if book:
+            cart_books.append({'book': book, 'quantity': quantity})
+            total += book.price * quantity
+    
+    if total > 0:
+        flash('This cart contains paid items. Please use regular checkout.', 'warning')
+        return redirect(url_for('checkout'))
+    
+    # Create the order
+    order = Order(
+        user_id=current_user.id,
+        total_amount=0.0,
+        status='completed'  # Free orders are immediately completed
+    )
+    db.session.add(order)
+    db.session.flush()  # Get the order ID
+    
+    # Create payment record for free order
+    payment = Payment(
+        order_id=order.id,
+        amount=0.0,
+        payment_method='free',
+        transaction_id='FREE_ORDER',
+        status='completed'
+    )
+    db.session.add(payment)
+    
+    # Create order items
+    for cart_book in cart_books:
+        order_item = OrderItem(
+            order_id=order.id,
+            book_id=cart_book['book'].id,
+            quantity=cart_book['quantity'],
+            price=0.0  # Free books
+        )
+        db.session.add(order_item)
+    
+    # Clear the cart
+    session['cart'] = {}
+    
+    db.session.commit()
+    
+    flash('Free books added to your library! You can download them now.', 'success')
+    return redirect(url_for('order_complete', order_id=order.id))
+
 # Download routes
 @app.route('/download/<int:book_id>/<int:order_id>')
 @login_required
 @purchase_required
 def download_book(book_id, order_id):
-    """Handle secure book download after purchase"""
+    """Handle secure book download after purchase with download limits"""
     # Get the book
     book = Book.query.get_or_404(book_id)
+    
+    # Check if user is admin (unlimited downloads)
+    is_admin = current_user.email == 'admin@example.com'  # You can make this more sophisticated
+    
+    if not is_admin:
+        # For regular users, check download limit (1 download per book per order)
+        existing_downloads = Download.query.filter_by(
+            user_id=current_user.id,
+            book_id=book.id,
+            order_id=order_id
+        ).count()
+        
+        if existing_downloads >= 1:
+            flash('Download limit reached. You have already downloaded this book once. Contact support if you need help.', 'warning')
+            return redirect(url_for('account'))
     
     # Record the download
     record_download(

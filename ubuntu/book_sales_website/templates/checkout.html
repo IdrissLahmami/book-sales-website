@@ -30,7 +30,11 @@
                             <span class="small">Qty: {{ item.quantity }}</span>
                         </div>
                         <div class="col-md-2 text-end">
-                            <span>${{ "%.2f"|format(item.total) }}</span>
+                            {% if item.book.price == 0 %}
+                                <span>FREE</span>
+                            {% else %}
+                                <span>£{{ "%.2f"|format(item.total) }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     {% if not loop.last %}<hr>{% endif %}
@@ -38,6 +42,8 @@
                 </div>
             </div>
             
+            {% if total > 0 %}
+            <!-- Only show billing info for paid books -->
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">Billing Information</h5>
@@ -57,6 +63,19 @@
                     <p class="mb-0"><strong>Payment Method:</strong> PayPal</p>
                 </div>
             </div>
+            {% else %}
+            <!-- For free books - show simple confirmation -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Order Information</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ current_user.name }}</p>
+                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    <p class="mb-0 text-success"><strong><i class="bi bi-gift"></i> Free Download</strong> - No payment or billing information required!</p>
+                </div>
+            </div>
+            {% endif %}
         </div>
         
         <div class="col-md-4">
@@ -64,23 +83,36 @@
                 <h4 class="mb-3">Order Summary</h4>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Subtotal:</span>
-                    <span>${{ "%.2f"|format(total) }}</span>
+                    <span>£{{ "%.2f"|format(total) }}</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Tax:</span>
-                    <span>$0.00</span>
+                    <span>£0.00</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between mb-4">
                     <strong>Total:</strong>
-                    <strong>${{ "%.2f"|format(total) }}</strong>
+                    <strong>£{{ "%.2f"|format(total) }}</strong>
                 </div>
                 
-                <button id="checkout-btn" class="btn btn-primary btn-lg w-100">Proceed to Payment</button>
-                <div class="text-center mt-3">
-                    <img src="{{ url_for('static', filename='img/paypal-logo.png') }}" alt="PayPal" height="30">
-                </div>
-                <p class="small text-muted text-center mt-2">You will be redirected to PayPal to complete your payment.</p>
+                {% if total == 0 %}
+                    <!-- Free books only - no PayPal needed -->
+                    <form action="{{ url_for('complete_free_order') }}" method="post">
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="bi bi-download"></i> Get Free Books
+                        </button>
+                    </form>
+                    <p class="small text-success text-center mt-2">
+                        <i class="bi bi-info-circle"></i> These books are completely FREE! No payment required.
+                    </p>
+                {% else %}
+                    <!-- Paid books - PayPal checkout -->
+                    <button id="checkout-btn" class="btn btn-primary btn-lg w-100">Proceed to Payment</button>
+                    <div class="text-center mt-3">
+                        <img src="{{ url_for('static', filename='img/paypal-logo.png') }}" alt="PayPal" height="30">
+                    </div>
+                    <p class="small text-muted text-center mt-2">You will be redirected to PayPal to complete your payment.</p>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -42,7 +42,13 @@
                                     </td>
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
-                                    <td>${{ "%.2f"|format(book.price) }}</td>
+                                    <td>
+                                        {% if book.price == 0 %}
+                                            FREE
+                                        {% else %}
+                                            £{{ "%.2f"|format(book.price) }}
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         {% set cat = book.category or 'unknown' %}
                                         <span class="badge bg-{% if cat == 'programming' %}primary{% elif cat == 'islamic' %}info{% elif cat == 'test_automation' %}warning{% else %}secondary{% endif %}">

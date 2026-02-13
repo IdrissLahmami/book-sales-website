@@ -24,7 +24,11 @@
                         <p class="text-muted">{{ item.book.author }}</p>
                     </div>
                     <div class="col-md-2">
-                        <p class="book-price">${{ "%.2f"|format(item.book.price) }}</p>
+                        {% if item.book.price == 0 %}
+                            <p class="book-price">FREE</p>
+                        {% else %}
+                            <p class="book-price">£{{ "%.2f"|format(item.book.price) }}</p>
+                        {% endif %}
                     </div>
                     <div class="col-md-2">
                         <form action="{{ url_for('update_cart', book_id=item.book.id) }}" method="post">
@@ -53,16 +57,16 @@
                 <h4 class="mb-3">Order Summary</h4>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Subtotal:</span>
-                    <span>${{ "%.2f"|format(total) }}</span>
+                    <span>£{{ "%.2f"|format(total) }}</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Tax:</span>
-                    <span>$0.00</span>
+                    <span>£0.00</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between mb-4">
                     <strong>Total:</strong>
-                    <strong>${{ "%.2f"|format(total) }}</strong>
+                    <strong>£{{ "%.2f"|format(total) }}</strong>
                 </div>
                 
                 {% if current_user.is_authenticated %}

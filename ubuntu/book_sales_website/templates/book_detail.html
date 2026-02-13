@@ -17,7 +17,11 @@
                 <h1 class="mb-2">{{ book.title }}</h1>
                 <h5 class="text-muted mb-3">by {{ book.author }}</h5>
                 
-                <div class="book-price mb-3">${{ "%.2f"|format(book.price) }}</div>
+                {% if book.price == 0 %}
+                    <div class="book-price mb-3">FREE</div>
+                {% else %}
+                    <div class="book-price mb-3">£{{ "%.2f"|format(book.price) }}</div>
+                {% endif %}
                 
                 <form action="{{ url_for('add_to_cart', book_id=book.id) }}" method="post">
                     <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>

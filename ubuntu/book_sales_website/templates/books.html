@@ -18,7 +18,11 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ book.title }}</h5>
                     <p class="card-text text-muted">{{ book.author }}</p>
-                    <p class="book-price">${{ "%.2f"|format(book.price) }}</p>
+                    {% if book.price == 0 %}
+                        <p class="book-price">FREE</p>
+                    {% else %}
+                        <p class="book-price">£{{ "%.2f"|format(book.price) }}</p>
+                    {% endif %}
                     <a href="{{ url_for('book_detail', book_id=book.id) }}" class="btn btn-primary btn-sm">View Details</a>
                 </div>
             </div>

@@ -6,11 +6,19 @@
 <div class="container">
     <div class="text-center py-5">
         <div class="mb-4">
-            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            {% if order.total_amount == 0 %}
+                <i class="bi bi-gift-fill text-success" style="font-size: 4rem;"></i>
+            {% else %}
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+            {% endif %}
         </div>
-        <h1 class="mb-3">Thank You for Your Purchase!</h1>
-        <p class="lead">Your order has been successfully processed.</p>
-        <p>Order Reference: <strong>{{ order.order_reference }}</strong></p>
+        {% if order.total_amount == 0 %}
+            <h1 class="mb-3">Free Books Ready!</h1>
+            <p class="lead">Your free books are ready to download below.</p>
+        {% else %}
+            <h1 class="mb-3">Thank You for Your Purchase!</h1>
+            <p class="lead">Your order has been successfully processed.</p>
+        {% endif %}
     </div>
     
     <div class="row justify-content-center">
@@ -34,9 +42,24 @@
                             <p class="text-muted small mb-0">{{ item.book.author }}</p>
                         </div>
                         <div class="col-md-4 text-end">
-                            <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="download-link">
-                                <i class="bi bi-download"></i> Download PDF
-                            </a>
+                            {% set download_count = item.book.downloads|selectattr('user_id', 'equalto', current_user.id)|selectattr('order_id', 'equalto', order.id)|list|length %}
+                            {% if current_user.email == 'admin@example.com' %}
+                                <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="download-link btn btn-success btn-sm">
+                                    <i class="bi bi-download"></i> Download PDF (Admin)
+                                </a>
+                            {% elif download_count == 0 %}
+                                <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="download-link btn btn-primary btn-sm">
+                                    <i class="bi bi-download"></i> Download PDF
+                                </a>
+                                <br>
+                                <small class="text-muted">One download allowed</small>
+                            {% else %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i> Downloaded
+                                </span>
+                                <br>
+                                <small class="text-muted">Download used ({{ download_count }}x)</small>
+                            {% endif %}
                         </div>
                     </div>
                     {% if not loop.last %}<hr>{% endif %}
@@ -51,4 +74,51 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle free book download success message
+    {% if order.total_amount == 0 %}
+        const downloadLinks = document.querySelectorAll('.download-link');
+        downloadLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Small delay to allow download to start, then show success message
+                setTimeout(() => {
+                    // Replace the header text with thank you message
+                    const header = document.querySelector('h1');
+                    const lead = document.querySelector('.lead');
+                    if (header && lead) {
+                        header.innerHTML = 'Thank You for Downloading Free Books!';
+                        header.className = 'mb-3 text-success';
+                        lead.innerHTML = 'Your free books have been downloaded successfully.';
+                        
+                        // Show a toast notification
+                        if (typeof bootstrap !== 'undefined') {
+                            const toast = document.createElement('div');
+                            toast.className = 'toast-container position-fixed top-0 end-0 p-3';
+                            toast.innerHTML = `
+                                <div class="toast show" role="alert">
+                                    <div class="toast-header">
+                                        <i class="bi bi-download text-success me-2"></i>
+                                        <strong class="me-auto">Download Complete</strong>
+                                    </div>
+                                    <div class="toast-body">
+                                        Thank you for downloading your free book!
+                                    </div>
+                                </div>
+                            `;
+                            document.body.appendChild(toast);
+                            
+                            // Remove toast after 5 seconds
+                            setTimeout(() => {
+                                toast.remove();
+                            }, 5000);
+                        }
+                    }
+                }, 1000);
+            });
+        });
+    {% endif %}
+});
+</script>
 {% endblock %}

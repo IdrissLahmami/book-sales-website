@@ -105,8 +105,14 @@ def home():
 # Book routes
 @app.route('/books')
 def book_list():
-    """List all available books"""
-    books = Book.query.filter_by(is_available=True).all()
+    """List all available books with optional category filtering"""
+    category = request.args.get('category')
+    
+    if category and category in ['programming', 'islamic', 'test_automation']:
+        books = Book.query.filter_by(is_available=True, category=category).all()
+    else:
+        books = Book.query.filter_by(is_available=True).all()
+    
     return render_template('books.html', books=books)
 
 @app.route('/books/<int:book_id>')
@@ -655,6 +661,7 @@ def admin_add_book():
         author = request.form.get('author')
         description = request.form.get('description')
         price = float(request.form.get('price'))
+        category = request.form.get('category') or 'programming'  # Default to programming
         isbn = request.form.get('isbn') or None
         publisher = request.form.get('publisher') or None
         language = request.form.get('language') or None
@@ -707,6 +714,7 @@ def admin_add_book():
             author=author,
             description=description,
             price=price,
+            category=category,
             isbn=isbn,
             publisher=publisher,
             language=language,
@@ -759,6 +767,9 @@ def admin_edit_book(book_id):
                     book.language = metadata.get('language')
                 if metadata.get('pages'):
                     book.pages = metadata.get('pages')
+                
+                # Preserve user-selected category even during metadata re-extraction
+                book.category = request.form.get('category') or book.category or 'programming'
                 pub_date_str = metadata.get('publication_date')
                 if pub_date_str:
                     try:
@@ -795,6 +806,7 @@ def admin_edit_book(book_id):
         book.author = request.form.get('author')
         book.description = request.form.get('description')
         book.price = float(request.form.get('price'))
+        book.category = request.form.get('category') or 'programming'
         book.isbn = request.form.get('isbn') or None
         book.publisher = request.form.get('publisher') or None
         book.language = request.form.get('language') or None

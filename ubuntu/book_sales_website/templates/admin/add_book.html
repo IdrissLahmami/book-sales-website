@@ -45,16 +45,25 @@
                                 <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="isbn" class="form-label">ISBN/DOI</label>
-                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="ISBN or DOI">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Select category...</option>
+                                    <option value="programming">📚 Programming</option>
+                                    <option value="islamic">🕌 Islamic</option>
+                                    <option value="test_automation">🤖 Test Automation</option>
+                                </select>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="publisher" class="form-label">Publisher</label>
-                                <input type="text" class="form-control" id="publisher" name="publisher">
+                                <label for="isbn" class="form-label">ISBN/DOI</label>
+                                <input type="text" class="form-control" id="isbn" name="isbn" placeholder="ISBN or DOI">
                             </div>
                         </div>
                         
                         <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="publisher" class="form-label">Publisher</label>
+                                <input type="text" class="form-control" id="publisher" name="publisher">
+                            </div>
                             <div class="col-md-4 mb-3">
                                 <label for="publication_date" class="form-label">Publication Date</label>
                                 <input type="date" class="form-control" id="publication_date" name="publication_date">
@@ -63,6 +72,9 @@
                                 <label for="language" class="form-label">Language</label>
                                 <input type="text" class="form-control" id="language" name="language">
                             </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="pages" class="form-label">Pages</label>
                                 <input type="number" class="form-control" id="pages" name="pages" min="1">

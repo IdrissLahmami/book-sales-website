@@ -50,6 +50,7 @@ class Book(db.Model):
     author = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
     price = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String(50), nullable=False, default='programming')  # programming, islamic
     cover_image = db.Column(db.String(255), nullable=True)
     pdf_file = db.Column(db.String(255), nullable=False)  # Path to the PDF file
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

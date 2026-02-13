@@ -45,9 +45,21 @@
                                 <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" value="{{ book.price }}" required>
                             </div>
                             <div class="col-md-4 mb-3">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Select category...</option>
+                                    <option value="programming" {% if book.category == 'programming' or (not book.category) %}selected{% endif %}>📚 Programming</option>
+                                    <option value="islamic" {% if book.category == 'islamic' %}selected{% endif %}>🕌 Islamic</option>
+                                    <option value="test_automation" {% if book.category == 'test_automation' %}selected{% endif %}>🤖 Test Automation</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
                                 <input type="text" class="form-control" id="isbn" name="isbn" value="{{ book.isbn }}">
                             </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="publisher" class="form-label">Publisher</label>
                                 <input type="text" class="form-control" id="publisher" name="publisher" value="{{ book.publisher }}">

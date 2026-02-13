@@ -11,6 +11,9 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
+            <button class="btn btn-outline-light me-2" type="button" id="sidebarToggle">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <a class="navbar-brand" href="{{ url_for('home') }}">Book Store</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -69,6 +72,24 @@
             </div>
         </div>
     </nav>
+
+    <!-- Sliding Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h4>Categories</h4>
+            <button id="sidebarClose" class="btn btn-link text-white">&times;</button>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{{ url_for('book_list') }}?category=programming" class="sidebar-link">📚 Programming</a></li>
+            <li><a href="{{ url_for('book_list') }}?category=islamic" class="sidebar-link">🕌 Islamic</a></li>
+            <li><a href="{{ url_for('book_list') }}?category=test_automation" class="sidebar-link">🤖 Test Automation</a></li>
+            <li><hr class="sidebar-divider"></li>
+            <li><a href="{{ url_for('book_list') }}" class="sidebar-link">📖 All Books</a></li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
     <div class="container mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}

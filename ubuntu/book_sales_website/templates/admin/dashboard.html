@@ -24,6 +24,7 @@
                                     <th>Title</th>
                                     <th>Author</th>
                                     <th>Price</th>
+                                    <th>Category</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -42,6 +43,16 @@
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
                                     <td>${{ "%.2f"|format(book.price) }}</td>
+                                    <td>
+                                        {% set cat = book.category or 'unknown' %}
+                                        <span class="badge bg-{% if cat == 'programming' %}primary{% elif cat == 'islamic' %}info{% elif cat == 'test_automation' %}warning{% else %}secondary{% endif %}">
+                                            {% if cat == 'programming' %}📚 Programming
+                                            {% elif cat == 'islamic' %}🕌 Islamic
+                                            {% elif cat == 'test_automation' %}🤖 Test Automation
+                                            {% else %}{{ cat | title }}
+                                            {% endif %}
+                                        </span>
+                                    </td>
                                     <td>
                                         {% if book.is_available %}
                                         <span class="badge bg-success">Available</span>

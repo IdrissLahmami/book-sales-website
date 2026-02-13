@@ -18,12 +18,22 @@ body {
     font-size: 1.5rem;
 }
 
+/* Custom 5 books per row layout */
+.col-5-books {
+    flex: 0 0 20%;
+    max-width: 20%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 /* Book cards */
 .book-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     border-radius: 8px;
     overflow: hidden;
+    max-width: 250px;
+    margin: 0 auto;
 }
 
 .book-card:hover {
@@ -32,8 +42,9 @@ body {
 }
 
 .book-card img {
-    height: 250px;
-    object-fit: cover;
+    height: 200px;
+    object-fit: contain;
+    width: 100%;
 }
 
 .book-card .card-body {
@@ -44,16 +55,19 @@ body {
 .book-card .card-title {
     font-weight: bold;
     margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.2;
 }
 
 .book-card .card-text {
     flex-grow: 1;
+    font-size: 0.8rem;
 }
 
 .book-price {
     font-weight: bold;
     color: #0d6efd;
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
 }
 
@@ -166,6 +180,6 @@ footer a:hover {
     }
     
     .book-card img {
-        height: 200px;
+        height: 160px;
     }
 }

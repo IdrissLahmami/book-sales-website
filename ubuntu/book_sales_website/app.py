@@ -112,7 +112,7 @@ def book_list():
     """List all available books with optional category filtering"""
     category = request.args.get('category')
     
-    if category and category in ['programming', 'islamic', 'test_automation']:
+    if category and category in ['general', 'programming', 'islamic', 'test_automation']:
         books = Book.query.filter_by(is_available=True, category=category).all()
     else:
         books = Book.query.filter_by(is_available=True).all()

@@ -80,6 +80,7 @@
             <button id="sidebarClose" class="btn btn-link text-white">&times;</button>
         </div>
         <ul class="sidebar-nav">
+            <li><a href="{{ url_for('book_list') }}?category=general" class="sidebar-link">📖 General</a></li>
             <li><a href="{{ url_for('book_list') }}?category=programming" class="sidebar-link">📚 Programming</a></li>
             <li><a href="{{ url_for('book_list') }}?category=islamic" class="sidebar-link">🕌 Islamic</a></li>
             <li><a href="{{ url_for('book_list') }}?category=test_automation" class="sidebar-link">🤖 Test Automation</a></li>

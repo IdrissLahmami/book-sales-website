@@ -10,7 +10,7 @@ and includes all the routes for the website functionality.
 import os
 import logging
 logging.basicConfig(level=logging.DEBUG)
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file, session
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file, session, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -99,7 +99,11 @@ with app.app_context():
 @app.route('/')
 def home():
     """Home page route - displays featured books"""
+    with open('debug_home.txt', 'a') as f:
+        f.write(f"HOME ROUTE ACCESSED at {datetime.now()}\n")
     books = Book.query.filter_by(is_available=True).limit(6).all()
+    with open('debug_home.txt', 'a') as f:
+        f.write(f"Books found: {len(books)}\n")
     return render_template('home.html', books=books)
 
 # Book routes
@@ -133,10 +137,59 @@ def book_search():
             (Book.author.ilike(search)) | 
             (Book.description.ilike(search))
         ).filter_by(is_available=True).all()
+
+        # Search inside PDFs for the query, collect page matches
+        from pdf_helpers import PYMUPDF_AVAILABLE
+        import fitz
+        matches = []
+        for book in books:
+            pdf_path = book.pdf_file
+            if not pdf_path:
+                continue
+            full_pdf_path = os.path.join(app.config['PDF_FOLDER'], pdf_path)
+            if not os.path.exists(full_pdf_path):
+                continue
+            if not PYMUPDF_AVAILABLE:
+                continue
+            try:
+                doc = fitz.open(full_pdf_path)
+                for page_num in range(len(doc)):
+                    page = doc[page_num]
+                    text = page.get_text()
+                    if query.lower() in text.lower():
+                        # Try to extract visible page number from top of page text
+                        page_label = None
+                        top_text = page.get_text("text")
+                        # Look for a number at the start or end of the first line
+                        lines = [line.strip() for line in top_text.split('\n') if line.strip()]
+                        if lines:
+                            first_line = lines[0]
+                            # Remove any non-digit characters except for numbers inside shapes
+                            import re
+                            match = re.search(r'(\d{1,4})', first_line)
+                            if match:
+                                page_label = match.group(1)
+                        if not page_label and lines:
+                            last_line = lines[-1]
+                            match = re.search(r'(\d{1,4})', last_line)
+                            if match:
+                                page_label = match.group(1)
+                        if not page_label:
+                            page_label = str(page_num + 1)
+                        matches.append({
+                            'book': book,
+                            'page': page_label,
+                            'snippet': text[text.lower().find(query.lower()):text.lower().find(query.lower())+80] if query.lower() in text.lower() else '',
+                        })
+                doc.close()
+            except Exception as e:
+                continue
+        # Sort matches by book id, then page number
+        matches.sort(key=lambda m: (m['book'].id, m['page']))
     else:
-        books = []
-    
-    return render_template('search_results.html', books=books, query=query)
+        matches = []
+
+    return render_template('search_results.html', matches=matches, query=query)
 
 # Authentication routes
 @app.route('/register', methods=['GET', 'POST'])

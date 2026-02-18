@@ -89,3 +89,13 @@ Cart items: {'1': 1, '3': 1}
   Book ID 1: Sample Book - RESTful Web APIs x 1 = $29.99
   Book ID 3: Advanced C# Programming x 1 = $39.99
 Total books: 2, Total: $69.98
+
+=== CART VIEW at 2026-02-18 11:04:22.985404 ===
+Cart items: {'7': 1}
+  Book ID 7: Kalamullah.Com | Sahih al-Bukhari Vol. 1 - Ahadith 1-875 x 1 = $0.0
+Total books: 1, Total: $0.0
+
+=== CART VIEW at 2026-02-18 11:10:09.511039 ===
+Cart items: {'6': 1}
+  Book ID 6: CORS in Action x 1 = $20.48
+Total books: 1, Total: $20.48

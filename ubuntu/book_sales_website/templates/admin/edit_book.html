@@ -48,6 +48,7 @@
                                 <label for="category" class="form-label">Category *</label>
                                 <select class="form-select" id="category" name="category" required>
                                     <option value="">Select category...</option>
+                                    <option value="general" {% if book.category == 'general' %}selected{% endif %}>📖 General</option>
                                     <option value="programming" {% if book.category == 'programming' or (not book.category) %}selected{% endif %}>📚 Programming</option>
                                     <option value="islamic" {% if book.category == 'islamic' %}selected{% endif %}>🕌 Islamic</option>
                                     <option value="test_automation" {% if book.category == 'test_automation' %}selected{% endif %}>🤖 Test Automation</option>

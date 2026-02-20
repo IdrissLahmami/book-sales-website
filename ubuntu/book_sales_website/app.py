@@ -35,6 +35,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_store.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- Flask Logging Setup ---
 if not app.debug:
@@ -59,7 +61,7 @@ def js_log():
         f.write(f"[{log_type.upper()}] {log_message}\n")
     return {'status': 'ok'}
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-development')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///booksales.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_store.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['PDF_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/pdfs')
@@ -129,21 +131,16 @@ def book_detail(book_id):
 def book_search():
     """Search for books by title, author, or description"""
     query = request.args.get('query', '')
+    books = []
     if query:
-        # Search in title, author, and description
         search = f"%{query}%"
-        if query:
-            # Search in title, author, and description
-            search = f"%{query}%"
-            books = Book.query.filter(
-                (Book.title.ilike(search)) | 
-                (Book.author.ilike(search)) | 
-                (Book.description.ilike(search))
-            ).filter_by(is_available=True).all()
-        else:
-            books = []
-
-        return render_template('search_results.html', books=books, query=query)
+        books = Book.query.filter(
+            (Book.title.ilike(search)) |
+            (Book.author.ilike(search)) |
+            (Book.description.ilike(search))
+        ).filter_by(is_available=True).all()
+    return render_template('search_results.html', books=books, query=query)
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     """User registration route"""
     if request.method == 'POST':

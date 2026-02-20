@@ -68,7 +68,8 @@ def create_sample_data():
                     'pages': 320,
                     'publication_date': datetime(2023, 5, 15),
                     'is_available': True,
-                    'pdf_file': 'python_beginners.pdf'
+                    'pdf_file': 'python_beginners.pdf',
+                    'cover_image': 'cover_python_beginners.jpg'
                 },
                 {
                     'title': 'Advanced Web Development',
@@ -81,7 +82,8 @@ def create_sample_data():
                     'pages': 450,
                     'publication_date': datetime(2023, 8, 10),
                     'is_available': True,
-                    'pdf_file': 'advanced_web_dev.pdf'
+                    'pdf_file': 'advanced_web_dev.pdf',
+                    'cover_image': 'cover_advanced_web_dev.jpg'
                 },
                 {
                     'title': 'Data Science Essentials',
@@ -94,7 +96,8 @@ def create_sample_data():
                     'pages': 380,
                     'publication_date': datetime(2023, 3, 22),
                     'is_available': True,
-                    'pdf_file': 'data_science.pdf'
+                    'pdf_file': 'data_science.pdf',
+                    'cover_image': 'cover_data_science.jpg'
                 },
                 {
                     'title': 'Mobile App Development with Flutter',
@@ -107,7 +110,8 @@ def create_sample_data():
                     'pages': 290,
                     'publication_date': datetime(2023, 9, 5),
                     'is_available': True,
-                    'pdf_file': 'flutter_dev.pdf'
+                    'pdf_file': 'flutter_dev.pdf',
+                    'cover_image': 'cover_flutter_dev.jpg'
                 },
                 {
                     'title': 'Cybersecurity Fundamentals',
@@ -120,7 +124,8 @@ def create_sample_data():
                     'pages': 410,
                     'publication_date': datetime(2023, 6, 18),
                     'is_available': True,
-                    'pdf_file': 'cybersecurity.pdf'
+                    'pdf_file': 'cybersecurity.pdf',
+                    'cover_image': 'cover_cybersecurity.jpg'
                 }
             ]
             

@@ -120,3 +120,7 @@ Total books: 1, Total: $20.48
 Cart items: {'6': 1}
   Book ID 6: CORS in Action x 1 = $20.48
 Total books: 1, Total: $20.48
+
+=== CART VIEW at 2026-02-23 14:32:37.527652 ===
+Cart items: {'3': 1}
+Total books: 0, Total: $0

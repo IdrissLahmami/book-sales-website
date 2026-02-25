@@ -31,7 +31,7 @@
         <style>
             #highlight-layer {
                 position: absolute;
-                left: 1px;
+                left: 1px;   /* keep border offset */
                 top: 1px;
                 overflow: visible;
                 pointer-events: none;
@@ -208,6 +208,23 @@
         z-index: 9999;
         display: none;
     `;
+    // add a small label inside the box for error message
+    let selLabel = document.createElement('div');
+    selLabel.id = 'manual-selection-label';
+    selLabel.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(255,0,0,0.8);
+        color: white;
+        font-size: 12px;
+        padding: 2px 4px;
+        pointer-events: none;
+        display: none;
+        white-space: nowrap;
+    `;
+    selLabel.textContent = 'cannot copy';
+    selectionBox.appendChild(selLabel);
     document.getElementById('pdf-container').appendChild(selectionBox);
     
     // Get mouse position relative to pdf-container
@@ -285,7 +302,17 @@
         
         if (!currentTextContent || !currentViewport) {
             sendLogToServer('error', 'No text content available');
-            selectionBox.style.display = 'none';
+            // show red box + label to indicate nothing to copy
+            selectionBox.style.border = '3px solid red';
+            selectionBox.style.backgroundColor = 'rgba(255,0,0,0.3)';
+            selLabel.style.display = 'block';
+            setTimeout(() => {
+                selectionBox.style.display = 'none';
+                selLabel.style.display = 'none';
+                // restore default blue style
+                selectionBox.style.border = '3px solid #0066ff';
+                selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.25)';
+            }, 1000);
             return;
         }
         
@@ -349,26 +376,40 @@
         let finalText = selectedTexts.join(' ').trim();
         
         if (finalText) {
+            // always populate the search box with selection
+            if (searchInput) {
+                searchInput.value = finalText;
+            }
+
             navigator.clipboard.writeText(finalText).then(() => {
                 sendLogToServer('info', 'Copied: ' + finalText.substring(0, 100));
-                // Show brief feedback
+                // show brief green feedback
                 selectionBox.style.backgroundColor = 'rgba(0, 200, 0, 0.3)';
                 setTimeout(() => {
                     selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.2)';
                     selectionBox.style.display = 'none';
                 }, 500);
-                
-                // Clear search field and place copied text there
-                if (searchInput) {
-                    searchInput.value = '';
-                    searchInput.value = finalText;
-                }
             }).catch(err => {
                 sendLogToServer('error', 'Clipboard error: ' + err.message);
-                selectionBox.style.display = 'none';
+                // still flash green so user sees selection succeeded
+                selectionBox.style.backgroundColor = 'rgba(0, 200, 0, 0.3)';
+                setTimeout(() => {
+                    selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.2)';
+                    selectionBox.style.display = 'none';
+                }, 500);
             });
         } else {
-            selectionBox.style.display = 'none';
+            // no text was found under the box – show red highlight + message
+            selectionBox.style.border = '3px solid red';
+            selectionBox.style.backgroundColor = 'rgba(255,0,0,0.3)';
+            selLabel.style.display = 'block';
+            setTimeout(() => {
+                selectionBox.style.display = 'none';
+                selLabel.style.display = 'none';
+                // restore defaults
+                selectionBox.style.border = '3px solid #0066ff';
+                selectionBox.style.backgroundColor = 'rgba(0, 100, 255, 0.25)';
+            }, 1000);
         }
     });
 
@@ -522,7 +563,8 @@
             // Size and position text layer and highlight layer to match canvas
             textLayerDiv.style.width = viewport.width + 'px';
             textLayerDiv.style.height = viewport.height + 'px';
-            highlightLayer.style.width = viewport.width + 'px';
+            // highlight layer is offset 1px to account for canvas border, so subtract 1px
+            highlightLayer.style.width = (viewport.width - 1) + 'px';
             highlightLayer.style.height = viewport.height + 'px';
             
             let renderContext = {

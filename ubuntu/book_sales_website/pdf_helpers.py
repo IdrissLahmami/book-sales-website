@@ -558,7 +558,7 @@ def extract_pdf_metadata(pdf_path):
         # If STILL not found and OCR available, try OCR on copyright page (usually page 2-4)
         if (not metadata['isbn'] or not metadata['doi']) and OCR_AVAILABLE:
             print("📖 ISBN/DOI not found in text, trying OCR on copyright page...", flush=True)
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write("\n📖 Attempting OCR ISBN/DOI extraction from copyright page...\n")
             
             isbn_pattern = r'ISBN[:\s-]*([0-9]{13}|[0-9]{10}|[0-9\-]{10,17})'
@@ -578,7 +578,7 @@ def extract_pdf_metadata(pdf_path):
                             if len(isbn) in [10, 13]:
                                 metadata['isbn'] = isbn
                                 print(f"✓ Found ISBN via OCR on page {page_num + 1}: {metadata['isbn']}", flush=True)
-                                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                     f.write(f"✓ Found ISBN via OCR on page {page_num + 1}: {metadata['isbn']}\n")
                     
                     if not metadata['doi']:
@@ -586,7 +586,7 @@ def extract_pdf_metadata(pdf_path):
                         if doi_match:
                             metadata['doi'] = doi_match.group(1)
                             print(f"✓ Found DOI via OCR on page {page_num + 1}: {metadata['doi']}", flush=True)
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"✓ Found DOI via OCR on page {page_num + 1}: {metadata['doi']}\n")
                     
                     if metadata['isbn'] and metadata['doi']:
@@ -601,24 +601,24 @@ def extract_pdf_metadata(pdf_path):
     
     # If metadata is incomplete, try OCR from cover
     # Write debug to file since Flask swallows print statements
-    with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+    with open('debug_ocr.log', 'a', encoding='utf-8') as f:
         f.write(f"\n=== OCR Debug ===\n")
         f.write(f"OCR_AVAILABLE={OCR_AVAILABLE}, title='{metadata['title']}', author='{metadata['author']}', isbn='{metadata['isbn']}', doi='{metadata['doi']}'\n")
     
     if OCR_AVAILABLE and (not metadata['title'] or not metadata['author']):
         try:
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write("📖 PDF metadata incomplete, attempting OCR extraction from cover...\n")
             
             cover_text = extract_text_from_cover(pdf_path)
             
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write(f"OCR extracted {len(cover_text)} characters\n")
                 f.write(f"RAW OCR TEXT:\n{cover_text}\n")
             
             if cover_text:
                 cover_metadata = parse_cover_text(cover_text)
-                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                     f.write(f"Parsed metadata - Title: '{cover_metadata['title']}', Author: '{cover_metadata['author']}', Publisher: '{cover_metadata.get('publisher', '')}', ISBN: '{cover_metadata['isbn']}'\n")
                 
                 # Fill in missing fields from OCR (but NOT description - that comes from introduction)
@@ -645,7 +645,7 @@ def extract_pdf_metadata(pdf_path):
     if (not metadata['title'] or len(metadata['title']) < 5) and PYMUPDF_AVAILABLE:
         try:
             print("📖 Searching for title on page 2 (title page)...", flush=True)
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write("\n📖 Searching for title on page 2 (title page)...\n")
             
             doc = fitz.open(pdf_path)
@@ -653,7 +653,7 @@ def extract_pdf_metadata(pdf_path):
                 page_text = doc[1].get_text()  # Page 2 is index 1
                 lines = [line.strip() for line in page_text.split('\n') if line.strip()]
                 
-                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                     f.write(f"Page 2 has {len(lines)} lines of text\n")
                 
                 # Look for title in first 10 lines of page 2
@@ -669,7 +669,7 @@ def extract_pdf_metadata(pdf_path):
                     
                     # Skip publisher names
                     if any(kw in line.lower() for kw in publisher_keywords):
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Skipping publisher line: '{line}'\n")
                         continue
                     
@@ -679,14 +679,14 @@ def extract_pdf_metadata(pdf_path):
                         if not any(x in line for x in ['http://', 'https://', '@', 'www.']):
                             metadata['title'] = line
                             print(f"✓ Title from page 2: {metadata['title']}", flush=True)
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"✓ Extracted title from page 2: {metadata['title']}\n")
                             break
             
             doc.close()
         except Exception as e:
             print(f"Error extracting title from page 2: {e}", flush=True)
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write(f"Error extracting title from page 2: {e}\n")
     
     # If author is still empty or looks invalid (single word, numbers, etc.), try to extract from first page content
@@ -706,7 +706,7 @@ def extract_pdf_metadata(pdf_path):
     if (not metadata['author'] or not is_valid_author(metadata['author'])) and PYMUPDF_AVAILABLE:
         try:
             print("📖 Searching for author on first page content...", flush=True)
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write("\n📖 Searching for author on first page content...\n")
             
             doc = fitz.open(pdf_path)
@@ -743,19 +743,19 @@ def extract_pdf_metadata(pdf_path):
                     
                     # Check for "X authors:" pattern
                     if 'author' in line_lower and ':' in line:
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Found authors indicator: '{line}'\n")
                         # Look for names in next few lines (skip non-name lines)
                         for j in range(i + 1, min(i + 15, len(lines))):
                             if is_person_name(lines[j]):
                                 authors.append(lines[j])
-                                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                     f.write(f"Found author: '{lines[j]}'\n")
                                 # Keep looking for more consecutive names
                                 k = j + 1
                                 while k < min(j + 5, len(lines)) and is_person_name(lines[k]):
                                     authors.append(lines[k])
-                                    with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                                    with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                         f.write(f"Found author: '{lines[k]}'\n")
                                     k += 1
                                 break  # Found author(s), stop searching
@@ -764,13 +764,13 @@ def extract_pdf_metadata(pdf_path):
                     # Check if line itself looks like a person name (fallback)
                     elif is_person_name(line):
                         authors.append(line)
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Found potential author: '{line}'\n")
                         # Check next few lines for more authors
                         j = i + 1
                         while j < min(i + 5, len(lines)) and is_person_name(lines[j]):
                             authors.append(lines[j])
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"Found additional author: '{lines[j]}'\n")
                             j += 1
                         break  # Found author(s), stop searching
@@ -779,7 +779,7 @@ def extract_pdf_metadata(pdf_path):
                 if authors:
                     metadata['author'] = ', '.join(authors)
                     print(f"✓ Authors from first page: {metadata['author']}", flush=True)
-                    with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                    with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                         f.write(f"✓ Final authors: {metadata['author']}\n")
             
             doc.close()
@@ -789,7 +789,7 @@ def extract_pdf_metadata(pdf_path):
     # If description is still empty, extract from introduction/preface page
     if not metadata['description']:
         print("📖 Description still empty, searching for introduction page...", flush=True)
-        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
             f.write("\n📖 Searching for introduction/preface page for description...\n")
         
         try:
@@ -815,7 +815,7 @@ def extract_pdf_metadata(pdf_path):
                         is_toc = (dot_count / total_chars) > 0.1 if total_chars > 0 else False
                         
                         if is_toc:
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"⏭ Page {page_num + 1} has '{keyword}' but looks like TOC (skipping)\n")
                             continue  # Skip TOC pages
                         
@@ -823,7 +823,7 @@ def extract_pdf_metadata(pdf_path):
                         intro_page_num = page_num
                         found_keyword = keyword
                         print(f"📖 Found '{keyword}' on page {page_num + 1}", flush=True)
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"✓ Found '{keyword}' on page {page_num + 1} (actual content)\n")
                         break
                 
@@ -835,7 +835,7 @@ def extract_pdf_metadata(pdf_path):
                 intro_page = doc[3]
                 intro_page_num = 3
                 print(f"📖 Using page 4 for description (no introduction found)", flush=True)
-                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                     f.write("ℹ Using page 4 for description (no introduction keyword found)\n")
             elif not intro_page and len(doc) > 0:
                 intro_page = doc[0]
@@ -851,7 +851,7 @@ def extract_pdf_metadata(pdf_path):
                         page_text = page.get_text()
                         page_lines = [line.strip() for line in page_text.split('\n') if line.strip()]
                         all_lines.extend(page_lines)
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Page {page_idx + 1} has {len(page_lines)} lines of text\n")
                 
                 lines = all_lines
@@ -863,14 +863,14 @@ def extract_pdf_metadata(pdf_path):
                 found_acknowledgments = False
                 skip_acknowledgments = 0
                 
-                with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                     f.write(f"Processing lines from introduction section (multiple pages):\n")
                 
                 for i, line in enumerate(lines):
                     # Look for the heading first
                     if not found_heading and found_keyword and found_keyword in line.lower():
                         found_heading = True
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Found heading: '{line}'\n")
                         
                         # Only extract title from heading if we don't already have one
@@ -886,17 +886,17 @@ def extract_pdf_metadata(pdf_path):
                             # This looks like an actual paper/article title
                             metadata['title'] = line.strip()
                             print(f"✓ Extracted title from heading: {metadata['title']}", flush=True)
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"✓ Extracted title from heading: {metadata['title']}\n")
                         elif metadata['title']:
                             # Already have a title, don't overwrite
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"Skipping heading as title (already have: '{metadata['title']}')\n")
                         continue
                     
                     # Log lines after heading for debugging
                     if found_heading and len(description_lines) < 5:
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Line {i}: len={len(line)}, text='{line[:80]}'\n")
                     
                     # Skip lines after heading to get past TOC/navigation content
@@ -934,14 +934,14 @@ def extract_pdf_metadata(pdf_path):
                         
                         if is_toc_like:
                             skip_after_heading += 1
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"Skipping TOC/nav line {skip_after_heading}: '{line[:60]}'\n")
                             continue
                         
                         # Found a proper paragraph line (long, mostly letters, no TOC markers)
                         letter_count = sum(c.isalpha() for c in line)
                         if len(line) >= 80 and letter_count > len(line) * 0.7:
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"✓ Found description paragraph: '{line[:80]}'\n")
                             skip_after_heading = 999  # Done skipping
                         else:
@@ -952,7 +952,7 @@ def extract_pdf_metadata(pdf_path):
                     if skip_after_heading >= 700 and not found_acknowledgments and 'acknowledgment' in line.lower():
                         found_acknowledgments = True
                         skip_acknowledgments = 0
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Found acknowledgments section (after TOC) at line {i}: '{line}'\n")
                         continue
                     
@@ -960,7 +960,7 @@ def extract_pdf_metadata(pdf_path):
                     if found_acknowledgments and skip_acknowledgments < 150:
                         skip_acknowledgments += 1
                         if skip_acknowledgments <= 5:  # Log first few lines
-                            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                                 f.write(f"Skipping acknowledgments content line {skip_acknowledgments}: '{line[:60]}'\n")
                         continue
                     
@@ -975,14 +975,14 @@ def extract_pdf_metadata(pdf_path):
                     # Skip lines with mostly dots or special chars (TOC entries)
                     dot_count = line.count('.') + line.count('_') + line.count('-')
                     if dot_count > len(line) * 0.2:  # More than 20% dots/dashes (stricter)
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Skipping TOC line: '{line[:50]}'\n")
                         continue
                     
                     # Skip lines that are mostly numbers (chapter/page references)
                     digit_count = sum(c.isdigit() for c in line)
                     if digit_count > len(line) * 0.3:
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"Skipping number-heavy line: '{line[:50]}'\n")
                         continue
                     
@@ -1022,24 +1022,24 @@ def extract_pdf_metadata(pdf_path):
                         
                         metadata['description'] = current_desc.strip()
                         print(f"✓ Extracted description from page {intro_page_num + 1}: {len(current_desc)} chars", flush=True)
-                        with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                        with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                             f.write(f"✓ Extracted description: {len(current_desc)} chars\n")
                             f.write(f"Description text: {current_desc}\n")
                         break
                 
                 if not metadata['description'] and description_lines:
                     metadata['description'] = ' '.join(description_lines)[:600]
-                    with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                    with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                         f.write(f"✓ Extracted partial description: {len(metadata['description'])} chars\n")
                 
                 if not metadata['description']:
-                    with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+                    with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                         f.write("⚠ No suitable description paragraph found\n")
             
             doc.close()
         except Exception as e:
             print(f"Error extracting description: {e}", flush=True)
-            with open('ocr_debug.log', 'a', encoding='utf-8') as f:
+            with open('debug_ocr.log', 'a', encoding='utf-8') as f:
                 f.write(f"❌ Error extracting description: {e}\n")
     
     # Detect language from available text

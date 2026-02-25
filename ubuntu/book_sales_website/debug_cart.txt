@@ -31,3 +31,18 @@ Total books: 0, Total: $0
 Cart items: {'2': 1}
   Book ID 2: CORS in Action x 1 = $5.99
 Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-25 22:20:03.552582 ===
+Cart items: {'2': 2}
+  Book ID 2: CORS in Action x 2 = $11.98
+Total books: 1, Total: $11.98
+
+=== CART VIEW at 2026-02-25 22:20:30.609550 ===
+Cart items: {'2': 2}
+  Book ID 2: CORS in Action x 2 = $11.98
+Total books: 1, Total: $11.98
+
+=== CART VIEW at 2026-02-25 22:20:33.485677 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99

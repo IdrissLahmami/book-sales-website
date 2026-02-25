@@ -703,6 +703,19 @@ def admin_users():
     return render_template('admin/users.html', users=users)
 
 
+@app.route('/admin/users/<int:user_id>/set-temp-password', methods=['POST'], endpoint='admin_set_temp_password')
+@login_required
+@admin_required
+def admin_set_temp_password(user_id):
+    """Set a temporary password for a user (for testing). The password is hashed before saving."""
+    new_password = request.form.get('temp_password', 'Test1234')
+    user = User.query.get_or_404(user_id)
+    user.password = generate_password_hash(new_password)
+    db.session.commit()
+    flash(f'Temporary password set for {user.email}: {new_password}', 'success')
+    return redirect(url_for('admin_users'))
+
+
 # Development-only debug endpoint to list users as JSON (not for production)
 @app.route('/__debug_users')
 def __debug_users():

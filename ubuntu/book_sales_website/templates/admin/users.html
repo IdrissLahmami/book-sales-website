@@ -15,6 +15,7 @@
                     <th>Email</th>
                     <th>Joined</th>
                     <th>Orders / Invoices</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,6 +40,16 @@
                         {% else %}
                         <span class="text-muted">No orders</span>
                         {% endif %}
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('admin_set_temp_password', user_id=user.id) }}" class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="temp_password" value="Test1234" class="form-control" style="max-width:140px;" aria-label="Temp password">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm" type="submit">Set Temp</button>
+                                </div>
+                            </div>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Registered Users - Admin{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Registered Users</h1>
+
+    {% if users %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Joined</th>
+                    <th>Orders / Invoices</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                    <td>
+                        {% if user.orders %}
+                        <ul class="list-unstyled mb-0">
+                            {% for order in user.orders %}
+                            <li>
+                                <a href="{{ url_for('admin_order_detail', order_id=order.id) }}">
+                                    {{ order.order_reference }}
+                                </a>
+                                &ndash; ${{ "%.2f"|format(order.total_amount) }}
+                                ({{ order.order_date.strftime('%Y-%m-%d') }})
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <span class="text-muted">No orders</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center">No registered users.</p>
+    {% endif %}
+
+    <div class="mt-3">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,1301 @@
+[2026-02-25 21:58:00,336] INFO in base: [cached since 175.6s ago] (1,)
+[2026-02-25 21:58:00,339] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> checked out from pool
+[2026-02-25 21:58:00,341] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:00,341] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,343] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:00,344] DEBUG in base: Created new connection <sqlite3.Connection object at 0x000001F795286C50>
+[2026-02-25 21:58:00,345] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:00,346] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:00,346] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:00,346] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:00,346] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:00,347] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286C50> checked out from pool
+[2026-02-25 21:58:00,347] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:00,348] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:00,348] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:00,349] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:00,349] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:00,349] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:00,350] INFO in base: [cached since 175.6s ago] (1,)
+[2026-02-25 21:58:00,350] INFO in base: [cached since 175.6s ago] (1,)
+[2026-02-25 21:58:00,351] INFO in base: [cached since 175.6s ago] (1,)
+[2026-02-25 21:58:00,352] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,352] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:00,352] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:00,353] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:00,353] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:00,353] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:00,354] INFO in base: [cached since 175.6s ago] (1,)
+[2026-02-25 21:58:00,354] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:00,355] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:00,355] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:00,355] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:00,356] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:00,357] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,358] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,358] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:00,358] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,359] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> being returned to pool
+[2026-02-25 21:58:00,359] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:00,360] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:00,360] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> rollback-on-return
+[2026-02-25 21:58:00,360] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:00,361] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:00,362] INFO in base: ROLLBACK
+[2026-02-25 21:58:00,363] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286C50> being returned to pool
+[2026-02-25 21:58:00,364] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286C50> rollback-on-return
+[2026-02-25 21:58:00,364] DEBUG in base: Closing connection <sqlite3.Connection object at 0x000001F795286C50>
+[2026-02-25 21:58:02,288] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:02,288] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,288] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,289] INFO in base: [cached since 177.5s ago] (1,)
+[2026-02-25 21:58:02,290] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,290] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,292] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books
+[2026-02-25 21:58:02,292] INFO in base: [cached since 170.2s ago] ()
+[2026-02-25 21:58:02,293] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 21:58:02,293] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 21:58:02,294] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 21:58:02,294] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 21:58:02,295] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 21:58:02,296] INFO in base: SELECT orders.id AS orders_id, orders.user_id AS orders_user_id, orders.order_date AS orders_order_date, orders.total_amount AS orders_total_amount, orders.status AS orders_status, orders.order_reference AS orders_order_reference 
+FROM orders ORDER BY orders.order_date DESC
+ LIMIT ? OFFSET ?
+[2026-02-25 21:58:02,296] INFO in base: [cached since 170.2s ago] (10, 0)
+[2026-02-25 21:58:02,297] DEBUG in cursor: Col ('orders_id', 'orders_user_id', 'orders_order_date', 'orders_total_amount', 'orders_status', 'orders_order_reference')
+[2026-02-25 21:58:02,298] INFO in base: SELECT count(*) AS count_1 
+FROM (SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books) AS anon_1
+[2026-02-25 21:58:02,298] INFO in base: [cached since 170.2s ago] ()
+[2026-02-25 21:58:02,298] DEBUG in cursor: Col ('count_1',)
+[2026-02-25 21:58:02,299] DEBUG in cursor: Row (4,)
+[2026-02-25 21:58:02,299] INFO in base: SELECT count(*) AS count_1 
+FROM (SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users) AS anon_1
+[2026-02-25 21:58:02,300] INFO in base: [cached since 170.2s ago] ()
+[2026-02-25 21:58:02,300] DEBUG in cursor: Col ('count_1',)
+[2026-02-25 21:58:02,300] DEBUG in cursor: Row (2,)
+[2026-02-25 21:58:02,301] INFO in base: SELECT count(*) AS count_1 
+FROM (SELECT orders.id AS orders_id, orders.user_id AS orders_user_id, orders.order_date AS orders_order_date, orders.total_amount AS orders_total_amount, orders.status AS orders_status, orders.order_reference AS orders_order_reference 
+FROM orders) AS anon_1
+[2026-02-25 21:58:02,301] INFO in base: [cached since 170.2s ago] ()
+[2026-02-25 21:58:02,301] DEBUG in cursor: Col ('count_1',)
+[2026-02-25 21:58:02,302] DEBUG in cursor: Row (0,)
+[2026-02-25 21:58:02,303] INFO in base: SELECT payments.id AS payments_id, payments.order_id AS payments_order_id, payments.payment_date AS payments_payment_date, payments.amount AS payments_amount, payments.payment_method AS payments_payment_method, payments.transaction_id AS payments_transaction_id, payments.status AS payments_status 
+FROM payments 
+WHERE payments.status = ?
+[2026-02-25 21:58:02,303] INFO in base: [cached since 170.2s ago] ('completed',)
+[2026-02-25 21:58:02,303] DEBUG in cursor: Col ('payments_id', 'payments_order_id', 'payments_payment_date', 'payments_amount', 'payments_payment_method', 'payments_transaction_id', 'payments_status')
+[2026-02-25 21:58:02,305] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,305] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:02,305] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:02,337] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:02,338] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,339] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,340] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,341] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,344] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> checked out from pool
+[2026-02-25 21:58:02,344] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:02,345] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,347] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:02,347] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,347] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,348] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,349] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:02,349] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,350] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,350] DEBUG in base: Created new connection <sqlite3.Connection object at 0x000001F7952873D0>
+[2026-02-25 21:58:02,350] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,351] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,351] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,352] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,352] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,352] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952873D0> checked out from pool
+[2026-02-25 21:58:02,353] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,353] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,354] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,354] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:02,354] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:02,355] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,355] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,355] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,356] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:02,356] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,356] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:02,357] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,357] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,358] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,358] INFO in base: [cached since 177.6s ago] (1,)
+[2026-02-25 21:58:02,358] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,359] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,360] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,360] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> being returned to pool
+[2026-02-25 21:58:02,361] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,361] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:02,362] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:02,362] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> rollback-on-return
+[2026-02-25 21:58:02,363] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:02,363] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,364] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:02,364] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:02,364] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:02,364] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:02,366] INFO in base: ROLLBACK
+[2026-02-25 21:58:02,366] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:02,367] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952873D0> being returned to pool
+[2026-02-25 21:58:02,368] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952873D0> rollback-on-return
+[2026-02-25 21:58:02,369] DEBUG in base: Closing connection <sqlite3.Connection object at 0x000001F7952873D0>
+[2026-02-25 21:58:05,484] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:05,484] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,485] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,485] INFO in base: [cached since 180.7s ago] (1,)
+[2026-02-25 21:58:05,486] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,486] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,489] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 21:58:05,490] INFO in base: [cached since 180.7s ago] (6, 0)
+[2026-02-25 21:58:05,490] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 21:58:05,491] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 21:58:05,491] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 21:58:05,491] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 21:58:05,492] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 21:58:05,494] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,494] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:05,494] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:05,528] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> checked out from pool
+[2026-02-25 21:58:05,529] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,531] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,532] INFO in base: [cached since 180.7s ago] (1,)
+[2026-02-25 21:58:05,533] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:05,535] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:05,535] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,536] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,536] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,537] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,538] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:05,540] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,540] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,542] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:05,542] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,542] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,544] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,544] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,546] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,546] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,546] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,546] DEBUG in base: Created new connection <sqlite3.Connection object at 0x000001F7952872E0>
+[2026-02-25 21:58:05,547] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,547] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,547] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> being returned to pool
+[2026-02-25 21:58:05,548] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,548] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,548] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:05,548] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,549] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,549] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> rollback-on-return
+[2026-02-25 21:58:05,550] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,550] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,551] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,551] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,552] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,553] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,553] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:05,553] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,553] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,554] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,554] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:05,555] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:05,556] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,558] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,558] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:05,559] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,559] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:05,560] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> checked out from pool
+[2026-02-25 21:58:05,560] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,561] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:05,561] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:05,561] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:05,563] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:05,564] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,565] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:05,567] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:05,567] INFO in base: [cached since 180.8s ago] (1,)
+[2026-02-25 21:58:05,568] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:05,568] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:05,569] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:05,573] INFO in base: ROLLBACK
+[2026-02-25 21:58:05,574] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> being returned to pool
+[2026-02-25 21:58:05,574] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952508B0> rollback-on-return
+[2026-02-25 21:58:05,574] DEBUG in base: Closing connection <sqlite3.Connection object at 0x000001F7952508B0>
+[2026-02-25 21:58:10,908] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:10,908] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:10,909] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:10,909] INFO in base: [cached since 186.1s ago] (1,)
+[2026-02-25 21:58:10,909] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:10,910] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:10,911] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.id = ?
+[2026-02-25 21:58:10,912] INFO in base: [cached since 38.25s ago] (4,)
+[2026-02-25 21:58:10,912] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 21:58:10,913] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 21:58:10,922] INFO in base: ROLLBACK
+[2026-02-25 21:58:10,923] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:10,923] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:10,956] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:10,957] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:10,957] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:10,957] INFO in base: [cached since 186.2s ago] (1,)
+[2026-02-25 21:58:10,959] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:10,960] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:10,961] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:10,962] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:10,962] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:10,962] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:10,963] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:10,963] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:10,964] INFO in base: ROLLBACK
+[2026-02-25 21:58:10,964] INFO in base: [cached since 186.2s ago] (1,)
+[2026-02-25 21:58:10,964] INFO in base: [cached since 186.2s ago] (1,)
+[2026-02-25 21:58:10,965] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:10,965] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:10,965] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:10,966] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:10,966] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:10,967] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:10,969] INFO in base: ROLLBACK
+[2026-02-25 21:58:10,970] INFO in base: ROLLBACK
+[2026-02-25 21:58:10,970] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:10,971] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:10,971] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:10,971] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:12,894] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:12,894] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:12,895] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:12,895] INFO in base: [cached since 188.1s ago] (1,)
+[2026-02-25 21:58:12,896] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:12,897] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:12,898] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.id = ?
+[2026-02-25 21:58:12,899] INFO in base: [cached since 40.24s ago] (4,)
+[2026-02-25 21:58:12,899] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 21:58:12,900] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 21:58:12,909] INFO in base: ROLLBACK
+[2026-02-25 21:58:12,910] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:12,910] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:12,943] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:12,944] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:12,945] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:12,946] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:12,946] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:12,946] INFO in base: [cached since 188.2s ago] (1,)
+[2026-02-25 21:58:12,947] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:12,947] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:12,947] INFO in base: [cached since 188.2s ago] (1,)
+[2026-02-25 21:58:12,948] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:12,948] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:12,949] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:12,950] INFO in base: ROLLBACK
+[2026-02-25 21:58:12,951] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:12,951] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:12,952] INFO in base: ROLLBACK
+[2026-02-25 21:58:12,953] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:12,953] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:12,960] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:12,961] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:12,962] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:12,962] INFO in base: [cached since 188.2s ago] (1,)
+[2026-02-25 21:58:12,963] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:12,963] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:12,963] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:12,964] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:12,964] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:12,964] INFO in base: [cached since 188.2s ago] (1,)
+[2026-02-25 21:58:12,966] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:12,966] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:12,968] INFO in base: ROLLBACK
+[2026-02-25 21:58:12,968] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:12,969] INFO in base: ROLLBACK
+[2026-02-25 21:58:12,969] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:12,969] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:12,970] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:12,999] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:12,999] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:13,000] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:13,000] INFO in base: [cached since 188.2s ago] (1,)
+[2026-02-25 21:58:13,001] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:13,001] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:13,003] INFO in base: ROLLBACK
+[2026-02-25 21:58:13,003] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:13,003] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:13,151] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:13,151] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:13,152] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:13,152] INFO in base: [cached since 188.4s ago] (1,)
+[2026-02-25 21:58:13,153] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:13,153] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:13,155] INFO in base: ROLLBACK
+[2026-02-25 21:58:13,155] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:13,155] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:20,318] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:20,319] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:20,319] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:20,320] INFO in base: [cached since 195.5s ago] (1,)
+[2026-02-25 21:58:20,320] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:20,321] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:20,323] INFO in base: ROLLBACK
+[2026-02-25 21:58:20,323] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:20,323] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:20,345] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:20,345] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:20,346] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:20,346] INFO in base: [cached since 195.6s ago] (1,)
+[2026-02-25 21:58:20,346] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:20,347] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:20,348] INFO in base: ROLLBACK
+[2026-02-25 21:58:20,348] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:20,348] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:28,719] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:28,719] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:28,719] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:28,720] INFO in base: [cached since 203.9s ago] (1,)
+[2026-02-25 21:58:28,720] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:28,720] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:28,721] INFO in base: ROLLBACK
+[2026-02-25 21:58:28,722] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:28,722] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:30,009] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:30,010] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:30,010] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:30,011] INFO in base: [cached since 205.2s ago] (1,)
+[2026-02-25 21:58:30,011] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:30,012] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:30,013] INFO in base: ROLLBACK
+[2026-02-25 21:58:30,014] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:30,014] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:31,856] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:31,856] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:31,857] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:31,857] INFO in base: [cached since 207.1s ago] (1,)
+[2026-02-25 21:58:31,858] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:31,858] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:31,859] INFO in base: ROLLBACK
+[2026-02-25 21:58:31,860] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:31,860] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:34,445] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:34,445] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:34,446] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:34,446] INFO in base: [cached since 209.7s ago] (1,)
+[2026-02-25 21:58:34,446] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:34,446] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:34,448] INFO in base: ROLLBACK
+[2026-02-25 21:58:34,448] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:34,448] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:35,745] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:35,745] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:35,746] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:35,746] INFO in base: [cached since 211s ago] (1,)
+[2026-02-25 21:58:35,746] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:35,746] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:35,748] INFO in base: ROLLBACK
+[2026-02-25 21:58:35,748] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:35,748] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:36,818] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:36,818] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:36,819] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:36,819] INFO in base: [cached since 212s ago] (1,)
+[2026-02-25 21:58:36,820] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:36,820] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:36,822] INFO in base: ROLLBACK
+[2026-02-25 21:58:36,822] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:36,822] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:38,962] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:38,963] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:38,964] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:38,964] INFO in base: [cached since 214.2s ago] (1,)
+[2026-02-25 21:58:38,965] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:38,965] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:38,967] INFO in base: ROLLBACK
+[2026-02-25 21:58:38,967] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:38,967] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:40,913] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:40,913] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:40,913] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:40,914] INFO in base: [cached since 216.1s ago] (1,)
+[2026-02-25 21:58:40,914] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:40,915] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:40,916] INFO in base: ROLLBACK
+[2026-02-25 21:58:40,917] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:40,917] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:58:45,191] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:58:45,192] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:45,192] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:45,193] INFO in base: [cached since 220.4s ago] (1,)
+[2026-02-25 21:58:45,193] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:45,193] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:45,195] INFO in base: ROLLBACK
+[2026-02-25 21:58:45,195] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:58:45,195] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:58:46,335] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:58:46,335] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:46,336] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:46,336] INFO in base: [cached since 221.6s ago] (1,)
+[2026-02-25 21:58:46,337] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:46,337] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:46,339] INFO in base: ROLLBACK
+[2026-02-25 21:58:46,339] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:58:46,340] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:58:51,406] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:58:51,407] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:51,407] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:51,408] INFO in base: [cached since 226.6s ago] (1,)
+[2026-02-25 21:58:51,408] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:51,409] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:51,411] INFO in base: ROLLBACK
+[2026-02-25 21:58:51,411] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:58:51,411] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:58:59,418] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:58:59,419] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:59,420] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:59,421] INFO in base: [cached since 234.6s ago] (1,)
+[2026-02-25 21:58:59,422] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:59,422] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:59,424] INFO in base: ROLLBACK
+[2026-02-25 21:58:59,425] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:58:59,425] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:58:59,836] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:58:59,836] INFO in base: BEGIN (implicit)
+[2026-02-25 21:58:59,837] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:58:59,837] INFO in base: [cached since 235.1s ago] (1,)
+[2026-02-25 21:58:59,840] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:58:59,840] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:58:59,842] INFO in base: ROLLBACK
+[2026-02-25 21:58:59,842] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:58:59,842] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:00,052] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:00,052] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:00,053] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:00,053] INFO in base: [cached since 235.3s ago] (1,)
+[2026-02-25 21:59:00,054] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:00,054] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:00,056] INFO in base: ROLLBACK
+[2026-02-25 21:59:00,056] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:00,057] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:00,287] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:00,288] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:00,289] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:00,289] INFO in base: [cached since 235.5s ago] (1,)
+[2026-02-25 21:59:00,289] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:00,290] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:00,295] INFO in base: ROLLBACK
+[2026-02-25 21:59:00,295] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:00,295] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:05,407] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:05,407] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:05,408] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:05,408] INFO in base: [cached since 240.6s ago] (1,)
+[2026-02-25 21:59:05,409] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:05,409] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:05,411] INFO in base: ROLLBACK
+[2026-02-25 21:59:05,411] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:05,411] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:10,593] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:10,593] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:10,593] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:10,593] INFO in base: [cached since 245.8s ago] (1,)
+[2026-02-25 21:59:10,594] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:10,594] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:10,595] INFO in base: ROLLBACK
+[2026-02-25 21:59:10,595] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:10,596] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:59:21,164] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:59:21,164] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:21,165] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:21,165] INFO in base: [cached since 256.4s ago] (1,)
+[2026-02-25 21:59:21,166] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:21,166] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:21,168] INFO in base: ROLLBACK
+[2026-02-25 21:59:21,169] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:59:21,169] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:23,252] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:23,252] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:23,252] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:23,253] INFO in base: [cached since 258.5s ago] (1,)
+[2026-02-25 21:59:23,253] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:23,253] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:23,255] INFO in base: ROLLBACK
+[2026-02-25 21:59:23,255] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:23,255] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:25,497] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:25,497] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:25,497] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:25,498] INFO in base: [cached since 260.7s ago] (1,)
+[2026-02-25 21:59:25,498] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:25,498] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:25,500] INFO in base: ROLLBACK
+[2026-02-25 21:59:25,500] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:25,501] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:27,580] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:27,581] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:27,581] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:27,581] INFO in base: [cached since 262.8s ago] (1,)
+[2026-02-25 21:59:27,582] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:27,582] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:27,583] INFO in base: ROLLBACK
+[2026-02-25 21:59:27,584] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:27,584] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:32,078] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:32,079] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:32,079] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:32,080] INFO in base: [cached since 267.3s ago] (1,)
+[2026-02-25 21:59:32,080] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:32,081] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:32,083] INFO in base: ROLLBACK
+[2026-02-25 21:59:32,083] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:32,083] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:59:33,809] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:59:33,809] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:33,810] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:33,810] INFO in base: [cached since 269s ago] (1,)
+[2026-02-25 21:59:33,810] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:33,811] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:33,812] INFO in base: ROLLBACK
+[2026-02-25 21:59:33,812] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:59:33,813] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:34,639] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:34,639] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:34,640] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:34,640] INFO in base: [cached since 269.9s ago] (1,)
+[2026-02-25 21:59:34,640] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:34,640] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:34,642] INFO in base: ROLLBACK
+[2026-02-25 21:59:34,642] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:34,642] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:35,189] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:35,190] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:35,190] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:35,190] INFO in base: [cached since 270.4s ago] (1,)
+[2026-02-25 21:59:35,191] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:35,191] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:35,192] INFO in base: ROLLBACK
+[2026-02-25 21:59:35,193] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:35,193] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:36,122] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:36,123] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:36,123] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:36,123] INFO in base: [cached since 271.3s ago] (1,)
+[2026-02-25 21:59:36,123] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:36,124] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:36,125] INFO in base: ROLLBACK
+[2026-02-25 21:59:36,125] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:36,125] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:36,941] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:36,942] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:36,942] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:36,943] INFO in base: [cached since 272.2s ago] (1,)
+[2026-02-25 21:59:36,943] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:36,943] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:36,945] INFO in base: ROLLBACK
+[2026-02-25 21:59:36,945] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:36,945] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:59:37,507] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:59:37,508] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:37,508] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:37,508] INFO in base: [cached since 272.7s ago] (1,)
+[2026-02-25 21:59:37,509] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:37,509] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:37,510] INFO in base: ROLLBACK
+[2026-02-25 21:59:37,510] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:59:37,511] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:38,022] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:38,022] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:38,022] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:38,022] INFO in base: [cached since 273.2s ago] (1,)
+[2026-02-25 21:59:38,023] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:38,023] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:38,024] INFO in base: ROLLBACK
+[2026-02-25 21:59:38,024] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:38,024] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:38,555] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:38,556] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:38,556] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:38,556] INFO in base: [cached since 273.8s ago] (1,)
+[2026-02-25 21:59:38,557] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:38,557] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:38,558] INFO in base: ROLLBACK
+[2026-02-25 21:59:38,559] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:38,559] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:39,818] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:39,819] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:39,819] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:39,819] INFO in base: [cached since 275s ago] (1,)
+[2026-02-25 21:59:39,820] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:39,820] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:39,821] INFO in base: ROLLBACK
+[2026-02-25 21:59:39,821] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:39,821] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:44,734] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:44,734] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:44,735] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:44,735] INFO in base: [cached since 280s ago] (1,)
+[2026-02-25 21:59:44,735] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:44,736] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:44,737] INFO in base: ROLLBACK
+[2026-02-25 21:59:44,737] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:44,738] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:59:47,201] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:59:47,202] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:47,202] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:47,202] INFO in base: [cached since 282.4s ago] (1,)
+[2026-02-25 21:59:47,203] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:47,203] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:47,205] INFO in base: ROLLBACK
+[2026-02-25 21:59:47,205] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:59:47,205] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:51,496] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:51,497] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:51,498] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:51,498] INFO in base: [cached since 286.7s ago] (1,)
+[2026-02-25 21:59:51,498] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:51,499] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:51,500] INFO in base: ROLLBACK
+[2026-02-25 21:59:51,501] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:51,501] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:55,028] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:55,029] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,029] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,030] INFO in base: [cached since 290.2s ago] (1,)
+[2026-02-25 21:59:55,030] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,031] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,033] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 21:59:55,034] INFO in base: [cached since 290.2s ago] (6, 0)
+[2026-02-25 21:59:55,035] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 21:59:55,035] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 21:59:55,036] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 21:59:55,036] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 21:59:55,036] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 21:59:55,038] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,039] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:55,039] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:55,078] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:55,079] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:55,079] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,080] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 21:59:55,081] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,081] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,082] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,082] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,083] INFO in base: [cached since 290.3s ago] (1,)
+[2026-02-25 21:59:55,083] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,083] INFO in base: [cached since 290.3s ago] (1,)
+[2026-02-25 21:59:55,084] INFO in base: [cached since 290.3s ago] (1,)
+[2026-02-25 21:59:55,084] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,085] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,085] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,086] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,086] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,086] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,089] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,089] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,090] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:55,090] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,091] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:55,091] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:55,092] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 21:59:55,092] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 21:59:55,093] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 21:59:55,185] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 21:59:55,186] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,187] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 21:59:55,187] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,188] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 21:59:55,189] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,189] INFO in base: [cached since 290.4s ago] (1,)
+[2026-02-25 21:59:55,190] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,191] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,192] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 21:59:55,192] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,192] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,192] INFO in base: [cached since 290.4s ago] (1,)
+[2026-02-25 21:59:55,193] INFO in base: BEGIN (implicit)
+[2026-02-25 21:59:55,193] INFO in base: [cached since 290.4s ago] (1,)
+[2026-02-25 21:59:55,193] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,194] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 21:59:55,194] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,194] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,194] INFO in base: [cached since 290.4s ago] (1,)
+[2026-02-25 21:59:55,195] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,195] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,195] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 21:59:55,196] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,197] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 21:59:55,197] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 21:59:55,197] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 21:59:55,198] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,198] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,199] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 21:59:55,199] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 21:59:55,200] INFO in base: ROLLBACK
+[2026-02-25 21:59:55,200] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 21:59:55,200] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 21:59:55,201] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 21:59:55,202] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:00:06,173] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:00:06,173] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:06,174] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:06,174] INFO in base: [cached since 301.4s ago] (1,)
+[2026-02-25 22:00:06,174] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:06,175] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:00:06,177] INFO in base: ROLLBACK
+[2026-02-25 22:00:06,178] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:00:06,178] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:00:06,190] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:00:06,190] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:06,191] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 22:00:06,191] INFO in base: [cached since 301.4s ago] (6, 0)
+[2026-02-25 22:00:06,192] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:06,192] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:00:06,193] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:06,193] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:00:06,193] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 22:00:06,196] INFO in base: ROLLBACK
+[2026-02-25 22:00:06,196] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:00:06,196] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:00:07,704] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:00:07,704] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:07,705] DEBUG in path_registry: set 'memoized_setups' on path 'ORM Path[Mapper[Book(books)]]' to '{}'
+[2026-02-25 22:00:07,706] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+[2026-02-25 22:00:07,706] INFO in base: [generated in 0.00061s] ()
+[2026-02-25 22:00:07,707] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:07,708] DEBUG in path_registry: set '('getters', <Mapper at 0x1f792b0f4d0; Book>)' on path 'ORM Path[Mapper[Book(books)]]' to '{'cached_populators': {'new': [], 'quick': [('description', operator.itemgetter(3)), ('id', operator.itemgetter(0)), ('category', operator.itemgetter(5)), ('pdf_file', operator.itemgetter(7)), ('is_available', operator.itemgetter(9)), ('publisher', operator.itemgetter(11)), ('language', operator.itemgetter(13)), ('title', operator.itemgetter(1)), ('author', operator.itemgetter(2)), ('price', operator.itemgetter(4)), ('cover_image', operator.itemgetter(6)), ('created_at', operator.itemgetter(8)), ('isbn', operator.itemgetter(10)), ('publication_date', operator.itemgetter(12)), ('pages', operator.itemgetter(14))], 'deferred': [], 'expire': [], 'existing': [], 'eager': []}, 'todo': [<_RelationshipDeclared at 0x1f792bfc050; order_items>, <RelationshipProperty at 0x1f7952013b0; downloads>], 'primary_key_getter': operator.itemgetter(slice(0, 1, None))}'
+[2026-02-25 22:00:07,709] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:00:07,709] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:07,710] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:00:07,710] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 22:00:07,718] INFO in base: ROLLBACK
+[2026-02-25 22:00:07,718] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:00:07,718] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:00:09,900] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 22:00:09,900] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:09,901] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.id = ?
+[2026-02-25 22:00:09,901] INFO in base: [cached since 157.2s ago] (2,)
+[2026-02-25 22:00:09,902] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:09,902] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:09,904] INFO in base: ROLLBACK
+[2026-02-25 22:00:09,904] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 22:00:09,905] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 22:00:12,023] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:00:12,023] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:12,024] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.id = ?
+[2026-02-25 22:00:12,024] INFO in base: [cached since 159.4s ago] (2,)
+[2026-02-25 22:00:12,025] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:12,025] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:12,026] INFO in base: ROLLBACK
+[2026-02-25 22:00:12,027] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:00:12,027] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:00:12,039] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:00:12,039] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:12,040] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.id = ?
+[2026-02-25 22:00:12,040] INFO in base: [cached since 159.4s ago] (2,)
+[2026-02-25 22:00:12,040] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:12,041] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:12,051] INFO in base: ROLLBACK
+[2026-02-25 22:00:12,051] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:00:12,052] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:00:40,444] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:00:40,444] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,445] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+[2026-02-25 22:00:40,445] INFO in base: [cached since 240.5s ago] ('irl2010@live.co.uk', 1, 0)
+[2026-02-25 22:00:40,446] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,446] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,569] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,569] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:00:40,569] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:00:40,576] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:00:40,577] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,577] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,578] INFO in base: [cached since 335.8s ago] (2,)
+[2026-02-25 22:00:40,578] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,579] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,580] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 22:00:40,581] INFO in base: [cached since 335.8s ago] (6, 0)
+[2026-02-25 22:00:40,581] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:40,582] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:00:40,582] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:40,583] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:00:40,583] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 22:00:40,585] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,585] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:00:40,585] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:00:40,619] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 22:00:40,620] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,621] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,623] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:00:40,623] INFO in base: [cached since 335.8s ago] (2,)
+[2026-02-25 22:00:40,624] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,625] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:00:40,625] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,626] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,626] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,628] INFO in base: [cached since 335.8s ago] (2,)
+[2026-02-25 22:00:40,628] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,629] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,631] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:00:40,632] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,633] INFO in base: [cached since 335.8s ago] (2,)
+[2026-02-25 22:00:40,634] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:00:40,635] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,636] DEBUG in base: Created new connection <sqlite3.Connection object at 0x000001F795286110>
+[2026-02-25 22:00:40,636] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,637] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,638] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,638] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,638] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,639] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> checked out from pool
+[2026-02-25 22:00:40,639] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 22:00:40,640] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,640] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,641] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,641] INFO in base: [cached since 335.9s ago] (2,)
+[2026-02-25 22:00:40,641] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,641] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 22:00:40,642] INFO in base: [cached since 335.9s ago] (2,)
+[2026-02-25 22:00:40,642] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:00:40,643] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,643] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,644] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,644] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:00:40,645] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,645] INFO in base: [cached since 335.9s ago] (2,)
+[2026-02-25 22:00:40,646] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,646] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:00:40,647] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,647] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:00:40,649] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,651] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,653] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> checked out from pool
+[2026-02-25 22:00:40,654] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,654] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:00:40,655] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,655] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:40,656] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:00:40,657] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:00:40,657] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,658] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:40,659] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:00:40,659] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> being returned to pool
+[2026-02-25 22:00:40,660] INFO in base: [cached since 335.9s ago] (2,)
+[2026-02-25 22:00:40,661] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> rollback-on-return
+[2026-02-25 22:00:40,662] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:40,664] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:40,667] INFO in base: ROLLBACK
+[2026-02-25 22:00:40,667] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> being returned to pool
+[2026-02-25 22:00:40,667] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207E20> rollback-on-return
+[2026-02-25 22:00:40,667] DEBUG in base: Closing connection <sqlite3.Connection object at 0x000001F795207E20>
+[2026-02-25 22:00:45,431] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:00:45,431] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:45,432] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:45,432] INFO in base: [cached since 340.6s ago] (2,)
+[2026-02-25 22:00:45,432] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:45,433] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:45,434] DEBUG in path_registry: set 'memoized_setups' on path 'ORM Path[Mapper[Order(orders)]]' to '{}'
+[2026-02-25 22:00:45,435] INFO in base: SELECT orders.id AS orders_id, orders.user_id AS orders_user_id, orders.order_date AS orders_order_date, orders.total_amount AS orders_total_amount, orders.status AS orders_status, orders.order_reference AS orders_order_reference 
+FROM orders 
+WHERE orders.user_id = ? ORDER BY orders.order_date DESC
+[2026-02-25 22:00:45,436] INFO in base: [generated in 0.00046s] (2,)
+[2026-02-25 22:00:45,436] DEBUG in cursor: Col ('orders_id', 'orders_user_id', 'orders_order_date', 'orders_total_amount', 'orders_status', 'orders_order_reference')
+[2026-02-25 22:00:45,436] DEBUG in path_registry: set '('getters', <Mapper at 0x1f792b0fed0; Order>)' on path 'ORM Path[Mapper[Order(orders)]]' to '{'cached_populators': {'new': [], 'quick': [('user_id', operator.itemgetter(1)), ('id', operator.itemgetter(0)), ('total_amount', operator.itemgetter(3)), ('order_reference', operator.itemgetter(5)), ('order_date', operator.itemgetter(2)), ('status', operator.itemgetter(4))], 'deferred': [], 'expire': [], 'existing': [], 'eager': []}, 'todo': [<_RelationshipDeclared at 0x1f792bfd6d0; items>, <RelationshipProperty at 0x1f794e2e710; customer>, <RelationshipProperty at 0x1f795202d50; downloads>, <_RelationshipDeclared at 0x1f792bfd770; payment>], 'primary_key_getter': operator.itemgetter(slice(0, 1, None))}'
+[2026-02-25 22:00:45,447] INFO in base: ROLLBACK
+[2026-02-25 22:00:45,448] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:00:45,448] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:00:45,480] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:00:45,480] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:45,481] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:00:45,481] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:45,482] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:45,482] INFO in base: [cached since 340.7s ago] (2,)
+[2026-02-25 22:00:45,483] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:45,484] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:45,484] INFO in base: [cached since 340.7s ago] (2,)
+[2026-02-25 22:00:45,484] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:45,485] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:45,486] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:45,487] INFO in base: ROLLBACK
+[2026-02-25 22:00:45,488] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:00:45,488] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:00:45,489] INFO in base: ROLLBACK
+[2026-02-25 22:00:45,490] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:00:45,490] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:00:56,822] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:00:56,822] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:56,822] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:00:56,823] INFO in base: [cached since 352s ago] (2,)
+[2026-02-25 22:00:56,823] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:00:56,823] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:00:56,824] INFO in base: ROLLBACK
+[2026-02-25 22:00:56,824] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:00:56,825] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:00:56,832] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> checked out from pool
+[2026-02-25 22:00:56,833] INFO in base: BEGIN (implicit)
+[2026-02-25 22:00:56,833] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 22:00:56,833] INFO in base: [cached since 352s ago] (6, 0)
+[2026-02-25 22:00:56,834] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:00:56,834] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:00:56,835] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:00:56,835] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:00:56,835] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 22:00:56,837] INFO in base: ROLLBACK
+[2026-02-25 22:00:56,837] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> being returned to pool
+[2026-02-25 22:00:56,837] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> rollback-on-return
+[2026-02-25 22:02:09,505] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:02:09,506] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:09,506] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+[2026-02-25 22:02:09,507] INFO in base: [cached since 329.6s ago] ('irl2010@live.co.uk', 1, 0)
+[2026-02-25 22:02:09,507] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:09,508] DEBUG in cursor: Row (2, 'irl2010@live.co.uk', 'scrypt:32768:8:1$M5fYMXuQIDMOom2m$11769d476e060e3e462dcf3cd6df2cbf64f3c92f17527a79e5867121a801505d54aa3680271380378d5f2ffa4750bae21767dc12bacdfccbfc518ce6e8c53f8f', 'Joe Bloggs', datetime.datetime(2026, 2, 25, 21, 56, 40, 65853), True, False, None, None, None, None, None)
+[2026-02-25 22:02:09,509] INFO in base: ROLLBACK
+[2026-02-25 22:02:09,509] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:02:09,510] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:02:45,398] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:02:45,398] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:45,398] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+[2026-02-25 22:02:45,399] INFO in base: [cached since 365.5s ago] ('lahmami@outlook.com', 1, 0)
+[2026-02-25 22:02:45,400] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:45,523] INFO in base: INSERT INTO users (email, password, name, created_at, is_active, is_admin, address, city, state, zip_code, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+[2026-02-25 22:02:45,523] INFO in base: [cached since 365.5s ago] ('lahmami@outlook.com', 'scrypt:32768:8:1$l3ttmD5Ge4VX1uBg$1904ee74d5a566d90354435e01af57b8e561c6c1212b063cfc9a7aa5e3f95b5b281bb1a14e934d3460069dde6a4a882ac648a85f8b4a3274ac7ed0dd6883f870', 'Tim Doe Test', '2026-02-25 22:02:45.523481', 1, 0, None, None, None, None, None)
+[2026-02-25 22:02:45,525] INFO in base: COMMIT
+[2026-02-25 22:02:45,529] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:02:45,529] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:02:59,155] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:02:59,155] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,155] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.email = ?
+ LIMIT ? OFFSET ?
+[2026-02-25 22:02:59,156] INFO in base: [cached since 379.2s ago] ('admin@example.com', 1, 0)
+[2026-02-25 22:02:59,156] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,157] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,278] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,278] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:02:59,279] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:02:59,286] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:02:59,287] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,287] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,288] INFO in base: [cached since 474.5s ago] (1,)
+[2026-02-25 22:02:59,288] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,289] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,290] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books 
+WHERE books.is_available = 1
+ LIMIT ? OFFSET ?
+[2026-02-25 22:02:59,291] INFO in base: [cached since 474.5s ago] (6, 0)
+[2026-02-25 22:02:59,291] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:02:59,292] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:02:59,292] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:02:59,292] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:02:59,293] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)
+[2026-02-25 22:02:59,295] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,295] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:02:59,296] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:02:59,336] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> checked out from pool
+[2026-02-25 22:02:59,337] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,337] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:02:59,338] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,338] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:02:59,338] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,339] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,339] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,339] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,340] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,340] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,340] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,341] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,341] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,342] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,342] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,343] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,344] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,345] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,345] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> being returned to pool
+[2026-02-25 22:02:59,346] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,346] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> rollback-on-return
+[2026-02-25 22:02:59,346] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:02:59,347] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,347] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:02:59,348] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> being returned to pool
+[2026-02-25 22:02:59,349] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> rollback-on-return
+[2026-02-25 22:02:59,360] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> checked out from pool
+[2026-02-25 22:02:59,361] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,362] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,363] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> checked out from pool
+[2026-02-25 22:02:59,364] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,365] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> checked out from pool
+[2026-02-25 22:02:59,365] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,366] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,366] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,367] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,367] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,367] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,368] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> checked out from pool
+[2026-02-25 22:02:59,368] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,368] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,369] INFO in base: BEGIN (implicit)
+[2026-02-25 22:02:59,369] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,370] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:02:59,370] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,370] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,370] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,371] INFO in base: [cached since 474.6s ago] (1,)
+[2026-02-25 22:02:59,371] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> being returned to pool
+[2026-02-25 22:02:59,371] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,372] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:02:59,372] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795287100> rollback-on-return
+[2026-02-25 22:02:59,373] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,374] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:02:59,375] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> being returned to pool
+[2026-02-25 22:02:59,375] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,376] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795286110> rollback-on-return
+[2026-02-25 22:02:59,376] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> being returned to pool
+[2026-02-25 22:02:59,377] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F795207A60> rollback-on-return
+[2026-02-25 22:02:59,378] INFO in base: ROLLBACK
+[2026-02-25 22:02:59,379] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> being returned to pool
+[2026-02-25 22:02:59,379] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F7952872E0> rollback-on-return
+[2026-02-25 22:03:02,235] DEBUG in base: Connection <sqlite3.Connection object at 0x000001F794D932E0> checked out from pool
+[2026-02-25 22:03:02,235] INFO in base: BEGIN (implicit)
+[2026-02-25 22:03:02,235] INFO in base: SELECT users.id AS users_id, users.email AS users_email, users.password AS users_password, users.name AS users_name, users.created_at AS users_created_at, users.is_active AS users_is_active, users.is_admin AS users_is_admin, users.address AS users_address, users.city AS users_city, users.state AS users_state, users.zip_code AS users_zip_code, users.country AS users_country 
+FROM users 
+WHERE users.id = ?
+[2026-02-25 22:03:02,236] INFO in base: [cached since 477.5s ago] (1,)
+[2026-02-25 22:03:02,236] DEBUG in cursor: Col ('users_id', 'users_email', 'users_password', 'users_name', 'users_created_at', 'users_is_active', 'users_is_admin', 'users_address', 'users_city', 'users_state', 'users_zip_code', 'users_country')
+[2026-02-25 22:03:02,237] DEBUG in cursor: Row (1, 'admin@example.com', 'scrypt:32768:8:1$hFbLidhudjHYVqI9$7aa6939d51547d02e495f9dc198d6134eec7e85b7f896e89dcb7dc6ccf318427aea1036833d7ffd1a71e44f21a72e5ac1f8c8f45ac7437152555efde3ec7614c', 'Admin User', datetime.datetime(2026, 2, 20, 16, 32, 39, 781428), True, True, None, None, None, None, None)
+[2026-02-25 22:03:02,239] INFO in base: SELECT books.id AS books_id, books.title AS books_title, books.author AS books_author, books.description AS books_description, books.price AS books_price, books.category AS books_category, books.cover_image AS books_cover_image, books.pdf_file AS books_pdf_file, books.created_at AS books_created_at, books.is_available AS books_is_available, books.isbn AS books_isbn, books.publisher AS books_publisher, books.publication_date AS books_publication_date, books.language AS books_language, books.pages AS books_pages 
+FROM books
+[2026-02-25 22:03:02,240] INFO in base: [cached since 470.1s ago] ()
+[2026-02-25 22:03:02,241] DEBUG in cursor: Col ('books_id', 'books_title', 'books_author', 'books_description', 'books_price', 'books_category', 'books_cover_image', 'books_pdf_file', 'books_created_at', 'books_is_available', 'books_isbn', 'books_publisher', 'books_publication_date', 'books_language', 'books_pages')
+[2026-02-25 22:03:02,241] DEBUG in cursor: Row (1, 'CHAPTER 1', 'Puran Singh Mehra', 'languages. Microsoft describes C# in this way: ”C# is a simple, modern, object–oriented, and typesafe programming language derived from C and C++.', 5.0, 'programming', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d_thumb.png', '426c16c7-e1eb-47eb-a55d-a25bf67fd73d.pdf', datetime.datetime(2026, 2, 20, 16, 45, 25, 199975), True, None, None, None, 'English', 56)
+[2026-02-25 22:03:02,242] DEBUG in cursor: Row (2, 'CORS in Action', 'Foreworb By Eric Bidelman', 'www.it-ebooks.info', 5.99, 'programming', '2b8754be-6dda-420b-9da7-b26b15328a0b_thumb.png', '2b8754be-6dda-420b-9da7-b26b15328a0b.pdf', datetime.datetime(2026, 2, 20, 16, 46, 33, 991023), True, None, 'MANNING', None, None, 231)
+[2026-02-25 22:03:02,242] DEBUG in cursor: Row (3, 'Advanced C# Programming', 'Paul Kimmel', 'We hope you enjoy this McGraw-Hill eBook!  If you d like and websites, please click here.', 20.48, 'programming', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4_thumb.png', 'ab8d27be-a6dd-4459-a6e0-37645c4b34c4.pdf', datetime.datetime(2026, 2, 21, 23, 6, 0, 822821), True, '10.1036/0072228288', 'McGraw-Hill/Osborne', datetime.date(2002, 1, 1), 'English', 579)
+[2026-02-25 22:03:02,243] DEBUG in cursor: Row (4, 'The Hacker’s Guide To Python', 'Julien Danjou', '', 18.6, 'programming', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8_thumb.png', 'ebc0ee87-3faa-43f4-8e92-e6991ec47cb8.pdf', datetime.datetime(2026, 2, 21, 23, 11, 42, 451465), True, None, None, None, 'English', 271)

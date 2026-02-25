@@ -35,18 +35,33 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_store.db'
+INSTANCE_DB = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'instance', 'book_store.db'
+))
+os.makedirs(os.path.dirname(INSTANCE_DB), exist_ok=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{INSTANCE_DB}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- Flask Logging Setup ---
 if not app.debug:
-    handler = RotatingFileHandler('flask.log', maxBytes=100000, backupCount=3)
+    handler = RotatingFileHandler('debug_flask.log', maxBytes=100000, backupCount=3)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('Flask logging is set up.')
+
+# --- SQLAlchemy Logging to file (debug) ---
+sql_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_SQLAlchemy.log')
+sql_logger = logging.getLogger('sqlalchemy')
+sql_handler = RotatingFileHandler(sql_log_path, maxBytes=200000, backupCount=3)
+sql_handler.setLevel(logging.DEBUG)
+sql_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+sql_handler.setFormatter(sql_formatter)
+if not any(isinstance(h, type(sql_handler)) and getattr(h, 'baseFilename', None)==getattr(sql_handler, 'baseFilename', None) for h in sql_logger.handlers):
+    sql_logger.addHandler(sql_handler)
+sql_logger.setLevel(logging.DEBUG)
 
 # --- JS Error Logging Endpoint ---
 import os
@@ -61,8 +76,6 @@ def js_log():
         f.write(f"[{log_type.upper()}] {log_message}\n")
     return {'status': 'ok'}
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-development')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///book_store.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['PDF_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/pdfs')
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max upload size
@@ -89,7 +102,14 @@ def load_user(user_id):
 @app.before_request
 def log_request():
     """Log all requests for debugging"""
-    with open('request_log.txt', 'a') as f:
+    # Ensure any legacy file is renamed to debug_request_log.txt
+    try:
+        if os.path.exists('request_log.txt') and not os.path.exists('debug_request_log.txt'):
+            os.rename('request_log.txt', 'debug_request_log.txt')
+    except Exception:
+        pass
+
+    with open('debug_request_log.txt', 'a', encoding='utf-8') as f:
         f.write(f"{datetime.now()} - {request.method} {request.path} - Auth: {current_user.is_authenticated if hasattr(current_user, 'is_authenticated') else 'N/A'}\n")
 
 # Create database tables
@@ -672,6 +692,34 @@ def admin_dashboard():
                           total_users=stats['total_users'],
                           total_orders=stats['total_orders'],
                           total_revenue=stats['total_revenue'])
+
+
+@app.route('/admin/users')
+@login_required
+@admin_required
+def admin_users():
+    """Admin view: list all registered users"""
+    users = User.query.order_by(User.created_at.desc()).all()
+    return render_template('admin/users.html', users=users)
+
+
+# Development-only debug endpoint to list users as JSON (not for production)
+@app.route('/__debug_users')
+def __debug_users():
+    if not app.debug:
+        return jsonify({'error': 'disabled'}), 403
+    users = User.query.order_by(User.created_at.desc()).all()
+    out = []
+    for u in users:
+        out.append({
+            'id': u.id,
+            'email': u.email,
+            'name': u.name,
+            'created_at': u.created_at.isoformat() if u.created_at else None,
+            'is_active': bool(u.is_active),
+            'is_admin': bool(u.is_admin)
+        })
+    return jsonify({'users': out})
 
 @app.route('/admin/extract-pdf-metadata', methods=['POST'])
 @login_required

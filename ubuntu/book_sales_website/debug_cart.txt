@@ -46,3 +46,78 @@ Total books: 1, Total: $11.98
 Cart items: {'2': 1}
   Book ID 2: CORS in Action x 1 = $5.99
 Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:46:44.262738 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:47:39.401830 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:49:48.688707 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:49:50.403096 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:50:06.095252 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:51:15.204251 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:51:55.435828 ===
+Cart items: {'2': 2}
+  Book ID 2: CORS in Action x 2 = $11.98
+Total books: 1, Total: $11.98
+
+=== CART VIEW at 2026-02-26 20:52:01.159646 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 20:54:09.670894 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:22.968120 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:28.084005 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:31.407479 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:32.514622 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:34.211714 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-02-26 21:20:35.078764 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99

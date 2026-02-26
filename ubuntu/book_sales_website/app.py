@@ -222,6 +222,13 @@ def logout():
 @app.route('/cart')
 def cart():
     """Display shopping cart contents"""
+    # If no one is logged in, do not show cart details
+    if not current_user.is_authenticated:
+        with open('debug_cart.txt', 'a', encoding='utf-8') as f:
+            f.write(f"CART VIEW BLOCKED (anonymous) at {datetime.now()}\n")
+        flash('Please log in to view cart details.', 'info')
+        return render_template('cart.html', items=[], total=0)
+
     # Get cart from session or initialize empty cart
     cart_items = session.get('cart', {})
     
@@ -614,15 +621,14 @@ def download_book(book_id, order_id):
     is_admin = current_user.email == 'admin@example.com'  # You can make this more sophisticated
     
     if not is_admin:
-        # For regular users, check download limit (1 download per book per order)
+        # For regular users, check if they've already downloaded this book (one download per user per book)
         existing_downloads = Download.query.filter_by(
             user_id=current_user.id,
             book_id=book.id,
-            order_id=order_id
         ).count()
-        
+
         if existing_downloads >= 1:
-            flash('Download limit reached. You have already downloaded this book once. Contact support if you need help.', 'warning')
+            flash('You have already downloaded/purchased this book. If you need another copy, contact support.', 'warning')
             return redirect(url_for('account'))
     
     # Record the download
@@ -714,6 +720,37 @@ def admin_set_temp_password(user_id):
     db.session.commit()
     flash(f'Temporary password set for {user.email}: {new_password}', 'success')
     return redirect(url_for('admin_users'))
+
+
+@app.route('/admin/users/<int:user_id>/edit', methods=['GET', 'POST'], endpoint='admin_edit_user')
+@login_required
+@admin_required
+def admin_edit_user(user_id):
+    """Edit a user's name and email (admin-only)."""
+    user = User.query.get_or_404(user_id)
+
+    if request.method == 'POST':
+        name = (request.form.get('name') or '').strip()
+        email = (request.form.get('email') or '').strip()
+
+        if not name or not email:
+            flash('Name and email are required.', 'danger')
+            return redirect(url_for('admin_edit_user', user_id=user_id))
+
+        # Prevent duplicate email addresses
+        existing = User.query.filter(User.email == email, User.id != user_id).first()
+        if existing:
+            flash('That email address is already used by another account.', 'danger')
+            return redirect(url_for('admin_edit_user', user_id=user_id))
+
+        user.name = name
+        user.email = email
+        db.session.commit()
+
+        flash('User updated successfully.', 'success')
+        return redirect(url_for('admin_users'))
+
+    return render_template('admin/edit_user.html', user=user)
 
 
 # Development-only debug endpoint to list users as JSON (not for production)

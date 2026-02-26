@@ -43,8 +43,8 @@
                     </td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a href="{{ url_for('admin_edit_user', user_id=user.id) }}" class="btn btn-outline-secondary btn-sm">Edit</a>
-                            <form method="post" action="{{ url_for('admin_set_temp_password', user_id=user.id) }}" class="form-inline">
+                            <a href="/admin/users/{{ user.id }}/edit" class="btn btn-outline-secondary btn-sm">Edit</a>
+                            <form method="post" action="/admin/users/{{ user.id }}/set-temp-password" class="form-inline">
                                 <div class="input-group input-group-sm">
                                     <input type="text" name="temp_password" value="Test1234" class="form-control" style="max-width:140px;" aria-label="Temp password">
                                     <div class="input-group-append">

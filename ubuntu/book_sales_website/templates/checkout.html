@@ -107,6 +107,14 @@
                     </p>
                 {% else %}
                     <!-- Paid books - PayPal checkout -->
+                    <div class="mb-2">
+                        <small class="text-muted">Approve payment using your PayPal account:</small>
+                        <div class="alert alert-light d-flex align-items-center justify-content-between p-2 mt-1 mb-2" role="alert">
+                            <div class="me-2"><strong id="paypal-email">{{ current_user.email }}</strong></div>
+                            <button id="copy-paypal-email" class="btn btn-sm btn-outline-secondary" type="button" aria-label="Copy PayPal email">Copy</button>
+                        </div>
+                        <p class="small text-muted">If you use a different PayPal account, you may need to switch accounts on the PayPal approval page.</p>
+                    </div>
                     <button id="checkout-btn" class="btn btn-primary btn-lg w-100">Proceed to Payment</button>
                     <div class="text-center mt-3">
                         <img src="{{ url_for('static', filename='img/paypal-logo.png') }}" alt="PayPal" height="30">
@@ -122,5 +130,30 @@
 {% block extra_js %}
 <script>
     // PayPal checkout functionality is handled in main.js
+    // Copy-to-clipboard for PayPal email
+    document.addEventListener('DOMContentLoaded', function () {
+        var btn = document.getElementById('copy-paypal-email');
+        if (btn) {
+            btn.addEventListener('click', function () {
+                var emailEl = document.getElementById('paypal-email');
+                if (!emailEl) return;
+                var text = emailEl.textContent.trim();
+                navigator.clipboard.writeText(text).then(function () {
+                    var orig = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    setTimeout(function () { btn.textContent = orig; }, 1800);
+                }).catch(function () {
+                    // Fallback: select and copy
+                    var range = document.createRange();
+                    range.selectNodeContents(emailEl);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                    try { document.execCommand('copy'); btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1800); } catch (e) { btn.textContent = 'Copy'; }
+                    sel.removeAllRanges();
+                });
+            });
+        }
+    });
 </script>
 {% endblock %}

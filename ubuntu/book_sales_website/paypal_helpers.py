@@ -8,6 +8,7 @@ import os
 import paypalrestsdk
 from flask import url_for, session
 from dotenv import load_dotenv
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -19,7 +20,7 @@ paypalrestsdk.configure({
     "client_secret": os.environ.get('PAYPAL_CLIENT_SECRET', '')
 })
 
-def create_payment(items, total, return_url, cancel_url):
+def create_payment(items, total, return_url, cancel_url, payer_email=None):
     """
     Create a PayPal payment
     
@@ -32,7 +33,13 @@ def create_payment(items, total, return_url, cancel_url):
     Returns:
         dict: Payment object or error message
     """
-    payment = paypalrestsdk.Payment({
+    # Determine currency preference: allow overriding via PAYPAL_CURRENCY env var
+    currency = os.environ.get('PAYPAL_CURRENCY')
+    if not currency:
+        # Fallback: determine currency from items (assume all items use same currency)
+        currency = items[0].get('currency', 'USD') if items else 'USD'
+
+    payment_payload = {
         "intent": "sale",
         "payer": {
             "payment_method": "paypal"
@@ -43,22 +50,45 @@ def create_payment(items, total, return_url, cancel_url):
         },
         "transactions": [{
             "item_list": {
-                "items": items
+                "items": [{**dict(item), 'currency': currency} for item in items]
             },
             "amount": {
-                "total": str(total),
-                "currency": "USD"
+                "total": "{:.2f}".format(total),
+                "currency": currency
             },
             "description": "Book purchase from Book Sales Website"
         }]
-    })
-    
+    }
+
+    paypal_logger = logging.getLogger('paypal')
+    paypal_logger.debug('Creating payment using currency=%s', currency)
+
+    # If we have a payer email from the logged-in user, include it in the payload
+    # PayPal may use this to pre-fill the buyer email on the approval page.
+    if payer_email:
+        try:
+            payment_payload["payer"]["payer_info"] = {"email": payer_email}
+        except Exception:
+            pass
+
+    payment = paypalrestsdk.Payment(payment_payload)
     if payment.create():
+        # Log full payment object for debugging (server-side)
+        try:
+            paypal_logger.debug(f"Payment created: {payment.to_dict()}")
+        except Exception:
+            paypal_logger.debug(f"Payment created (no to_dict available): id={getattr(payment, 'id', None)}")
+
         # Extract approval URL
         for link in payment.links:
             if link.rel == "approval_url":
                 return {"success": True, "payment_id": payment.id, "approval_url": link.href}
+        return {"success": True, "payment_id": payment.id, "approval_url": None}
     else:
+        try:
+            paypal_logger.error(f"Payment creation failed: {payment.error}")
+        except Exception:
+            paypal_logger.error("Payment creation failed (no error payload)")
         return {"success": False, "error": payment.error}
 
 def execute_payment(payment_id, payer_id):

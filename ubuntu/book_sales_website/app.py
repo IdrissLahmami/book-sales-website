@@ -63,6 +63,17 @@ if not any(isinstance(h, type(sql_handler)) and getattr(h, 'baseFilename', None)
     sql_logger.addHandler(sql_handler)
 sql_logger.setLevel(logging.DEBUG)
 
+# --- PayPal specific logging ---
+paypal_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_paypal.log')
+paypal_logger = logging.getLogger('paypal')
+paypal_handler = RotatingFileHandler(paypal_log_path, maxBytes=200000, backupCount=3)
+paypal_handler.setLevel(logging.DEBUG)
+paypal_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
+paypal_handler.setFormatter(paypal_formatter)
+if not any(isinstance(h, type(paypal_handler)) and getattr(h, 'baseFilename', None)==getattr(paypal_handler, 'baseFilename', None) for h in paypal_logger.handlers):
+    paypal_logger.addHandler(paypal_handler)
+paypal_logger.setLevel(logging.DEBUG)
+
 # --- JS Error Logging Endpoint ---
 import os
 from flask import request
@@ -98,6 +109,101 @@ def load_user(user_id):
     """Load user by ID for Flask-Login"""
     return User.query.get(int(user_id))
 
+
+# --- PayPal Login (OpenID Connect) ---
+import requests
+
+
+@app.route('/login/paypal')
+def login_paypal():
+    """Redirect user to PayPal for login (OpenID Connect)"""
+    from urllib.parse import quote_plus
+    paypal_mode = os.environ.get('PAYPAL_MODE', 'sandbox')
+    base = 'https://www.sandbox.paypal.com' if paypal_mode == 'sandbox' else 'https://www.paypal.com'
+    client_id = os.environ.get('PAYPAL_CLIENT_ID')
+    if not client_id:
+        flash('PayPal client not configured.', 'danger')
+        return redirect(url_for('login'))
+
+    redirect_uri = url_for('login_paypal_callback', _external=True)
+    scope = 'openid email profile'
+    auth_url = f"{base}/signin/authorize?client_id={quote_plus(client_id)}&response_type=code&scope={quote_plus(scope)}&redirect_uri={quote_plus(redirect_uri)}"
+    return redirect(auth_url)
+
+
+@app.route('/login/paypal/callback')
+def login_paypal_callback():
+    """Handle PayPal OAuth callback, exchange code for tokens, fetch userinfo, and log user in."""
+    code = request.args.get('code')
+    error = request.args.get('error')
+    if error:
+        flash(f'PayPal login error: {error}', 'danger')
+        return redirect(url_for('login'))
+
+    if not code:
+        flash('Missing authorization code from PayPal.', 'danger')
+        return redirect(url_for('login'))
+
+    paypal_mode = os.environ.get('PAYPAL_MODE', 'sandbox')
+    base = 'https://api.sandbox.paypal.com' if paypal_mode == 'sandbox' else 'https://api.paypal.com'
+    client_id = os.environ.get('PAYPAL_CLIENT_ID')
+    client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
+
+    token_url = f"{base}/v1/identity/openidconnect/tokenservice"
+    redirect_uri = url_for('login_paypal_callback', _external=True)
+
+    # Exchange code for tokens
+    try:
+        resp = requests.post(token_url, auth=(client_id, client_secret), data={
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': redirect_uri
+        })
+        resp.raise_for_status()
+        token_data = resp.json()
+        access_token = token_data.get('access_token')
+    except Exception:
+        app.logger.exception('Failed to exchange PayPal code for token')
+        flash('Failed to complete PayPal login.', 'danger')
+        return redirect(url_for('login'))
+
+    # Fetch userinfo
+    try:
+        ui = requests.get(f"{base}/v1/identity/openidconnect/userinfo/?schema=openid", headers={
+            'Authorization': f'Bearer {access_token}'
+        })
+        ui.raise_for_status()
+        userinfo = ui.json()
+    except Exception:
+        app.logger.exception('Failed to fetch PayPal userinfo')
+        flash('Failed to retrieve PayPal user information.', 'danger')
+        return redirect(url_for('login'))
+
+    email = userinfo.get('email')
+    name = userinfo.get('name') or userinfo.get('given_name') or email
+    # Note: PayPal may return 'email_verified': False for unconfirmed emails
+    email_verified = userinfo.get('email_verified', False)
+
+    if not email:
+        flash('PayPal did not return an email address.', 'danger')
+        return redirect(url_for('login'))
+
+    # Find or create local user account. Allow login even if PayPal email is unverified.
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        # Create a local user with a random password (user can reset later)
+        import uuid
+        from werkzeug.security import generate_password_hash
+        random_pw = str(uuid.uuid4())
+        user = User(email=email, name=name, password=generate_password_hash(random_pw))
+        db.session.add(user)
+        db.session.commit()
+
+    # Log the user in
+    login_user(user)
+    flash('Logged in with PayPal account.', 'success')
+    return redirect(url_for('book_list'))
+
 # Request logging for debugging
 @app.before_request
 def log_request():
@@ -111,6 +217,26 @@ def log_request():
 
     with open('debug_request_log.txt', 'a', encoding='utf-8') as f:
         f.write(f"{datetime.now()} - {request.method} {request.path} - Auth: {current_user.is_authenticated if hasattr(current_user, 'is_authenticated') else 'N/A'}\n")
+
+
+@app.after_request
+def _apply_dev_csp(response):
+    """In development only: relax CSP to allow `unsafe-eval` for testing third-party SDKs.
+
+    This is intentionally applied only when `app.debug` is True to avoid weakening
+    security in production. It appends a dev-friendly policy or merges with an
+    existing Content-Security-Policy header.
+    """
+    if app.debug:
+        existing = response.headers.get('Content-Security-Policy', '')
+        dev_policy = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; object-src 'none'; base-uri 'self'"
+        if existing:
+            # Append dev policy if not already present
+            if "unsafe-eval" not in existing:
+                response.headers['Content-Security-Policy'] = existing + '; ' + dev_policy
+        else:
+            response.headers['Content-Security-Policy'] = dev_policy
+    return response
 
 # Create database tables
 # Flask 2.0+ uses this pattern instead of before_first_request
@@ -390,25 +516,32 @@ def create_payment_route():
             items.append({
                 "name": book.title,
                 "sku": f"book-{book.id}",
-                "price": str(book.price),
-                "currency": "USD",
+                "price": "{:.2f}".format(book.price),
+                "currency": "GBP",
                 "quantity": quantity
             })
     
     # Create PayPal payment using helper function
     return_url = url_for('execute_payment', _external=True)
     cancel_url = url_for('payment_cancelled', _external=True)
-    
-    result = create_payment(items, total, return_url, cancel_url)
-    
-    if result["success"]:
-        # Store payment ID in session
-        session['payment_id'] = result["payment_id"]
-        
-        # Return approval URL to frontend
-        return jsonify({"approval_url": result["approval_url"]})
-    else:
-        return jsonify({"error": result["error"]}), 400
+
+    try:
+        payer_email = getattr(current_user, 'email', None)
+        result = create_payment(items, total, return_url, cancel_url, payer_email=payer_email)
+        paypal_logger.debug(f"create_payment called for user={current_user.email if hasattr(current_user, 'email') else 'unknown'} total={total} items={len(items)} result={result}")
+
+        if result.get("success"):
+            # Store payment ID in session
+            session['payment_id'] = result.get("payment_id")
+
+            # Return approval URL to frontend
+            return jsonify({"approval_url": result.get("approval_url")})
+        else:
+            paypal_logger.warning(f"PayPal create_payment failed: {result}")
+            return jsonify({"error": result.get("error", "unknown error")}), 400
+    except Exception as e:
+        paypal_logger.exception("Exception in create_payment_route")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/execute-payment')
 @login_required
@@ -459,11 +592,16 @@ def execute_payment():
         with open('debug_payment.txt', 'a') as f:
             f.write(f"Calling paypal_execute_payment({payment_id}, {payer_id})\n")
         sys.stdout.flush()
-        result = paypal_execute_payment(payment_id, payer_id)
-        print(f"DEBUG: Result: {result}", flush=True)
-        with open('debug_payment.txt', 'a') as f:
-            f.write(f"Result: {result}\n")
-        sys.stdout.flush()
+        try:
+            result = paypal_execute_payment(payment_id, payer_id)
+            paypal_logger.info(f"paypal_execute_payment called: payment_id={payment_id}, payer_id={payer_id}, user={current_user.email if hasattr(current_user, 'email') else 'unknown'} result={result}")
+            print(f"DEBUG: Result: {result}", flush=True)
+            with open('debug_payment.txt', 'a') as f:
+                f.write(f"Result: {result}\n")
+            sys.stdout.flush()
+        except Exception as e:
+            paypal_logger.exception(f"Exception during paypal_execute_payment(payment_id={payment_id}, payer_id={payer_id})")
+            raise
         
         if result["success"]:
             # Payment successful, create order in database
@@ -521,6 +659,7 @@ def execute_payment():
             flash('Payment execution failed.', 'danger')
             return redirect(url_for('checkout'))
     except Exception as e:
+        paypal_logger.exception("ERROR in execute_payment")
         print(f"ERROR in execute_payment: {str(e)}", flush=True)
         with open('debug_payment.txt', 'a') as f:
             f.write(f"EXCEPTION: {str(e)}\n")

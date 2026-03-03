@@ -811,6 +811,13 @@ def update_address():
     flash('Address updated successfully!', 'success')
     return redirect(url_for('account'))
 
+
+@app.route('/account/edit-address', methods=['GET'])
+@login_required
+def edit_address():
+    """Render a dedicated address edit page."""
+    return render_template('edit_address.html', user=current_user)
+
 @app.route('/account/orders/<int:order_id>')
 @login_required
 def order_detail(order_id):
@@ -837,6 +844,15 @@ def admin_dashboard():
                           total_users=stats['total_users'],
                           total_orders=stats['total_orders'],
                           total_revenue=stats['total_revenue'])
+
+
+@app.route('/admin/orders/<int:order_id>')
+@login_required
+@admin_required
+def admin_order_detail(order_id):
+    """Admin view for a specific order (bypasses user filter)."""
+    order = Order.query.get_or_404(order_id)
+    return render_template('order_detail.html', order=order)
 
 
 @app.route('/admin/users')

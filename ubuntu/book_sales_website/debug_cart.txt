@@ -212,3 +212,58 @@ Cart items: {'2': 1, '3': 1}
   Book ID 2: CORS in Action x 1 = $5.99
   Book ID 3: Advanced C# Programming x 1 = $20.48
 Total books: 2, Total: $26.47
+
+=== CART VIEW at 2026-03-02 21:17:07.144410 ===
+Cart items: {'2': 1, '3': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+  Book ID 3: Advanced C# Programming x 1 = $20.48
+Total books: 2, Total: $26.47
+
+=== CART VIEW at 2026-03-02 21:17:53.142201 ===
+Cart items: {'2': 1, '3': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+  Book ID 3: Advanced C# Programming x 1 = $20.48
+Total books: 2, Total: $26.47
+
+=== CART VIEW at 2026-03-02 21:21:28.578773 ===
+Cart items: {'2': 1, '3': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+  Book ID 3: Advanced C# Programming x 1 = $20.48
+Total books: 2, Total: $26.47
+
+=== CART VIEW at 2026-03-02 21:38:25.676010 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-03-02 21:38:32.013105 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+
+=== CART VIEW at 2026-03-02 22:15:42.073205 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-03-02 22:15:45.380198 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-03-02 22:17:01.248243 ===
+Cart items: {'4': 1}
+  Book ID 4: The Hacker’s Guide To Python x 1 = $18.6
+Total books: 1, Total: $18.6
+
+=== CART VIEW at 2026-03-02 22:17:03.104083 ===
+Cart items: {'4': 1}
+  Book ID 4: The Hacker’s Guide To Python x 1 = $18.6
+Total books: 1, Total: $18.6
+
+=== CART VIEW at 2026-03-02 22:17:04.361452 ===
+Cart items: {'4': 1}
+  Book ID 4: The Hacker’s Guide To Python x 1 = $18.6
+Total books: 1, Total: $18.6
+
+=== CART VIEW at 2026-03-02 22:17:05.205314 ===
+Cart items: {'4': 1}
+  Book ID 4: The Hacker’s Guide To Python x 1 = $18.6
+Total books: 1, Total: $18.6

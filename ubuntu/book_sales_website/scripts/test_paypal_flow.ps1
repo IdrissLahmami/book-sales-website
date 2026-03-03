@@ -1,7 +1,7 @@
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 
-# Login as sample user
-$login = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/login' -Method Post -Body @{email='testuser@example.com'; password='password123'} -WebSession $session -UseBasicParsing
+# Login as sample user (response not used)
+$null = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/login' -Method Post -Body @{email='testuser@example.com'; password='password123'} -WebSession $session -UseBasicParsing
 
 # Trigger create-payment
 $null = Invoke-WebRequest -Uri 'http://127.0.0.1:5000/cart/add/5' -Method Post -WebSession $session -UseBasicParsing -ErrorAction SilentlyContinue

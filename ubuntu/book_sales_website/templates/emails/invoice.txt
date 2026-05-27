@@ -1,0 +1,16 @@
+Invoice for Order #{{ order.id }}
+Date: {{ order.order_date.strftime('%Y-%m-%d %H:%M') if order.order_date else '' }}
+
+Customer: {{ user.name }} <{{ user.email }}>
+{% if user.address %}
+Address: {{ user.address }}, {{ user.city }} {{ user.state }} {{ user.zip_code }}, {{ user.country }}
+{% endif %}
+
+Items:
+{% for item in order.items %}
+- {{ item.book.title }} x{{ item.quantity }} @ £{{ '%.2f'|format(item.price) }} = £{{ '%.2f'|format(item.price * item.quantity) }}
+{% endfor %}
+
+Total: £{{ '%.2f'|format(order.total_amount) }}
+
+Thank you for your purchase.

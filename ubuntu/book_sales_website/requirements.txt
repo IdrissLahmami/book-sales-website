@@ -6,3 +6,4 @@ Werkzeug==3.0.1
 paypalrestsdk==1.13.1
 reportlab==4.0.7
 Pillow
+behave==1.2.6

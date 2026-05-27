@@ -10,7 +10,7 @@ import uuid
 import re
 from flask import send_file, abort, current_app
 from flask_login import current_user
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 
 try:
@@ -99,7 +99,7 @@ def record_download(user_id, book_id, order_id, ip_address):
         user_id=user_id,
         book_id=book_id,
         order_id=order_id,
-        download_date=datetime.utcnow(),
+        download_date=datetime.now(timezone.utc),
         ip_address=ip_address
     )
     

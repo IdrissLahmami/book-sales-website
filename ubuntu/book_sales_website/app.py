@@ -12,6 +12,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file, session, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+import click
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -25,6 +26,7 @@ load_dotenv()
 # Import database models
 from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 from paypal_helpers import create_payment, execute_payment as paypal_execute_payment, get_payment_details
+from mail_helpers import send_order_invoices
 from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename, extract_pdf_metadata
 from pdf_cleaner import clean_pdf_auto, detect_watermark_pages
 from admin_helpers import admin_required, get_admin_stats
@@ -39,12 +41,14 @@ INSTANCE_DB = os.path.normpath(os.path.join(
     os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'instance', 'book_store.db'
 ))
 os.makedirs(os.path.dirname(INSTANCE_DB), exist_ok=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{INSTANCE_DB}"
+default_db_uri = f"sqlite:///{INSTANCE_DB}"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI', default_db_uri)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- Flask Logging Setup ---
 if not app.debug:
-    handler = RotatingFileHandler('debug_flask.log', maxBytes=100000, backupCount=3)
+    flask_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_flask.log')
+    handler = logging.FileHandler(flask_log_path)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
     handler.setFormatter(formatter)
@@ -55,7 +59,7 @@ if not app.debug:
 # --- SQLAlchemy Logging to file (debug) ---
 sql_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_SQLAlchemy.log')
 sql_logger = logging.getLogger('sqlalchemy')
-sql_handler = RotatingFileHandler(sql_log_path, maxBytes=200000, backupCount=3)
+sql_handler = logging.FileHandler(sql_log_path)
 sql_handler.setLevel(logging.DEBUG)
 sql_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
 sql_handler.setFormatter(sql_formatter)
@@ -66,7 +70,7 @@ sql_logger.setLevel(logging.DEBUG)
 # --- PayPal specific logging ---
 paypal_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_paypal.log')
 paypal_logger = logging.getLogger('paypal')
-paypal_handler = RotatingFileHandler(paypal_log_path, maxBytes=200000, backupCount=3)
+paypal_handler = logging.FileHandler(paypal_log_path)
 paypal_handler.setLevel(logging.DEBUG)
 paypal_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
 paypal_handler.setFormatter(paypal_formatter)
@@ -104,10 +108,17 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
+def _session_get_or_404(model, object_id):
+    instance = db.session.get(model, object_id)
+    if instance is None:
+        abort(404)
+    return instance
+
 @login_manager.user_loader
 def load_user(user_id):
     """Load user by ID for Flask-Login"""
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 # --- PayPal Login (OpenID Connect) ---
@@ -270,7 +281,7 @@ def book_list():
 @app.route('/books/<int:book_id>')
 def book_detail(book_id):
     """Display details for a specific book"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     return render_template('book_detail.html', book=book)
 
 @app.route('/books/search')
@@ -318,6 +329,10 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login route"""
+    if current_user.is_authenticated:
+        flash('You are already logged in.', 'info')
+        return redirect(url_for('home'))
+
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -370,7 +385,7 @@ def cart():
     
     # Get book details for each item in cart
     for book_id, quantity in cart_items.items():
-        book = Book.query.get(int(book_id))
+        book = db.session.get(Book, int(book_id))
         if book:
             item_total = book.price * quantity
             book_info = {
@@ -408,7 +423,7 @@ def cart():
 @app.route('/cart/add/<int:book_id>', methods=['POST'])
 def add_to_cart(book_id):
     """Add a book to the shopping cart"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     # Initialize cart if it doesn't exist
     if 'cart' not in session:
@@ -480,7 +495,7 @@ def checkout():
     
     # Get book details for each item in cart
     for book_id, quantity in cart_items.items():
-        book = Book.query.get(int(book_id))
+        book = db.session.get(Book, int(book_id))
         if book:
             item_total = book.price * quantity
             books.append({
@@ -507,7 +522,7 @@ def create_payment_route():
     items = []
     
     for book_id, quantity in cart_items.items():
-        book = Book.query.get(int(book_id))
+        book = db.session.get(Book, int(book_id))
         if book:
             item_total = book.price * quantity
             total += item_total
@@ -554,7 +569,7 @@ def execute_payment():
         f.write(f"\n\n=== EXECUTE PAYMENT CALLED at {datetime.now()} ===\n")
         f.write(f"Request URL: {request.url}\n")
         f.write(f"User authenticated: {current_user.is_authenticated}\n")
-    
+
     try:
         # Get payment ID from both session AND URL parameter
         payment_id = session.get('payment_id')
@@ -619,7 +634,7 @@ def execute_payment():
             
             # Add order items
             for book_id, quantity in cart_items.items():
-                book = Book.query.get(int(book_id))
+                book = db.session.get(Book, int(book_id))
                 if book:
                     item_total = book.price * quantity
                     total_amount += item_total
@@ -648,6 +663,12 @@ def execute_payment():
             
             # Commit all changes
             db.session.commit()
+
+            # Send invoice emails (customer + merchant)
+            try:
+                send_order_invoices(new_order)
+            except Exception:
+                app.logger.exception('Failed to send order invoice emails')
             
             # Clear cart
             session.pop('cart', None)
@@ -701,7 +722,7 @@ def complete_free_order():
     cart_books = []
     total = 0
     for book_id, quantity in cart_items.items():
-        book = Book.query.get(int(book_id))
+        book = db.session.get(Book, int(book_id))
         if book:
             cart_books.append({'book': book, 'quantity': quantity})
             total += book.price * quantity
@@ -745,6 +766,12 @@ def complete_free_order():
     db.session.commit()
     
     flash('Free books added to your library! You can download them now.', 'success')
+    # Send invoice emails for free order as well
+    try:
+        send_order_invoices(order)
+    except Exception:
+        app.logger.exception('Failed to send invoice emails for free order')
+
     return redirect(url_for('order_complete', order_id=order.id))
 
 # Download routes
@@ -754,7 +781,7 @@ def complete_free_order():
 def download_book(book_id, order_id):
     """Handle secure book download after purchase with download limits"""
     # Get the book
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     # Check if user is admin (unlimited downloads)
     is_admin = current_user.email == 'admin@example.com'  # You can make this more sophisticated
@@ -851,8 +878,53 @@ def admin_dashboard():
 @admin_required
 def admin_order_detail(order_id):
     """Admin view for a specific order (bypasses user filter)."""
-    order = Order.query.get_or_404(order_id)
+    order = _session_get_or_404(Order, order_id)
     return render_template('order_detail.html', order=order)
+
+
+# Debug endpoint to trigger invoice emails manually (development only)
+@app.route('/debug/send-invoice/<int:order_id>', methods=['POST'])
+@login_required
+@admin_required
+def debug_send_invoice(order_id):
+    """Debug endpoint: send invoice emails for an existing order.
+
+    Only available when app.debug is True or when ENABLE_DEBUG_EMAIL_ENDPOINT env var is set.
+    Protected by admin_required/login_required.
+    """
+    # Allow explicit enabling in non-debug environments using env var
+    enabled = app.debug or os.environ.get('ENABLE_DEBUG_EMAIL_ENDPOINT', 'false').lower() in ('1', 'true', 'yes')
+    if not enabled:
+        return "Debug endpoint disabled", 403
+
+    order = _session_get_or_404(Order, order_id)
+    try:
+        send_order_invoices(order)
+        return jsonify({'status': 'sent', 'order_id': order_id})
+    except Exception as e:
+        app.logger.exception('Failed to send debug invoice')
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+# CLI command to send invoice for an order ID
+@app.cli.command('send-invoice')
+@click.argument('order_id', type=int)
+def send_invoice_cmd(order_id):
+    """Send invoice emails for ORDER_ID from the command line.
+
+    Usage: flask send-invoice 123
+    """
+    with app.app_context():
+        order = db.session.get(Order, order_id)
+        if not order:
+            print(f'Order {order_id} not found')
+            return
+        try:
+            send_order_invoices(order)
+            print(f'Sent invoices for order {order_id}')
+        except Exception:
+            import traceback
+            traceback.print_exc()
 
 
 @app.route('/admin/users')
@@ -870,7 +942,7 @@ def admin_users():
 def admin_set_temp_password(user_id):
     """Set a temporary password for a user (for testing). The password is hashed before saving."""
     new_password = request.form.get('temp_password', 'Test1234')
-    user = User.query.get_or_404(user_id)
+    user = _session_get_or_404(User, user_id)
     user.password = generate_password_hash(new_password)
     db.session.commit()
     flash(f'Temporary password set for {user.email}: {new_password}', 'success')
@@ -882,7 +954,7 @@ def admin_set_temp_password(user_id):
 @admin_required
 def admin_edit_user(user_id):
     """Edit a user's name and email (admin-only)."""
-    user = User.query.get_or_404(user_id)
+    user = _session_get_or_404(User, user_id)
 
     if request.method == 'POST':
         name = (request.form.get('name') or '').strip()
@@ -1068,7 +1140,7 @@ def admin_add_book():
 @admin_required
 def admin_edit_book(book_id):
     """Admin route to edit an existing book"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     if request.method == 'POST':
         # Check if we should re-extract metadata (when no significant user input)
@@ -1193,7 +1265,7 @@ def admin_edit_book(book_id):
 @admin_required
 def admin_delete_book(book_id):
     """Admin route to delete a book"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     try:
         # Delete associated downloads first (foreign key constraint)
@@ -1229,7 +1301,7 @@ def admin_delete_book(book_id):
 @admin_required
 def admin_clean_pdf(book_id):
     """Admin route to manually clean watermark pages from a book's PDF"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     if not book.pdf_file:
         return jsonify({'error': 'No PDF file for this book'}), 400
@@ -1296,7 +1368,7 @@ def admin_clean_pdf(book_id):
 @admin_required
 def admin_view_pdf(book_id):
     """Admin route to view PDF pages with option to remove individual pages"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     if not book.pdf_file:
         flash('No PDF file for this book', 'danger')
@@ -1324,7 +1396,7 @@ def admin_pdf_page_preview(book_id, page_num):
     from flask import send_file
     import io
     
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     if not book.pdf_file:
         abort(404)
@@ -1367,7 +1439,7 @@ def admin_pdf_page_preview(book_id, page_num):
 @admin_required
 def admin_remove_pdf_page(book_id, page_num):
     """Remove a specific page from a PDF"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     
     if not book.pdf_file:
         return jsonify({'error': 'No PDF file for this book'}), 400
@@ -1436,7 +1508,7 @@ def admin_remove_pdf_page(book_id, page_num):
 @login_required
 def read_book(book_id):
     """Route to view a book's PDF in the browser using PDF.js"""
-    book = Book.query.get_or_404(book_id)
+    book = _session_get_or_404(Book, book_id)
     if not book.pdf_file:
         flash('No PDF file available for this book.', 'danger')
         return redirect(url_for('book_detail', book_id=book_id))

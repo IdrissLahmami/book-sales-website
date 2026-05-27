@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Invoice - Order {{ order.id }}</title>
+    <style>
+      body { font-family: Arial, sans-serif; color: #333; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { padding: 8px; border-bottom: 1px solid #ddd; text-align: left; }
+      .total { font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <h2>Invoice for Order #{{ order.id }}</h2>
+    <p>Date: {{ order.order_date.strftime('%Y-%m-%d %H:%M') if order.order_date else '' }}</p>
+
+    <h3>Customer</h3>
+    <p>{{ user.name }} &lt;{{ user.email }}&gt;</p>
+    {% if user.address %}
+    <p>
+      {{ user.address }}<br>
+      {{ user.city }} {{ user.state }} {{ user.zip_code }}<br>
+      {{ user.country }}
+    </p>
+    {% endif %}
+
+    <h3>Items</h3>
+    <table>
+      <thead>
+        <tr><th>Title</th><th>Qty</th><th>Price</th><th>Line</th></tr>
+      </thead>
+      <tbody>
+        {% for item in order.items %}
+        <tr>
+          <td>{{ item.book.title }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>£{{ '%.2f'|format(item.price) }}</td>
+          <td>£{{ '%.2f'|format(item.price * item.quantity) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr><td colspan="3" class="total">Total</td><td class="total">£{{ '%.2f'|format(order.total_amount) }}</td></tr>
+      </tfoot>
+    </table>
+
+    <p>Thank you for your purchase.</p>
+  </body>
+</html>

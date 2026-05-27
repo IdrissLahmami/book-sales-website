@@ -11,10 +11,14 @@ This module defines the database models for:
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 db = SQLAlchemy()
+
+
+def utc_now():
+    return datetime.now(timezone.utc)
 
 class User(db.Model, UserMixin):
     """User model for customer accounts and authentication"""
@@ -24,7 +28,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(100), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utc_now)
     is_active = db.Column(db.Boolean, default=True)
     is_admin = db.Column(db.Boolean, default=False)
     
@@ -53,7 +57,7 @@ class Book(db.Model):
     category = db.Column(db.String(50), nullable=False, default='programming')  # programming, islamic
     cover_image = db.Column(db.String(255), nullable=True)
     pdf_file = db.Column(db.String(255), nullable=False)  # Path to the PDF file
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=utc_now)
     is_available = db.Column(db.Boolean, default=True)
     
     # Additional book metadata
@@ -75,7 +79,7 @@ class Order(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    order_date = db.Column(db.DateTime, default=datetime.utcnow)
+    order_date = db.Column(db.DateTime, default=utc_now)
     total_amount = db.Column(db.Float, nullable=False)
     status = db.Column(db.String(20), default='pending')  # pending, completed, cancelled
     
@@ -109,7 +113,7 @@ class Payment(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
-    payment_date = db.Column(db.DateTime, default=datetime.utcnow)
+    payment_date = db.Column(db.DateTime, default=utc_now)
     amount = db.Column(db.Float, nullable=False)
     payment_method = db.Column(db.String(50), default='paypal')
     transaction_id = db.Column(db.String(100), nullable=True)  # PayPal transaction ID
@@ -126,7 +130,7 @@ class Download(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
     order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
-    download_date = db.Column(db.DateTime, default=datetime.utcnow)
+    download_date = db.Column(db.DateTime, default=utc_now)
     ip_address = db.Column(db.String(50), nullable=True)  # For security tracking
     
     # Relationships

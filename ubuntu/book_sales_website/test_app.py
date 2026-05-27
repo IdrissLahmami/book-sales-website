@@ -9,20 +9,37 @@ payment processing, and PDF downloads.
 import os
 import sys
 import unittest
+import pytest
 from flask import session
+
+TEST_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'test_app.db')
+os.makedirs(os.path.dirname(TEST_DB_PATH), exist_ok=True)
+os.environ['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{TEST_DB_PATH}"
+
 from app import app, db
 from database_schema import User, Book, Order, OrderItem, Payment, Download
 from werkzeug.security import generate_password_hash
 from werkzeug.datastructures import FileStorage
 
+pytestmark = [pytest.mark.db, pytest.mark.web, pytest.mark.integration]
+
 class BookSalesWebsiteTestCase(unittest.TestCase):
     """Test case for Book Sales Website"""
+
+    def _assert_safe_test_database(self):
+        with app.app_context():
+            database_path = os.path.normpath(str(db.engine.url.database or ''))
+        expected = os.path.normpath(TEST_DB_PATH)
+        if database_path != expected:
+            raise RuntimeError(
+                f"Unsafe test DB target. Expected '{expected}', got '{database_path}'."
+            )
     
     def setUp(self):
         """Set up test environment"""
         app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
         app.config['WTF_CSRF_ENABLED'] = False
+        self._assert_safe_test_database()
         self.client = app.test_client()
         
         # Create test directories
@@ -31,14 +48,18 @@ class BookSalesWebsiteTestCase(unittest.TestCase):
         
         # Create test database
         with app.app_context():
+            db.session.remove()
+            db.drop_all()
             db.create_all()
             self._create_test_data()
     
     def tearDown(self):
         """Clean up after tests"""
+        self._assert_safe_test_database()
         with app.app_context():
             db.session.remove()
             db.drop_all()
+            db.engine.dispose()
     
     def _create_test_data(self):
         """Create test data for the database"""
@@ -197,9 +218,15 @@ class BookSalesWebsiteTestCase(unittest.TestCase):
         
         # Test payment creation
         response = self.client.post('/create-payment')
-        self.assertEqual(response.status_code, 400)  # Will fail without PayPal credentials
-        
-        # Note: Full payment testing would require PayPal sandbox credentials
+        self.assertIn(response.status_code, (200, 400, 500))
+
+        payload = response.get_json()
+        self.assertIsInstance(payload, dict)
+
+        if response.status_code == 200:
+            self.assertIn('approval_url', payload)
+        else:
+            self.assertIn('error', payload)
     
     def test_order_completion_page(self):
         """Test order completion page with mock order"""

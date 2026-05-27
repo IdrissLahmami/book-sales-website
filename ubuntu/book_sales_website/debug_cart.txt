@@ -267,3 +267,284 @@ Total books: 1, Total: $18.6
 Cart items: {'4': 1}
   Book ID 4: The Hacker’s Guide To Python x 1 = $18.6
 Total books: 1, Total: $18.6
+
+=== CART VIEW at 2026-03-03 22:03:16.639289 ===
+Cart items: {'3': 1}
+  Book ID 3: Advanced C# Programming x 1 = $20.48
+Total books: 1, Total: $20.48
+
+=== CART VIEW at 2026-03-20 15:48:47.530702 ===
+Cart items: {'3': 1}
+  Book ID 3: Advanced C# Programming x 1 = $20.48
+Total books: 1, Total: $20.48
+
+=== CART VIEW at 2026-03-31 12:33:15.602900 ===
+Cart items: {'2': 1}
+  Book ID 2: CORS in Action x 1 = $5.99
+Total books: 1, Total: $5.99
+CART VIEW BLOCKED (anonymous) at 2026-05-26 17:03:13.958882
+
+=== CART VIEW at 2026-05-26 17:05:53.253193 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+CART VIEW BLOCKED (anonymous) at 2026-05-26 17:06:11.306954
+CART VIEW BLOCKED (anonymous) at 2026-05-26 17:07:03.237512
+
+=== CART VIEW at 2026-05-26 17:07:48.460131 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+
+=== CART VIEW at 2026-05-26 17:08:03.135477 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+
+=== CART VIEW at 2026-05-26 17:08:11.053978 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+
+=== CART VIEW at 2026-05-26 17:08:19.089676 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+
+=== CART VIEW at 2026-05-26 17:08:27.090635 ===
+Cart items: {'1': 1}
+  Book ID 1: CHAPTER 1 x 1 = $5.0
+Total books: 1, Total: $5.0
+
+=== CART VIEW at 2026-05-27 11:10:33.927027 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:10:33.948900 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:10:33.956433 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 11:10:33.963494 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 11:10:34.319289 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:10:35.779080 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:15:12.351466 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:15:22.617583 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:15:22.628618 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:15:22.636264 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 11:15:22.642840 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 11:15:22.978705 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:15:24.274433 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:19:10.796104 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:19:10.811108 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:19:10.819973 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 11:19:10.829945 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 11:19:11.225980 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:19:12.712618 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:20:07.543840 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:20:07.555581 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:20:07.563685 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 11:20:07.570644 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 11:20:07.897634 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 11:20:09.186259 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:01:54.610678 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:01:54.623922 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:01:54.630295 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 12:01:54.636972 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 12:01:54.979439 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:01:56.497467 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:03:34.055534 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:03:34.066338 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:03:34.072744 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 12:03:34.079202 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 12:03:34.425372 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:03:35.736299 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:11:27.237284 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:11:27.248393 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:11:27.254839 ===
+Cart items: {'1': 2}
+  Book ID 1: Test Book 1 x 2 = $19.98
+Total books: 1, Total: $19.98
+
+=== CART VIEW at 2026-05-27 12:11:27.261412 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-05-27 12:11:27.615668 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 12:11:28.965484 ===
+Cart items: {'1': 1}
+  Book ID 1: Test Book 1 x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 13:38:32.438773 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 13:39:06.602874 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 13:39:21.424867 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 13:39:34.555187 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-05-27 13:39:49.316931 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99

@@ -29,7 +29,7 @@
                 </ul>
                 <form class="d-flex me-2" action="{{ url_for('book_search') }}" method="get">
                     <input class="form-control me-2" type="search" name="query" placeholder="Search books..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit">Search</button>
+                    <button class="btn btn-outline-light" type="button" onclick="this.form.submit()">Search</button>
                 </form>
                 <ul class="navbar-nav">
                     <!-- DEBUG: Auth={{ current_user.is_authenticated }}, Admin={{ current_user.is_admin if current_user.is_authenticated else 'N/A' }} -->

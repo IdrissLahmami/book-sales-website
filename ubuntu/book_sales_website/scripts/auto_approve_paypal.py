@@ -15,8 +15,8 @@ except Exception as e:
 ROOT = Path(__file__).resolve().parents[1]
 LOG_PATH = ROOT / 'debug_paypal.log'
 # Sandbox buyer credentials (created by create_john_doe_user.py)
-SANDBOX_EMAIL = os.environ.get('SANDBOX_EMAIL', 'John.Doe997@personal.example.com')
-SANDBOX_PASSWORD = os.environ.get('SANDBOX_PASSWORD', 'test123')
+SANDBOX_EMAIL = os.environ.get('SANDBOX_EMAIL', 'irluk2011@outlook.com')
+SANDBOX_PASSWORD = os.environ.get('SANDBOX_PASSWORD', 'Access#001')
 
 # Extract latest approval URL from debug_paypal.log
 if not LOG_PATH.exists():

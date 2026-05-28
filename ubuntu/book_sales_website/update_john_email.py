@@ -18,18 +18,18 @@ def update_john_doe_email():
         if old_user:
             print(f"Found user: {old_user.email} ({old_user.name})")
             
-            # Check if 997 email already exists
-            existing_997 = User.query.filter_by(email='John.Doe997@personal.example.com').first()
+            # Check if target email already exists
+            existing_997 = User.query.filter_by(email='irluk2011@outlook.com').first()
             if existing_997:
-                print("ERROR: John.Doe997@personal.example.com already exists!")
+                print("ERROR: irluk2011@outlook.com already exists!")
                 return
             
             # Update the email
-            old_user.email = 'John.Doe997@personal.example.com'
+            old_user.email = 'irluk2011@outlook.com'
             
             try:
                 db.session.commit()
-                print("SUCCESS: Updated email from John.Doe998@personal.example.com to John.Doe997@personal.example.com")
+                print("SUCCESS: Updated email from John.Doe998@personal.example.com to irluk2011@outlook.com")
             except Exception as e:
                 db.session.rollback()
                 print(f"ERROR: Failed to update email - {e}")

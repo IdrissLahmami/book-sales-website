@@ -17,8 +17,8 @@ python .\home\ubuntu\book_sales_website\scripts/list_users.py --include-password
   },
   {
     "id": 2,
-    "email": "irl2010@live.co.uk",
-    "password": "test123",
+    "email": "irluk2011@outlook.com",
+    "password": "Access#001",
     "name": "Joe Bloggs",
     "created_at": "2026-02-25 21:01:33.553732",
     "is_active": 1,

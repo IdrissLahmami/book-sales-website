@@ -15,8 +15,8 @@ from app import app
 def create_john_doe_user():
     """Create John Doe PayPal test user in the database"""
     with app.app_context():
-        email = 'John.Doe997@personal.example.com'
-        password = 'test123'
+        email = 'irluk2011@outlook.com'
+        password = 'Access#001'
         name = 'John Doe'
         address = '2211 N First St, San Jose, CA 95131'
 

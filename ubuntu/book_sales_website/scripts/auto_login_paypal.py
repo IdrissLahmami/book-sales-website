@@ -8,7 +8,7 @@ except Exception:
     sys.exit(2)
 
 ROOT = Path(__file__).resolve().parents[1]
-SANDBOX_EMAIL = os.environ.get('SANDBOX_EMAIL', 'John.Doe997@personal.example.com')
+SANDBOX_EMAIL = os.environ.get('SANDBOX_EMAIL', 'irluk2011@outlook.com')
 SANDBOX_PASSWORD = os.environ.get('SANDBOX_PASSWORD', 'Access#001')
 LOGIN_URL = os.environ.get('LOCAL_LOGIN_PAYPAL_URL', 'http://127.0.0.1:5000/login/paypal')
 

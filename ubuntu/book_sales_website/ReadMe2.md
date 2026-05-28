@@ -17,8 +17,8 @@ Type: Regular customer (not admin)
 PayPal Test Account (John Doe)
 From your PayPal debug logs:
 
-Email: John.Doe997@personal.example.com
-password: test123
+Email: irluk2011@outlook.com
+password: Access#001
 Name: John Doe
 Type: PayPal sandbox buyer account
 Address: 2211 N First St, San Jose, CA 95131

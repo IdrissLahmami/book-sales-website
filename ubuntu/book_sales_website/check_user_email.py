@@ -23,16 +23,16 @@ def check_user_email():
         else:
             print("NOT FOUND: John.Doe998@personal.example.com")
         
-        # Also check John.Doe997@personal.example.com
-        user997 = User.query.filter_by(email='John.Doe997@personal.example.com').first()
+        # Also check irluk2011@outlook.com
+        user997 = User.query.filter_by(email='irluk2011@outlook.com').first()
         
         if user997:
-            print("\nFOUND: John.Doe997@personal.example.com")
+            print("\nFOUND: irluk2011@outlook.com")
             print(f"  Name: {user997.name}")
             print(f"  ID: {user997.id}")
             print(f"  Admin: {user997.is_admin}")
         else:
-            print("\nNOT FOUND: John.Doe997@personal.example.com")
+            print("\nNOT FOUND: irluk2011@outlook.com")
         
         # Show all users for reference
         print(f"\nTotal users in database: {User.query.count()}")

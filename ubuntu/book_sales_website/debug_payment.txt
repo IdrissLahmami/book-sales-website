@@ -62,3 +62,83 @@ payment_id from URL: None
 payer_id: None
 Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
 ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 13:54:32.612526 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 14:12:39.420195 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 14:13:46.763334 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 14:14:40.383411 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 16:05:53.610314 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 16:06:47.885376 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 16:10:47.662487 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info
+
+
+=== EXECUTE PAYMENT CALLED at 2026-05-27 16:12:06.677303 ===
+Request URL: http://127.0.0.1:5000/execute-payment
+User authenticated: True
+payment_id from session: None
+payment_id from URL: None
+payer_id: None
+Session data: {'_fresh': True, '_id': '56d9871617bc7b6a19f4b82ad75c1b6afeecf92051b6726cbbaf62a88dc932390a59cbbfd2b495d560b30d155412acd4f438c5497cb8caa88bf3a105d0eccd6c', '_user_id': '1', 'cart': {'1': 1}}
+ERROR: Missing payment info

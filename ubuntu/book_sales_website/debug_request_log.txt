@@ -6486,3 +6486,10 @@ e
 2026-05-28 17:20:18.629511 - GET /static/js/main.js - Auth: False
 2026-05-28 17:20:18.629621 - GET /static/css/style.css - Auth: False
 2026-05-28 17:20:18.809210 - GET /favicon.ico - Auth: False
+2026-05-31 11:56:20.652101 - GET /account - Auth: False
+2026-05-31 11:56:20.675524 - GET /login - Auth: False
+2026-05-31 11:56:20.724433 - GET /static/js/main.js - Auth: False
+2026-05-31 11:56:20.724630 - GET /static/css/style.css - Auth: False
+2026-05-31 11:56:57.446039 - POST /login - Auth: False
+2026-05-31 11:56:57.656338 - GET /static/css/style.css - Auth: False
+2026-05-31 11:56:57.656579 - GET /static/js/main.js - Auth: False

@@ -867,3 +867,107 @@ Total books: 1, Total: $24.68
 Cart items: {'14': 3}
   Book ID 14: UI Thumbnail Test Book x 3 = $37.019999999999996
 Total books: 1, Total: $37.019999999999996
+
+=== CART VIEW at 2026-06-11 15:37:25.984754 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:38:52.030316 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:38:53.160695 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:40:47.023435 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:40:48.172278 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:54:19.222369 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:54:20.367725 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:57:49.263644 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:57:50.395523 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 15:59:59.769429 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:00:00.900593 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:01:27.780178 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:01:28.922304 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:03:51.789389 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:03:52.917197 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:06:14.028576 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:06:15.181113 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:09:49.875061 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-11 16:09:51.057109 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99

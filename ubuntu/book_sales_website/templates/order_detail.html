@@ -47,22 +47,23 @@
                     </thead>
                     <tbody>
                         {% for item in order.items %}
+                        {% set book = item.book %}
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    {% if item.book.cover_image %}
-                                    <img src="{{ url_for('static', filename='uploads/' + item.book.cover_image) }}" class="img-fluid rounded me-3" alt="{{ item.book.title }}" style="width: 50px;">
+                                    {% if book and book.cover_image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + book.cover_image) }}" class="img-fluid rounded me-3" alt="{{ book.title }}" style="width: 50px;" data-fallback="{{ url_for('static', filename='img/book-placeholder.jpg') }}" onerror="this.onerror=null;this.src=this.dataset.fallback;">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" class="img-fluid rounded me-3" alt="Book cover placeholder" style="width: 50px;">
                                     {% endif %}
                                     <div>
-                                        <h6 class="mb-0">{{ item.book.title }}</h6>
-                                        <small class="text-muted">{{ item.book.author }}</small>
+                                        <h6 class="mb-0">{{ book.title if book else 'Book unavailable' }}</h6>
+                                        <small class="text-muted">{{ book.author if book else 'Removed from catalog' }}</small>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                {% if item.book.category == 'islamic' %}
+                                {% if item.price == 0 %}
                                     FREE
                                 {% else %}
                                     £{{ "%.2f"|format(item.price) }}
@@ -70,7 +71,7 @@
                             </td>
                             <td>{{ item.quantity }}</td>
                             <td class="text-end">
-                                {% if item.book.price == 0 %}
+                                {% if item.price == 0 %}
                                     FREE
                                 {% else %}
                                     £{{ "%.2f"|format(item.price * item.quantity) }}
@@ -78,13 +79,14 @@
                             </td>
                             <td>
                                 {% if order.status == 'completed' %}
-                                    {% set download_count = item.book.downloads|selectattr('user_id', 'equalto', current_user.id)|selectattr('order_id', 'equalto', order.id)|list|length %}
+                                    {% if book %}
+                                    {% set download_count = book.downloads|selectattr('user_id', 'equalto', current_user.id)|selectattr('order_id', 'equalto', order.id)|list|length %}
                                     {% if current_user.email == 'admin@example.com' %}
-                                        <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="btn btn-sm btn-success">
+                                        <a href="{{ url_for('download_book', book_id=book.id, order_id=order.id) }}" class="btn btn-sm btn-success">
                                             <i class="bi bi-download"></i> Download (Admin)
                                         </a>
                                     {% elif download_count == 0 %}
-                                        <a href="{{ url_for('download_book', book_id=item.book.id, order_id=order.id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ url_for('download_book', book_id=book.id, order_id=order.id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-download"></i> Download
                                         </a>
                                     {% else %}
@@ -93,6 +95,9 @@
                                         </span>
                                         <br>
                                         <small class="text-muted">Download limit reached</small>
+                                    {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-secondary">Unavailable</span>
                                     {% endif %}
                                 {% else %}
                                     <span class="badge bg-warning">Pending Payment</span>
@@ -114,7 +119,11 @@
     </div>
     
     <div class="text-center">
-        <a href="{{ url_for('account') }}" class="btn btn-outline-primary">Back to Account</a>
+        {% set from_admin_users = request.referrer and '/admin/users' in request.referrer %}
+        {% set back_href = request.referrer if request.referrer else url_for('account') %}
+        <a href="{{ back_href }}" class="btn btn-outline-primary">
+            {{ 'Back to Registered Users' if from_admin_users else 'Back to Account' }}
+        </a>
     </div>
 </div>
 {% endblock %}

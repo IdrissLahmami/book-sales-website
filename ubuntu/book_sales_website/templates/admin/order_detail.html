@@ -50,22 +50,23 @@
                     </thead>
                     <tbody>
                         {% for item in order.items %}
+                        {% set book = item.book %}
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    {% if item.book.cover_image %}
-                                    <img src="{{ url_for('static', filename='uploads/' + item.book.cover_image) }}" class="img-fluid rounded me-3" alt="{{ item.book.title }}" style="width: 50px;">
+                                    {% if book and book.cover_image %}
+                                    <img src="{{ url_for('static', filename='uploads/' + book.cover_image) }}" class="img-fluid rounded me-3" alt="{{ book.title }}" style="width: 50px;" data-fallback="{{ url_for('static', filename='img/book-placeholder.jpg') }}" onerror="this.onerror=null;this.src=this.dataset.fallback;">
                                     {% else %}
                                     <img src="{{ url_for('static', filename='img/book-placeholder.jpg') }}" class="img-fluid rounded me-3" alt="Book cover placeholder" style="width: 50px;">
                                     {% endif %}
                                     <div>
-                                        <h6 class="mb-0">{{ item.book.title }}</h6>
-                                        <small class="text-muted">{{ item.book.author }}</small>
+                                        <h6 class="mb-0">{{ book.title if book else 'Book unavailable' }}</h6>
+                                        <small class="text-muted">{{ book.author if book else 'Removed from catalog' }}</small>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                {% if item.book.category == 'islamic' %}
+                                {% if item.price == 0 %}
                                     FREE
                                 {% else %}
                                     £{{ "%.2f"|format(item.price) }}
@@ -73,7 +74,7 @@
                             </td>
                             <td>{{ item.quantity }}</td>
                             <td class="text-end">
-                                {% if item.book.price == 0 %}
+                                {% if item.price == 0 %}
                                     FREE
                                 {% else %}
                                     £{{ "%.2f"|format(item.price * item.quantity) }}

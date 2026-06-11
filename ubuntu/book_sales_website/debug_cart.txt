@@ -804,3 +804,66 @@ Cart items: {'1': 1, '2': 1}
   Book ID 1: E2E Seed Book x 1 = $9.99
   Book ID 2: E2E Free Book x 1 = $0.0
 Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:20:41.515486 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:20:42.666314 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:24:33.565170 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:24:34.705129 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:34:00.924349 ===
+Cart items: {'1': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+Total books: 1, Total: $9.99
+
+=== CART VIEW at 2026-06-10 16:34:02.148857 ===
+Cart items: {'1': 1, '2': 1}
+  Book ID 1: E2E Seed Book x 1 = $9.99
+  Book ID 2: E2E Free Book x 1 = $0.0
+Total books: 2, Total: $9.99
+
+=== CART VIEW at 2026-06-11 08:57:35.456505 ===
+Cart items: {'7': 1}
+  Book ID 7: Web Services Testing x 1 = $5.99
+Total books: 1, Total: $5.99
+CART VIEW BLOCKED (anonymous) at 2026-06-11 09:31:32.349498
+
+=== CART VIEW at 2026-06-11 10:06:37.024722 ===
+Cart items: {'7': 2}
+  Book ID 7: Kalamullah.Com | Sahih al-Bukhari Vol. 1 - Ahadith 1-875 x 2 = $0.0
+Total books: 1, Total: $0.0
+
+=== CART VIEW at 2026-06-11 10:06:39.576907 ===
+Cart items: {}
+Total books: 0, Total: $0
+
+=== CART VIEW at 2026-06-11 10:07:02.680073 ===
+Cart items: {'14': 1}
+  Book ID 14: UI Thumbnail Test Book x 1 = $12.34
+Total books: 1, Total: $12.34
+
+=== CART VIEW at 2026-06-11 10:07:07.142951 ===
+Cart items: {'14': 2}
+  Book ID 14: UI Thumbnail Test Book x 2 = $24.68
+Total books: 1, Total: $24.68
+
+=== CART VIEW at 2026-06-11 10:07:08.916290 ===
+Cart items: {'14': 3}
+  Book ID 14: UI Thumbnail Test Book x 3 = $37.019999999999996
+Total books: 1, Total: $37.019999999999996

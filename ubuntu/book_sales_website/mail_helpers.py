@@ -3,6 +3,7 @@ import asyncio
 import shlex
 import smtplib
 from html import escape
+from urllib.parse import quote
 from email.message import EmailMessage
 from flask import render_template, current_app
 from database_schema import User
@@ -255,15 +256,42 @@ def _format_order_date(order):
     return ''
 
 
+def _get_book_icon_url():
+    # Force a public PNG for maximum compatibility across email clients.
+    return 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f4da.png'
+
+
 def _build_resend_invoice_variables(order, user, pathway):
     items_rows = []
+    icon_url = escape(_get_book_icon_url(), quote=True)
+    asset_base = (os.environ.get('EMAIL_ASSET_BASE_URL') or '').strip().rstrip('/')
+    log_cover_sources = (os.environ.get('EMAIL_DEBUG_COVER_SOURCES', 'false').lower() in ('1', 'true', 'yes'))
     for item in getattr(order, 'items', []) or []:
-        title = escape(getattr(getattr(item, 'book', None), 'title', 'Book'))
+        book = getattr(item, 'book', None)
+        title = escape(getattr(book, 'title', 'Book'))
         qty = int(getattr(item, 'quantity', 0) or 0)
         price = float(getattr(item, 'price', 0) or 0)
         line_total = price * qty
+
+        cover_src = icon_url
+        cover_name = (getattr(book, 'cover_image', None) or '').strip() if book else ''
+        if cover_name and asset_base:
+            cover_src = escape(f"{asset_base}/static/uploads/{quote(cover_name)}", quote=True)
+
+        if log_cover_sources:
+            current_app.logger.info(
+                "Invoice cover source order=%s book=%s cover_image=%s source=%s",
+                getattr(order, 'id', ''),
+                getattr(book, 'id', ''),
+                cover_name or '(none)',
+                cover_src,
+            )
+
         items_rows.append(
-            f"<tr><td style='padding:10px;border-bottom:1px solid #e5e7eb'>{title}</td>"
+            f"<tr><td style='padding:10px;border-bottom:1px solid #e5e7eb'>"
+            f"<img src='{cover_src}' alt='Book Cover' width='24' height='32' "
+            f"style='margin-right:6px;vertical-align:middle;display:inline-block;border-radius:3px;object-fit:cover;' />"
+            f"<span style='vertical-align:middle;'>{title}</span></td>"
             f"<td style='padding:10px;border-bottom:1px solid #e5e7eb;text-align:center'>{qty}</td>"
             f"<td style='padding:10px;border-bottom:1px solid #e5e7eb;text-align:right'>£{price:.2f}</td>"
             f"<td style='padding:10px;border-bottom:1px solid #e5e7eb;text-align:right'>£{line_total:.2f}</td></tr>"

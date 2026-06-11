@@ -140,7 +140,7 @@
                                     <td>{{ order.order_reference }}</td>
                                     <td>{{ order.customer.name }}</td>
                                     <td>{{ order.order_date.strftime('%Y-%m-%d') }}</td>
-                                    <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                    <td>£{{ "%.2f"|format(order.total_amount) }}</td>
                                     <td>
                                         {% if order.status == 'completed' %}
                                         <span class="badge bg-success">Completed</span>
@@ -196,7 +196,7 @@
                         <div class="col-md-6 mb-3">
                             <div class="card bg-warning text-dark">
                                 <div class="card-body text-center">
-                                    <h3>${{ "%.2f"|format(total_revenue) }}</h3>
+                                    <h3>£{{ "%.2f"|format(total_revenue) }}</h3>
                                     <p class="mb-0">Total Revenue</p>
                                 </div>
                             </div>

@@ -12,7 +12,6 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_file, session, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-import click
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
@@ -26,7 +25,6 @@ load_dotenv()
 # Import database models
 from database_schema import db, User, Book, Order, OrderItem, Payment, Download
 from paypal_helpers import create_payment, execute_payment as paypal_execute_payment, get_payment_details
-from mail_helpers import send_order_invoices
 from pdf_helpers import purchase_required, record_download, get_download_path, generate_secure_filename, extract_pdf_metadata
 from pdf_cleaner import clean_pdf_auto, detect_watermark_pages
 from admin_helpers import admin_required, get_admin_stats
@@ -37,46 +35,16 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 app = Flask(__name__)
-INSTANCE_DB = os.path.normpath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'instance', 'book_store.db'
-))
-os.makedirs(os.path.dirname(INSTANCE_DB), exist_ok=True)
-default_db_uri = f"sqlite:///{INSTANCE_DB}"
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI', default_db_uri)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # --- Flask Logging Setup ---
 if not app.debug:
-    flask_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_flask.log')
-    handler = logging.FileHandler(flask_log_path)
+    handler = RotatingFileHandler('flask.log', maxBytes=100000, backupCount=3)
     handler.setLevel(logging.INFO)
     formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
     app.logger.setLevel(logging.INFO)
     app.logger.info('Flask logging is set up.')
-
-# --- SQLAlchemy Logging to file (debug) ---
-sql_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_SQLAlchemy.log')
-sql_logger = logging.getLogger('sqlalchemy')
-sql_handler = logging.FileHandler(sql_log_path)
-sql_handler.setLevel(logging.DEBUG)
-sql_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
-sql_handler.setFormatter(sql_formatter)
-if not any(isinstance(h, type(sql_handler)) and getattr(h, 'baseFilename', None)==getattr(sql_handler, 'baseFilename', None) for h in sql_logger.handlers):
-    sql_logger.addHandler(sql_handler)
-sql_logger.setLevel(logging.DEBUG)
-
-# --- PayPal specific logging ---
-paypal_log_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'debug_paypal.log')
-paypal_logger = logging.getLogger('paypal')
-paypal_handler = logging.FileHandler(paypal_log_path)
-paypal_handler.setLevel(logging.DEBUG)
-paypal_formatter = logging.Formatter('[%(asctime)s] %(levelname)s in %(module)s: %(message)s')
-paypal_handler.setFormatter(paypal_formatter)
-if not any(isinstance(h, type(paypal_handler)) and getattr(h, 'baseFilename', None)==getattr(paypal_handler, 'baseFilename', None) for h in paypal_logger.handlers):
-    paypal_logger.addHandler(paypal_handler)
-paypal_logger.setLevel(logging.DEBUG)
 
 # --- JS Error Logging Endpoint ---
 import os
@@ -91,6 +59,8 @@ def js_log():
         f.write(f"[{log_type.upper()}] {log_message}\n")
     return {'status': 'ok'}
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-key-for-development')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///booksales.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/uploads')
 app.config['PDF_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static/pdfs')
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max upload size
@@ -108,146 +78,17 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-
-def _session_get_or_404(model, object_id):
-    instance = db.session.get(model, object_id)
-    if instance is None:
-        abort(404)
-    return instance
-
 @login_manager.user_loader
 def load_user(user_id):
     """Load user by ID for Flask-Login"""
-    return db.session.get(User, int(user_id))
-
-
-# --- PayPal Login (OpenID Connect) ---
-import requests
-
-
-@app.route('/login/paypal')
-def login_paypal():
-    """Redirect user to PayPal for login (OpenID Connect)"""
-    from urllib.parse import quote_plus
-    paypal_mode = os.environ.get('PAYPAL_MODE', 'sandbox')
-    base = 'https://www.sandbox.paypal.com' if paypal_mode == 'sandbox' else 'https://www.paypal.com'
-    client_id = os.environ.get('PAYPAL_CLIENT_ID')
-    if not client_id:
-        flash('PayPal client not configured.', 'danger')
-        return redirect(url_for('login'))
-
-    redirect_uri = url_for('login_paypal_callback', _external=True)
-    scope = 'openid email profile'
-    auth_url = f"{base}/signin/authorize?client_id={quote_plus(client_id)}&response_type=code&scope={quote_plus(scope)}&redirect_uri={quote_plus(redirect_uri)}"
-    return redirect(auth_url)
-
-
-@app.route('/login/paypal/callback')
-def login_paypal_callback():
-    """Handle PayPal OAuth callback, exchange code for tokens, fetch userinfo, and log user in."""
-    code = request.args.get('code')
-    error = request.args.get('error')
-    if error:
-        flash(f'PayPal login error: {error}', 'danger')
-        return redirect(url_for('login'))
-
-    if not code:
-        flash('Missing authorization code from PayPal.', 'danger')
-        return redirect(url_for('login'))
-
-    paypal_mode = os.environ.get('PAYPAL_MODE', 'sandbox')
-    base = 'https://api.sandbox.paypal.com' if paypal_mode == 'sandbox' else 'https://api.paypal.com'
-    client_id = os.environ.get('PAYPAL_CLIENT_ID')
-    client_secret = os.environ.get('PAYPAL_CLIENT_SECRET')
-
-    token_url = f"{base}/v1/identity/openidconnect/tokenservice"
-    redirect_uri = url_for('login_paypal_callback', _external=True)
-
-    # Exchange code for tokens
-    try:
-        resp = requests.post(token_url, auth=(client_id, client_secret), data={
-            'grant_type': 'authorization_code',
-            'code': code,
-            'redirect_uri': redirect_uri
-        })
-        resp.raise_for_status()
-        token_data = resp.json()
-        access_token = token_data.get('access_token')
-    except Exception:
-        app.logger.exception('Failed to exchange PayPal code for token')
-        flash('Failed to complete PayPal login.', 'danger')
-        return redirect(url_for('login'))
-
-    # Fetch userinfo
-    try:
-        ui = requests.get(f"{base}/v1/identity/openidconnect/userinfo/?schema=openid", headers={
-            'Authorization': f'Bearer {access_token}'
-        })
-        ui.raise_for_status()
-        userinfo = ui.json()
-    except Exception:
-        app.logger.exception('Failed to fetch PayPal userinfo')
-        flash('Failed to retrieve PayPal user information.', 'danger')
-        return redirect(url_for('login'))
-
-    email = userinfo.get('email')
-    name = userinfo.get('name') or userinfo.get('given_name') or email
-    # Note: PayPal may return 'email_verified': False for unconfirmed emails
-    email_verified = userinfo.get('email_verified', False)
-
-    if not email:
-        flash('PayPal did not return an email address.', 'danger')
-        return redirect(url_for('login'))
-
-    # Find or create local user account. Allow login even if PayPal email is unverified.
-    user = User.query.filter_by(email=email).first()
-    if not user:
-        # Create a local user with a random password (user can reset later)
-        import uuid
-        from werkzeug.security import generate_password_hash
-        random_pw = str(uuid.uuid4())
-        user = User(email=email, name=name, password=generate_password_hash(random_pw))
-        db.session.add(user)
-        db.session.commit()
-
-    # Log the user in
-    login_user(user)
-    flash('Logged in with PayPal account.', 'success')
-    return redirect(url_for('book_list'))
+    return User.query.get(int(user_id))
 
 # Request logging for debugging
 @app.before_request
 def log_request():
     """Log all requests for debugging"""
-    # Ensure any legacy file is renamed to debug_request_log.txt
-    try:
-        if os.path.exists('request_log.txt') and not os.path.exists('debug_request_log.txt'):
-            os.rename('request_log.txt', 'debug_request_log.txt')
-    except Exception:
-        pass
-
-    with open('debug_request_log.txt', 'a', encoding='utf-8') as f:
+    with open('request_log.txt', 'a') as f:
         f.write(f"{datetime.now()} - {request.method} {request.path} - Auth: {current_user.is_authenticated if hasattr(current_user, 'is_authenticated') else 'N/A'}\n")
-
-
-@app.after_request
-def _apply_dev_csp(response):
-    """In development only: relax CSP to allow `unsafe-eval` for testing third-party SDKs.
-
-    This is intentionally applied only when `app.debug` is True to avoid weakening
-    security in production. It appends a dev-friendly policy or merges with an
-    existing Content-Security-Policy header.
-    """
-    if app.debug:
-        existing = response.headers.get('Content-Security-Policy', '')
-        dev_policy = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; object-src 'none'; base-uri 'self'"
-        if existing:
-            # Append dev policy if not already present
-            if "unsafe-eval" not in existing:
-                response.headers['Content-Security-Policy'] = existing + '; ' + dev_policy
-        else:
-            response.headers['Content-Security-Policy'] = dev_policy
-    return response
 
 # Create database tables
 # Flask 2.0+ uses this pattern instead of before_first_request
@@ -258,11 +99,7 @@ with app.app_context():
 @app.route('/')
 def home():
     """Home page route - displays featured books"""
-    with open('debug_home.txt', 'a') as f:
-        f.write(f"HOME ROUTE ACCESSED at {datetime.now()}\n")
     books = Book.query.filter_by(is_available=True).limit(6).all()
-    with open('debug_home.txt', 'a') as f:
-        f.write(f"Books found: {len(books)}\n")
     return render_template('home.html', books=books)
 
 # Book routes
@@ -271,7 +108,7 @@ def book_list():
     """List all available books with optional category filtering"""
     category = request.args.get('category')
     
-    if category and category in ['general', 'programming', 'islamic', 'test_automation']:
+    if category and category in ['programming', 'islamic', 'test_automation']:
         books = Book.query.filter_by(is_available=True, category=category).all()
     else:
         books = Book.query.filter_by(is_available=True).all()
@@ -281,22 +118,27 @@ def book_list():
 @app.route('/books/<int:book_id>')
 def book_detail(book_id):
     """Display details for a specific book"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     return render_template('book_detail.html', book=book)
 
 @app.route('/books/search')
 def book_search():
     """Search for books by title, author, or description"""
     query = request.args.get('query', '')
-    books = []
     if query:
+        # Search in title, author, and description
         search = f"%{query}%"
         books = Book.query.filter(
-            (Book.title.ilike(search)) |
-            (Book.author.ilike(search)) |
+            (Book.title.ilike(search)) | 
+            (Book.author.ilike(search)) | 
             (Book.description.ilike(search))
         ).filter_by(is_available=True).all()
+    else:
+        books = []
+    
     return render_template('search_results.html', books=books, query=query)
+
+# Authentication routes
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """User registration route"""
@@ -329,10 +171,6 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """User login route"""
-    if current_user.is_authenticated:
-        flash('You are already logged in.', 'info')
-        return redirect(url_for('home'))
-
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -351,6 +189,31 @@ def login():
     
     return render_template('login.html')
 
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    """Dedicated admin login route used by the admin login page."""
+    if current_user.is_authenticated and getattr(current_user, 'is_admin', False):
+        return redirect(url_for('admin_dashboard'))
+
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(email=email).first()
+        if user and check_password_hash(user.password, password):
+            if not user.is_admin:
+                flash('Admin access is required for this page.', 'danger')
+                return redirect(url_for('admin_login'))
+
+            login_user(user)
+            flash('Admin login successful!', 'success')
+            return redirect(url_for('admin_dashboard'))
+
+        flash('Invalid admin email or password. Please try again.', 'danger')
+
+    return render_template('admin/login.html')
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -363,13 +226,6 @@ def logout():
 @app.route('/cart')
 def cart():
     """Display shopping cart contents"""
-    # If no one is logged in, do not show cart details
-    if not current_user.is_authenticated:
-        with open('debug_cart.txt', 'a', encoding='utf-8') as f:
-            f.write(f"CART VIEW BLOCKED (anonymous) at {datetime.now()}\n")
-        flash('Please log in to view cart details.', 'info')
-        return render_template('cart.html', items=[], total=0)
-
     # Get cart from session or initialize empty cart
     cart_items = session.get('cart', {})
     
@@ -385,7 +241,7 @@ def cart():
     
     # Get book details for each item in cart
     for book_id, quantity in cart_items.items():
-        book = db.session.get(Book, int(book_id))
+        book = Book.query.get(int(book_id))
         if book:
             item_total = book.price * quantity
             book_info = {
@@ -423,7 +279,7 @@ def cart():
 @app.route('/cart/add/<int:book_id>', methods=['POST'])
 def add_to_cart(book_id):
     """Add a book to the shopping cart"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     # Initialize cart if it doesn't exist
     if 'cart' not in session:
@@ -495,7 +351,7 @@ def checkout():
     
     # Get book details for each item in cart
     for book_id, quantity in cart_items.items():
-        book = db.session.get(Book, int(book_id))
+        book = Book.query.get(int(book_id))
         if book:
             item_total = book.price * quantity
             books.append({
@@ -522,7 +378,7 @@ def create_payment_route():
     items = []
     
     for book_id, quantity in cart_items.items():
-        book = db.session.get(Book, int(book_id))
+        book = Book.query.get(int(book_id))
         if book:
             item_total = book.price * quantity
             total += item_total
@@ -531,32 +387,25 @@ def create_payment_route():
             items.append({
                 "name": book.title,
                 "sku": f"book-{book.id}",
-                "price": "{:.2f}".format(book.price),
-                "currency": "GBP",
+                "price": str(book.price),
+                "currency": "USD",
                 "quantity": quantity
             })
     
     # Create PayPal payment using helper function
     return_url = url_for('execute_payment', _external=True)
     cancel_url = url_for('payment_cancelled', _external=True)
-
-    try:
-        payer_email = getattr(current_user, 'email', None)
-        result = create_payment(items, total, return_url, cancel_url, payer_email=payer_email)
-        paypal_logger.debug(f"create_payment called for user={current_user.email if hasattr(current_user, 'email') else 'unknown'} total={total} items={len(items)} result={result}")
-
-        if result.get("success"):
-            # Store payment ID in session
-            session['payment_id'] = result.get("payment_id")
-
-            # Return approval URL to frontend
-            return jsonify({"approval_url": result.get("approval_url")})
-        else:
-            paypal_logger.warning(f"PayPal create_payment failed: {result}")
-            return jsonify({"error": result.get("error", "unknown error")}), 400
-    except Exception as e:
-        paypal_logger.exception("Exception in create_payment_route")
-        return jsonify({"error": str(e)}), 500
+    
+    result = create_payment(items, total, return_url, cancel_url)
+    
+    if result["success"]:
+        # Store payment ID in session
+        session['payment_id'] = result["payment_id"]
+        
+        # Return approval URL to frontend
+        return jsonify({"approval_url": result["approval_url"]})
+    else:
+        return jsonify({"error": result["error"]}), 400
 
 @app.route('/execute-payment')
 @login_required
@@ -569,7 +418,7 @@ def execute_payment():
         f.write(f"\n\n=== EXECUTE PAYMENT CALLED at {datetime.now()} ===\n")
         f.write(f"Request URL: {request.url}\n")
         f.write(f"User authenticated: {current_user.is_authenticated}\n")
-
+    
     try:
         # Get payment ID from both session AND URL parameter
         payment_id = session.get('payment_id')
@@ -607,16 +456,11 @@ def execute_payment():
         with open('debug_payment.txt', 'a') as f:
             f.write(f"Calling paypal_execute_payment({payment_id}, {payer_id})\n")
         sys.stdout.flush()
-        try:
-            result = paypal_execute_payment(payment_id, payer_id)
-            paypal_logger.info(f"paypal_execute_payment called: payment_id={payment_id}, payer_id={payer_id}, user={current_user.email if hasattr(current_user, 'email') else 'unknown'} result={result}")
-            print(f"DEBUG: Result: {result}", flush=True)
-            with open('debug_payment.txt', 'a') as f:
-                f.write(f"Result: {result}\n")
-            sys.stdout.flush()
-        except Exception as e:
-            paypal_logger.exception(f"Exception during paypal_execute_payment(payment_id={payment_id}, payer_id={payer_id})")
-            raise
+        result = paypal_execute_payment(payment_id, payer_id)
+        print(f"DEBUG: Result: {result}", flush=True)
+        with open('debug_payment.txt', 'a') as f:
+            f.write(f"Result: {result}\n")
+        sys.stdout.flush()
         
         if result["success"]:
             # Payment successful, create order in database
@@ -634,7 +478,7 @@ def execute_payment():
             
             # Add order items
             for book_id, quantity in cart_items.items():
-                book = db.session.get(Book, int(book_id))
+                book = Book.query.get(int(book_id))
                 if book:
                     item_total = book.price * quantity
                     total_amount += item_total
@@ -663,12 +507,6 @@ def execute_payment():
             
             # Commit all changes
             db.session.commit()
-
-            # Send invoice emails (customer + merchant)
-            try:
-                send_order_invoices(new_order)
-            except Exception:
-                app.logger.exception('Failed to send order invoice emails')
             
             # Clear cart
             session.pop('cart', None)
@@ -680,7 +518,6 @@ def execute_payment():
             flash('Payment execution failed.', 'danger')
             return redirect(url_for('checkout'))
     except Exception as e:
-        paypal_logger.exception("ERROR in execute_payment")
         print(f"ERROR in execute_payment: {str(e)}", flush=True)
         with open('debug_payment.txt', 'a') as f:
             f.write(f"EXCEPTION: {str(e)}\n")
@@ -722,7 +559,7 @@ def complete_free_order():
     cart_books = []
     total = 0
     for book_id, quantity in cart_items.items():
-        book = db.session.get(Book, int(book_id))
+        book = Book.query.get(int(book_id))
         if book:
             cart_books.append({'book': book, 'quantity': quantity})
             total += book.price * quantity
@@ -766,12 +603,6 @@ def complete_free_order():
     db.session.commit()
     
     flash('Free books added to your library! You can download them now.', 'success')
-    # Send invoice emails for free order as well
-    try:
-        send_order_invoices(order)
-    except Exception:
-        app.logger.exception('Failed to send invoice emails for free order')
-
     return redirect(url_for('order_complete', order_id=order.id))
 
 # Download routes
@@ -781,20 +612,21 @@ def complete_free_order():
 def download_book(book_id, order_id):
     """Handle secure book download after purchase with download limits"""
     # Get the book
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     # Check if user is admin (unlimited downloads)
     is_admin = current_user.email == 'admin@example.com'  # You can make this more sophisticated
     
     if not is_admin:
-        # For regular users, check if they've already downloaded this book (one download per user per book)
+        # For regular users, check download limit (1 download per book per order)
         existing_downloads = Download.query.filter_by(
             user_id=current_user.id,
             book_id=book.id,
+            order_id=order_id
         ).count()
-
+        
         if existing_downloads >= 1:
-            flash('You have already downloaded/purchased this book. If you need another copy, contact support.', 'warning')
+            flash('Download limit reached. You have already downloaded this book once. Contact support if you need help.', 'warning')
             return redirect(url_for('account'))
     
     # Record the download
@@ -838,13 +670,6 @@ def update_address():
     flash('Address updated successfully!', 'success')
     return redirect(url_for('account'))
 
-
-@app.route('/account/edit-address', methods=['GET'])
-@login_required
-def edit_address():
-    """Render a dedicated address edit page."""
-    return render_template('edit_address.html', user=current_user)
-
 @app.route('/account/orders/<int:order_id>')
 @login_required
 def order_detail(order_id):
@@ -873,88 +698,30 @@ def admin_dashboard():
                           total_revenue=stats['total_revenue'])
 
 
-@app.route('/admin/orders/<int:order_id>')
-@login_required
-@admin_required
-def admin_order_detail(order_id):
-    """Admin view for a specific order (bypasses user filter)."""
-    order = _session_get_or_404(Order, order_id)
-    return render_template('order_detail.html', order=order)
-
-
-# Debug endpoint to trigger invoice emails manually (development only)
-@app.route('/debug/send-invoice/<int:order_id>', methods=['POST'])
-@login_required
-@admin_required
-def debug_send_invoice(order_id):
-    """Debug endpoint: send invoice emails for an existing order.
-
-    Only available when app.debug is True or when ENABLE_DEBUG_EMAIL_ENDPOINT env var is set.
-    Protected by admin_required/login_required.
-    """
-    # Allow explicit enabling in non-debug environments using env var
-    enabled = app.debug or os.environ.get('ENABLE_DEBUG_EMAIL_ENDPOINT', 'false').lower() in ('1', 'true', 'yes')
-    if not enabled:
-        return "Debug endpoint disabled", 403
-
-    order = _session_get_or_404(Order, order_id)
-    try:
-        send_order_invoices(order)
-        return jsonify({'status': 'sent', 'order_id': order_id})
-    except Exception as e:
-        app.logger.exception('Failed to send debug invoice')
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-
-
-# CLI command to send invoice for an order ID
-@app.cli.command('send-invoice')
-@click.argument('order_id', type=int)
-def send_invoice_cmd(order_id):
-    """Send invoice emails for ORDER_ID from the command line.
-
-    Usage: flask send-invoice 123
-    """
-    with app.app_context():
-        order = db.session.get(Order, order_id)
-        if not order:
-            print(f'Order {order_id} not found')
-            return
-        try:
-            send_order_invoices(order)
-            print(f'Sent invoices for order {order_id}')
-        except Exception:
-            import traceback
-            traceback.print_exc()
-
-
 @app.route('/admin/users')
 @login_required
 @admin_required
 def admin_users():
-    """Admin view: list all registered users"""
+    """Admin view: list all registered users."""
     users = User.query.order_by(User.created_at.desc()).all()
     return render_template('admin/users.html', users=users)
 
 
-@app.route('/admin/users/<int:user_id>/set-temp-password', methods=['POST'], endpoint='admin_set_temp_password')
+@app.route('/admin/orders/<int:order_id>')
 @login_required
 @admin_required
-def admin_set_temp_password(user_id):
-    """Set a temporary password for a user (for testing). The password is hashed before saving."""
-    new_password = request.form.get('temp_password', 'Test1234')
-    user = _session_get_or_404(User, user_id)
-    user.password = generate_password_hash(new_password)
-    db.session.commit()
-    flash(f'Temporary password set for {user.email}: {new_password}', 'success')
-    return redirect(url_for('admin_users'))
+def admin_order_detail(order_id):
+    """Admin view for a specific order."""
+    order = Order.query.get_or_404(order_id)
+    return render_template('admin/order_detail.html', order=order)
 
 
-@app.route('/admin/users/<int:user_id>/edit', methods=['GET', 'POST'], endpoint='admin_edit_user')
+@app.route('/admin/users/<int:user_id>/edit', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def admin_edit_user(user_id):
-    """Edit a user's name and email (admin-only)."""
-    user = _session_get_or_404(User, user_id)
+    """Edit a user's basic profile fields."""
+    user = User.query.get_or_404(user_id)
 
     if request.method == 'POST':
         name = (request.form.get('name') or '').strip()
@@ -964,7 +731,6 @@ def admin_edit_user(user_id):
             flash('Name and email are required.', 'danger')
             return redirect(url_for('admin_edit_user', user_id=user_id))
 
-        # Prevent duplicate email addresses
         existing = User.query.filter(User.email == email, User.id != user_id).first()
         if existing:
             flash('That email address is already used by another account.', 'danger')
@@ -980,23 +746,17 @@ def admin_edit_user(user_id):
     return render_template('admin/edit_user.html', user=user)
 
 
-# Development-only debug endpoint to list users as JSON (not for production)
-@app.route('/__debug_users')
-def __debug_users():
-    if not app.debug:
-        return jsonify({'error': 'disabled'}), 403
-    users = User.query.order_by(User.created_at.desc()).all()
-    out = []
-    for u in users:
-        out.append({
-            'id': u.id,
-            'email': u.email,
-            'name': u.name,
-            'created_at': u.created_at.isoformat() if u.created_at else None,
-            'is_active': bool(u.is_active),
-            'is_admin': bool(u.is_admin)
-        })
-    return jsonify({'users': out})
+@app.route('/admin/users/<int:user_id>/set-temp-password', methods=['POST'])
+@login_required
+@admin_required
+def admin_set_temp_password(user_id):
+    """Set a temporary password for a user."""
+    user = User.query.get_or_404(user_id)
+    new_password = request.form.get('temp_password', 'Test1234')
+    user.password = generate_password_hash(new_password)
+    db.session.commit()
+    flash(f'Temporary password set for {user.email}.', 'success')
+    return redirect(url_for('admin_users'))
 
 @app.route('/admin/extract-pdf-metadata', methods=['POST'])
 @login_required
@@ -1140,7 +900,7 @@ def admin_add_book():
 @admin_required
 def admin_edit_book(book_id):
     """Admin route to edit an existing book"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     if request.method == 'POST':
         # Check if we should re-extract metadata (when no significant user input)
@@ -1265,7 +1025,7 @@ def admin_edit_book(book_id):
 @admin_required
 def admin_delete_book(book_id):
     """Admin route to delete a book"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     try:
         # Delete associated downloads first (foreign key constraint)
@@ -1301,7 +1061,7 @@ def admin_delete_book(book_id):
 @admin_required
 def admin_clean_pdf(book_id):
     """Admin route to manually clean watermark pages from a book's PDF"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     if not book.pdf_file:
         return jsonify({'error': 'No PDF file for this book'}), 400
@@ -1368,7 +1128,7 @@ def admin_clean_pdf(book_id):
 @admin_required
 def admin_view_pdf(book_id):
     """Admin route to view PDF pages with option to remove individual pages"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     if not book.pdf_file:
         flash('No PDF file for this book', 'danger')
@@ -1396,7 +1156,7 @@ def admin_pdf_page_preview(book_id, page_num):
     from flask import send_file
     import io
     
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     if not book.pdf_file:
         abort(404)
@@ -1439,7 +1199,7 @@ def admin_pdf_page_preview(book_id, page_num):
 @admin_required
 def admin_remove_pdf_page(book_id, page_num):
     """Remove a specific page from a PDF"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     
     if not book.pdf_file:
         return jsonify({'error': 'No PDF file for this book'}), 400
@@ -1508,7 +1268,7 @@ def admin_remove_pdf_page(book_id, page_num):
 @login_required
 def read_book(book_id):
     """Route to view a book's PDF in the browser using PDF.js"""
-    book = _session_get_or_404(Book, book_id)
+    book = Book.query.get_or_404(book_id)
     if not book.pdf_file:
         flash('No PDF file available for this book.', 'danger')
         return redirect(url_for('book_detail', book_id=book_id))
@@ -1532,4 +1292,4 @@ def debug_user():
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=False)
+    app.run(debug=True)
